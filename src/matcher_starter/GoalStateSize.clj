@@ -303,11 +303,16 @@ I will be measuring the results by:
 )
 
 (defn test-two []
+  "Move the agent from room A to room D"
+  (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false)) operations))
+  )
+
+(defn test-three []
   "Move the agent from room A to room K"
   (time (ops-search move-A-D-all-unlocked '((in R K)) operations))
 )
 
-(defn test-three []
+(defn test-four []
   "Move the agent from room A to room K and close the door behind him (D-K close)"
   (time (ops-search move-A-D-all-unlocked '((in R K) (opened D-K false)) operations))
 )
