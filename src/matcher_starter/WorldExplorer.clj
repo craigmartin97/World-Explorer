@@ -1,7 +1,12 @@
 (ns world-explorer
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
-            [org.clojars.cognesence.ops-search.core :refer :all]))
+            [org.clojars.cognesence.ops-search.core :refer :all]
+
+  )
+)
+
+(use 'clojure.tools.trace)
 
 ;; *ns* // check what namespace your currently in
 ;; (in-ns 'world-explorer) // this changes the namespace to this file
