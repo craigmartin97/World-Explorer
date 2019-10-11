@@ -1,18 +1,4 @@
-(comment
-"In this experiment I am evaluating the efficency of the
-both the ops-search and the planner inference engines in respect to
-the size of the goal state size.
 
-In these tests I will keep the size of the state and operators lists
-the same but change the quantity of goal states
-
-I will be measuring the results by:
- 1) the amount of time taken for each function to finish executing
- 2) the trace call of the stack, how many nodes did it visit before reaching a solution?
- 3) did it manage to reach a correct result?
- 4) the amount of memory the function/object required
-"
-)
 
 
 (ns goal-state-size
@@ -27,6 +13,8 @@ I will be measuring the results by:
 (use 'clojure.tools.trace)
 
 
+
+
 (def operations
   "A map of operations that the agent can perform in the world"
   '{
@@ -34,24 +22,24 @@ I will be measuring the results by:
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           )
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (in ?agent ?room1)
+            )
      :add
           (
-           (opened ?door true)
-           )
+            (opened ?door true)
+            )
      :del
           (
-           (opened ?door false)
-           )
+            (opened ?door false)
+            )
      :txt (?agent has opened ?door)
      }
 
@@ -59,24 +47,24 @@ I will be measuring the results by:
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           )
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door true)
+            (unlocked ?door true)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            )
      :add
           (
-           (opened ?door false)
-           )
+            (opened ?door false)
+            )
      :del
           (
-           (opened ?door true)
-           )
+            (opened ?door true)
+            )
      :txt (?agent has closed ?door)
      }
 
@@ -84,29 +72,29 @@ I will be measuring the results by:
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door true)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
 
 
-           (key ?key)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           )
+            (key ?key)
+            (holdable ?key)
+            (unlocks ?key ?door)
+            (holds ?agent ?key)
+            )
      :add
           (
-           (unlocked ?door false)
-           )
+            (unlocked ?door false)
+            )
      :del
           (
-           (unlocked ?door true)
-           )
+            (unlocked ?door true)
+            )
      :txt (?agent has locked ?door)
      }
 
@@ -114,29 +102,29 @@ I will be measuring the results by:
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door false)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door false)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
 
 
-           (key ?key)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           )
+            (key ?key)
+            (holdable ?key)
+            (unlocks ?key ?door)
+            (holds ?agent ?key)
+            )
      :add
           (
-           (unlocked ?door true)
-           )
+            (unlocked ?door true)
+            )
      :del
           (
-           (unlocked ?door false)
-           )
+            (unlocked ?door false)
+            )
      :txt (?agent has unlocked ?door)
      }
 
@@ -144,24 +132,24 @@ I will be measuring the results by:
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           )
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door true)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (in ?agent ?room1)
+            )
      :add
           (
-           (in ?agent ?room2)
-           )
+            (in ?agent ?room2)
+            )
      :del
           (
-           (in ?agent ?room1)
-           )
+            (in ?agent ?room1)
+            )
      :txt (?agent has moved from ?room1 to ?room2)
      }
 
@@ -169,22 +157,22 @@ I will be measuring the results by:
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
+            (agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent nil)
+            (in ?obj ?room1)
+            )
      :add
           (
-           (holds ?agent ?obj)
-           )
+            (holds ?agent ?obj)
+            )
      :del
           (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
+            (holds ?agent nil)
+            (in ?obj ?room1)
+            )
      :txt (?agent picked up ?obj from ?room1)
      }
 
@@ -192,21 +180,21 @@ I will be measuring the results by:
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent ?obj)
-           )
+            (agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ?obj)
+            )
      :add
           (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
+            (holds ?agent nil)
+            (in ?obj ?room1)
+            )
      :del
           (
-           (holds ?agent ?obj)
-           )
+            (holds ?agent ?obj)
+            )
      :txt (?agent dropped ?obj in ?room1)
      }
     }
@@ -291,28 +279,226 @@ I will be measuring the results by:
      (key key-B-E)
      (holdable key-B-E)
      (unlocks key-B-E B-E)
-     (holds R nil)
      (in key-B-E B)
-   }
-)
+
+     (key key-A-D)
+     (holdable key-A-D)
+     (unlocks key-A-D A-D)
+     (in key-A-D A)
+
+     ;test 1-4
+     ;(holds R key-A-D)
+
+     ;test 5
+     (holds R nil)
+     }
+  )
 
 ;helper functions to call to achieve results of tests
 (defn test-one []
-  "Move the agent from room A to room D"
-  (time (ops-search move-A-D-all-unlocked '((in R D)) operations))
-)
+  "Move the agent from room A to room D
+  A move from one room to another
+  "
+  (time (ops-search move-A-D-all-unlocked '((in R D)) operations :debug true))
+  )
 
 (defn test-two []
-  "Move the agent from room A to room D"
-  (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false)) operations))
+  "Move the agent from room A to room D and close the door behind"
+  (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false)) operations :debug true))
   )
 
 (defn test-three []
-  "Move the agent from room A to room K"
-  (time (ops-search move-A-D-all-unlocked '((in R K)) operations))
-)
+  "Move the agent from room A to room D and close the door behind and lock the door"
+  (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false) (unlocked A-D false)) operations))
+  )
 
 (defn test-four []
-  "Move the agent from room A to room K and close the door behind him (D-K close)"
-  (time (ops-search move-A-D-all-unlocked '((in R K) (opened D-K false)) operations))
-)
+  "Move the agent from room A to room D and close the door behind and lock the door.
+  The agent will then drop the key at the after locking the door
+  moves room -> closes door -> locks door -> drops key (total 4 ops)"
+  (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations))
+  )
+
+(defn test-t []
+  "Move the agent from room A to room D and close the door behind and lock the door.
+  The agent will then drop the key at the after locking the door
+  moves room -> closes door -> locks door -> drops key (total 4 ops)"
+  (time (ops-search move-A-D-all-unlocked '((holds R key-A-D) (in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations :debug true))
+  )
+
+
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;--------------------------------------------Does Order Matter?---------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+
+(defn test-two-change-order []
+  "Move the agent from room A to room D and close the door behind"
+  (time (ops-search move-A-D-all-unlocked '((opened A-D false) (in R D) ) operations))
+  )
+
+(defn test-three-change-order []
+  "Move the agent from room A to room D and close the door behind and lock the door"
+  (time (ops-search move-A-D-all-unlocked '((unlocked A-D false) (opened A-D false) (in R D)  ) operations))
+  )
+
+
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+(def closed-doors-state
+  "A more advanced scenario"
+  '#{
+     ;define agent
+
+     ;define rooms
+
+     ;define doors
+
+     ;define connections (connects door room)
+
+     ;define where agent is in which room
+     (in R A)
+     ;define the state of the doors, open or closed
+     (opened A-B false)
+     (opened A-C false)
+     (opened A-D false)
+     (opened B-E false)
+     (opened C-F false)
+     (opened D-K false)
+     (opened E-G false)
+     (opened G-H false)
+     (opened E-I false)
+     (opened I-J false)
+     ;define if the doors are locked or unlocked
+     (unlocked A-B true)
+     (unlocked A-C true)
+     (unlocked A-D true)
+     (unlocked B-E true)
+     (unlocked C-F true)
+     (unlocked D-K true)
+     (unlocked E-G true)
+     (unlocked G-H true)
+     (unlocked E-I true)
+     (unlocked I-J true)
+
+     ;specify keys for the doors
+
+     ;(in key-A-D A)
+     ;(in key-A-B A)
+     ;(in key-A-C A)
+     ;(in key-B-E B)
+     ;(in key-C-F C)
+     ;(in key-D-K D)
+     ;(in key-E-G E)
+     ;(in key-G-H G)
+     ;(in key-E-I E)
+     ;(in key-I-J I)
+
+     ;test 5
+     (holds R nil)
+     }
+  )
+
+(def world
+  '#{
+     (agent R)
+
+     (door A-B)
+     (door A-C)
+     (door A-D)
+     (door B-E)
+     (door C-F)
+     (door D-K)
+     (door E-G)
+     (door G-H)
+     (door E-I)
+     (door I-J)
+
+     (room A)
+     (room B)
+     (room C)
+     (room D)
+     (room E)
+     (room F)
+     (room G)
+     (room H)
+     (room I)
+     (room J)
+     (room K)
+
+     (connects A-B A)
+     (connects A-B B)
+     (connects A-C A)
+     (connects A-C C)
+     (connects A-D A)
+     (connects A-D D)
+     (connects B-E B)
+     (connects B-E E)
+     (connects C-F C)
+     (connects C-F F)
+     (connects D-K D)
+     (connects D-K K)
+     (connects E-G E)
+     (connects E-G G)
+     (connects E-I E)
+     (connects E-I I)
+     (connects G-H G)
+     (connects G-H H)
+     (connects I-J I)
+     (connects I-J J)
+
+     (key key-A-D)
+     (key key-A-B)
+     (key key-A-C)
+     (key key-C-F)
+     (key key-B-E)
+     (key key-D-K)
+     (key key-E-G)
+     (key key-E-I)
+     (key key-G-H)
+     (key key-I-J)
+
+     (holdable key-A-D)
+     (holdable key-A-B)
+     (holdable key-A-C)
+     (holdable key-C-F)
+     (holdable key-B-E)
+     (holdable key-D-K)
+     (holdable key-E-G)
+     (holdable key-E-I)
+     (holdable key-G-H)
+     (holdable key-I-J)
+
+     (unlocks key-A-D A-D)
+     (unlocks key-A-B A-B)
+     (unlocks key-A-C A-C)
+     (unlocks key-C-F C-F)
+     (unlocks key-B-E B-E)
+     (unlocks key-D-K D-K)
+     (unlocks key-E-G E-G)
+     (unlocks key-E-I E-I)
+     (unlocks key-G-H G-H)
+     (unlocks key-I-J I-J)
+     })
+
+(defn test-five []
+  "Test six opens two doors"
+  (time (ops-search closed-doors-state '((opened A-D true) (opened C-F true)) operations :world world :debug true))
+  )
+
+(defn test-six []
+  "Test six opens "
+  (time (ops-search closed-doors-state '((in R J)) operations :world world :debug true))
+  )
