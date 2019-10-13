@@ -1,6 +1,3 @@
-
-
-
 (ns goal-state-size
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
@@ -298,31 +295,41 @@
 (defn test-one []
   "Move the agent from room A to room D
   A move from one room to another
+
+  Elapsed time: 3046.6834 msecs
   "
   (time (ops-search move-A-D-all-unlocked '((in R D)) operations :debug true))
   )
 
 (defn test-two []
-  "Move the agent from room A to room D and close the door behind"
+  "Move the agent from room A to room D and close the door behind
+
+  Elapsed time: 15371.377 msecs"
   (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false)) operations :debug true))
   )
 
 (defn test-three []
-  "Move the agent from room A to room D and close the door behind and lock the door"
+  "Move the agent from room A to room D and close the door behind and lock the door
+
+  Elapsed time: 70883.8343 msecs"
   (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false) (unlocked A-D false)) operations))
   )
 
 (defn test-four []
   "Move the agent from room A to room D and close the door behind and lock the door.
   The agent will then drop the key at the after locking the door
-  moves room -> closes door -> locks door -> drops key (total 4 ops)"
+  moves room -> closes door -> locks door -> drops key (total 4 ops)
+
+  Elapsed time: 275409.6173 msecs"
   (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations))
   )
 
-(defn test-t []
+(defn test-five []
   "Move the agent from room A to room D and close the door behind and lock the door.
   The agent will then drop the key at the after locking the door
-  moves room -> closes door -> locks door -> drops key (total 4 ops)"
+  moves room -> closes door -> locks door -> drops key (total 4 ops)
+
+  Elapsed time: unsolvable in reasonable time (left for over 1 hour)"
   (time (ops-search move-A-D-all-unlocked '((holds R key-A-D) (in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations :debug true))
   )
 
@@ -338,12 +345,16 @@
 
 
 (defn test-two-change-order []
-  "Move the agent from room A to room D and close the door behind"
+  "Move the agent from room A to room D and close the door behind
+
+  Elapsed time: 15482.871"
   (time (ops-search move-A-D-all-unlocked '((opened A-D false) (in R D) ) operations))
   )
 
 (defn test-three-change-order []
-  "Move the agent from room A to room D and close the door behind and lock the door"
+  "Move the agent from room A to room D and close the door behind and lock the door
+
+  Elapsed time: 71461.0799"
   (time (ops-search move-A-D-all-unlocked '((unlocked A-D false) (opened A-D false) (in R D)  ) operations))
   )
 
@@ -351,7 +362,7 @@
 ;-----------------------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------------------
-;-----------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------Deeper Depths----------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------------------
@@ -360,13 +371,7 @@
 (def closed-doors-state
   "A more advanced scenario"
   '#{
-     ;define agent
 
-     ;define rooms
-
-     ;define doors
-
-     ;define connections (connects door room)
 
      ;define where agent is in which room
      (in R A)
@@ -395,16 +400,16 @@
 
      ;specify keys for the doors
 
-     ;(in key-A-D A)
-     ;(in key-A-B A)
-     ;(in key-A-C A)
-     ;(in key-B-E B)
-     ;(in key-C-F C)
-     ;(in key-D-K D)
-     ;(in key-E-G E)
-     ;(in key-G-H G)
-     ;(in key-E-I E)
-     ;(in key-I-J I)
+     (in key-A-D A)
+     (in key-A-B A)
+     (in key-A-C A)
+     (in key-B-E B)
+     (in key-C-F C)
+     (in key-D-K D)
+     (in key-E-G E)
+     (in key-G-H G)
+     (in key-E-I E)
+     (in key-I-J I)
 
      ;test 5
      (holds R nil)
@@ -493,12 +498,32 @@
      (unlocks key-I-J I-J)
      })
 
-(defn test-five []
-  "Test six opens two doors"
-  (time (ops-search closed-doors-state '((opened A-D true) (opened C-F true)) operations :world world :debug true))
-  )
-
 (defn test-six []
+  "Test six opens door A-D and door C-F
+
+  Elapsed time: 76957.0342 msecs"
+  (time (ops-search closed-doors-state '((opened A-D true) (opened C-F true)) operations :world world :debug true))
+)
+
+(defn test-seven []
+  "Test seven opens door A-B, opens door A-D and opens the door C-F
+
+  Elapsed time: 198102.5083 msecs"
+  (time (ops-search closed-doors-state '((opened A-D true) (opened C-F true) (opened A-B true)) operations
+                    :world world :debug true))
+)
+
+(defn test-eight []
+  "Test eight opens door A-D, door C-F, door A-B
+   and picks up key-C-F
+
+   "
+  (time (ops-search closed-doors-state '((opened A-D true) (opened C-F true) (opened A-B true) (holds R key-C-F)) operations
+                    :world world :debug true))
+)
+
+
+(defn test-nine []
   "Test six opens "
   (time (ops-search closed-doors-state '((in R J)) operations :world world :debug true))
-  )
+)

@@ -7,6 +7,9 @@
             )
   )
 
+;(planner move-A-D-all-unlocked '(in R D) operations)
+;(planner move-A-D-all-unlocked '(opened A-B true) operations)
+
 (def operations
   "A map of operations that the agent can perform in the world"
   '{
