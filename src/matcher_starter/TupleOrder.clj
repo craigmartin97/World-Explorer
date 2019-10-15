@@ -3,7 +3,6 @@
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
             [clj-memory-meter.core :as mm]
-
             )
   )
 
@@ -13,380 +12,224 @@
   "
 )
 
-(def operations-one
+(def base-move-one
   "A map of operations that the agent can perform in the world
-  This is the first basic development of the operators list with items in any order"
+  This operator set only contains the move operator
+
+  we have placed the tuples in an order we assumed to be most efficent."
   '{
-    open
+    move
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           )
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door true)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (in ?agent ?room1)
+            )
      :add
           (
-           (opened ?door true)
-           )
+            (in ?agent ?room2)
+            )
      :del
           (
-           (opened ?door false)
-           )
-     :txt (?agent has opened ?door)
+            (in ?agent ?room1)
+            )
+     :txt (?agent has moved from ?room1 to ?room2)
      }
+    }
+  )
 
-    closed
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           )
-     :add
-          (
-           (opened ?door false)
-           )
-     :del
-          (
-           (opened ?door true)
-           )
-     :txt (?agent has closed ?door)
-     }
+(def base-move-two
+  "A map of operations that the agent can perform in the world
+  This operator set only contains the move operator
 
-    lock
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
+  We have rearranged the tuples with the '2 set tuples' at the bottom
+  as an inital test to see if anything changes"
+  '{
 
-
-           (key ?key)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           )
-     :add
-          (
-           (unlocked ?door false)
-           )
-     :del
-          (
-           (unlocked ?door true)
-           )
-     :txt (?agent has locked ?door)
-     }
-
-    unlock
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door false)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-
-
-           (key ?key)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           )
-     :add
-          (
-           (unlocked ?door true)
-           )
-     :del
-          (
-           (unlocked ?door false)
-           )
-     :txt (?agent has unlocked ?door)
-     }
 
     move
     {
      :pre
           (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           )
+            (opened ?door true)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (in ?agent ?room1)
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            )
      :add
           (
-           (in ?agent ?room2)
-           )
+            (in ?agent ?room2)
+            )
      :del
           (
-           (in ?agent ?room1)
-           )
+            (in ?agent ?room1)
+            )
      :txt (?agent has moved from ?room1 to ?room2)
-     }
-
-    pickup
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           )
-     :del
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :txt (?agent picked up ?obj from ?room1)
-     }
-
-    drop
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent ?obj)
-           )
-     :add
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :del
-          (
-           (holds ?agent ?obj)
-           )
-     :txt (?agent dropped ?obj in ?room1)
      }
     }
   )
 
-(def operations-two
+(def base-move-three
   "A map of operations that the agent can perform in the world
-  Reordered the tuples into different orders.
-  I've put the specifiers (agent ?agent) to the bottom and the operators list
-  to see if it affects the effects the performance of the search engine"
+  This operator set only contains the move operator
+
+  We moved the tuple to check which room the agent is in to the top of the :pre conditions
+  this was done as it ensured that one of the rooms being checked would always be the room
+  where the agent is currently located."
   '{
-    open
-    {
-     :pre
-          (
-           (opened ?door false)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           )
-     :add
-          (
-           (opened ?door true)
-           )
-     :del
-          (
-           (opened ?door false)
-           )
-     :txt (?agent has opened ?door)
-     }
 
-    closed
-    {
-     :pre
-          (
-           (opened ?door true)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           )
-     :add
-          (
-           (opened ?door false)
-           )
-     :del
-          (
-           (opened ?door true)
-           )
-     :txt (?agent has closed ?door)
-     }
-
-    lock
-    {
-     :pre
-          (
-           (opened ?door false)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           (key ?key)
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           )
-     :add
-          (
-           (unlocked ?door false)
-           )
-     :del
-          (
-           (unlocked ?door true)
-           )
-     :txt (?agent has locked ?door)
-     }
-
-    unlock
-    {
-     :pre
-          (
-           (opened ?door false)
-           (unlocked ?door false)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           (key ?key)
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           )
-     :add
-          (
-           (unlocked ?door true)
-           )
-     :del
-          (
-           (unlocked ?door false)
-           )
-     :txt (?agent has unlocked ?door)
-     }
 
     move
     {
      :pre
           (
-
-           (opened ?door true)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           )
+            (in ?agent ?room1)
+            (opened ?door true)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            )
      :add
           (
-           (in ?agent ?room2)
-           )
+            (in ?agent ?room2)
+            )
      :del
           (
-           (in ?agent ?room1)
-           )
+            (in ?agent ?room1)
+            )
      :txt (?agent has moved from ?room1 to ?room2)
-     }
-
-    pickup
-    {
-     :pre
-          (
-           (in ?agent ?room1)
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           )
-     :del
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :txt (?agent picked up ?obj from ?room1)
-     }
-
-    drop
-    {
-     :pre
-          (
-           (in ?agent ?room1)
-           (holds ?agent ?obj)
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           )
-     :add
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :del
-          (
-           (holds ?agent ?obj)
-           )
-     :txt (?agent dropped ?obj in ?room1)
      }
     }
   )
 
+(def base-move-four
+  "A map of operations that the agent can perform in the world
+  This operator set only contains the move operator
 
-(def intermediate-state-three
-  "A more advanced scenario"
+  We moved the connects tuples towards the top of the :pre so we could limit
+  which doors where looked at by ensuring the doors where connected to room one"
+  '{
+
+
+    move
+    {
+     :pre
+          (
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (opened ?door true)
+            (unlocked ?door true)
+            (agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            )
+     :add
+          (
+            (in ?agent ?room2)
+            )
+     :del
+          (
+            (in ?agent ?room1)
+            )
+     :txt (?agent has moved from ?room1 to ?room2)
+     }
+    }
+  )
+
+(def base-move-five
+  "A map of operations that the agent can perform in the world
+  This operator set only contains the move operator
+
+  We have moved the agent check to the top of the :pre conditions.
+  So the keys arent confused for agents as they both use the same keyword 'in'."
+  '{
+    move
+    {
+     :pre
+          (
+            (agent ?agent)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (opened ?door true)
+            (unlocked ?door true)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            )
+     :add
+          (
+            (in ?agent ?room2)
+            )
+     :del
+          (
+            (in ?agent ?room1)
+            )
+     :txt (?agent has moved from ?room1 to ?room2)
+     }
+    }
+  )
+
+(def base-move-six
+  "A map of operations that the agent can perform in the world
+  This operator set only contains the move operator
+
+  We have moved the '2 tuple' sets directly below where their matcher variables are first defined
+  We deduced this would make it more efficent for more complex scenarios.
+  For example, once you have a door its better to check that its unlocked and open before
+  figuring out which room its connected to.
+
+  This is quicker because the second connects tuple can be 2 values. Specifying it later means
+  that the opened/unlocked door tuples aren't checked twice."
+  '{
+    move
+    {
+     :pre
+          (
+            (agent ?agent)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (door ?door)
+            ;entrypy reduction
+            (opened ?door true)
+            (unlocked ?door true)
+            (room ?room1)
+            (connects ?door ?room2)
+            (room ?room2)
+            )
+     :add
+          (
+            (in ?agent ?room2)
+            )
+     :del
+          (
+            (in ?agent ?room1)
+            )
+     :txt (?agent has moved from ?room1 to ?room2)
+     }
+    }
+  )
+
+(def state-one
+  "basic state for agent to move from one room to next"
   '#{
      (agent R)
      (room A)
@@ -394,54 +237,70 @@
      (room C)
      (room D)
      (room E)
-     (room F)
+
      (door A-B)
-     (door A-C)
-     (door A-D)
-     (door B-E)
-     (door C-F)
+     (door B-C)
+     (door C-D)
+     (door D-E)
+
      (connects A-B A)
      (connects A-B B)
-     (connects A-C A)
-     (connects A-C C)
-     (connects A-D A)
-     (connects A-D D)
-     (connects B-E B)
-     (connects B-E E)
-     (connects C-F C)
-     (connects C-F F)
-     (in R A)
-     (opened A-B false)
-     (opened A-C false)
-     (opened A-D false)
-     (opened B-E false)
-     (opened C-F false)
+
+     (connects B-C B)
+     (connects B-C C)
+
+     (connects C-D C)
+     (connects C-D D)
+
+     (connects D-E D)
+     (connects D-E E)
+
+     (opened A-B true)
+     (opened B-C true)
+     (opened C-D true)
+     (opened D-E true)
+
      (unlocked A-B true)
-     (unlocked A-C true)
-     (unlocked A-D true)
-     (unlocked B-E false)
-     (unlocked C-F true)
-     (key key-B-E)
-     (holdable key-B-E)
-     (unlocks key-B-E B-E)
-     (holds R nil)
-     (in key-B-E B)
-     }
+     (unlocked B-C true)
+     (unlocked C-D true)
+     (unlocked D-E true)
+
+     (in R A)
+    }
   )
 
-(defn total-memory [obj]
-  "Helper method to show memory of obj"
-  (let [baos (java.io.ByteArrayOutputStream.)]
-    (with-open [oos (java.io.ObjectOutputStream. baos)]
-      (.writeObject oos obj))
-    (count (.toByteArray baos))))
-
+;----------------------------------------------------
+;----------------------------------------------------
+;----------------------Tests for move------------------------------
+;----------------------------------------------------
+;----------------------------------------------------
 (defn test-one []
-  "Test six opens two doors"
-  (time (ops-search intermediate-state-three '((opened A-D true)) operations-one  :debug true))
+  (time (ops-search state-one '((in R E)) base-move-one) )
   )
 
 (defn test-two []
-  "Test six opens two doors"
-  (time (ops-search intermediate-state-three '((opened A-D true)) operations-two  :debug true))
+  (time (ops-search state-one '((in R B)) base-move-two) )
   )
+
+(defn test-three []
+  (time (ops-search state-one '((in R B)) base-move-three) )
+  )
+
+(defn test-four []
+  (time (ops-search state-one '((in R B)) base-move-four) )
+  )
+
+(defn test-five []
+  (time (ops-search state-one '((in R B)) base-move-five) )
+  )
+
+(defn test-six []
+  (time (ops-search state-one '((in R B)) base-move-six) )
+  )
+
+
+;--------------------------------------------------------------
+;--------------------------------------------------------------
+;----------------------Open------------------------------
+;----------------------------------------------------
+;----------------------------------------------------

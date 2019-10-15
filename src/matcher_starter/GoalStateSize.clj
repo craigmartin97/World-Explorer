@@ -284,10 +284,10 @@
      (in key-A-D A)
 
      ;test 1-4
-     ;(holds R key-A-D)
+     (holds R key-A-D)
 
      ;test 5
-     (holds R nil)
+     ;(holds R nil)
      }
   )
 
@@ -312,7 +312,7 @@
   "Move the agent from room A to room D and close the door behind and lock the door
 
   Elapsed time: 70883.8343 msecs"
-  (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false) (unlocked A-D false)) operations))
+  (time (ops-search move-A-D-all-unlocked '((in R D) (opened A-D false) (unlocked A-D false)) operations :debug true))
   )
 
 (defn test-four []
@@ -514,16 +514,26 @@
 )
 
 (defn test-eight []
-  "Test eight opens door A-D, door C-F, door A-B
+  "Test eight will have to pick up a key, lock a door, open a door, move and open another door"
+  (time (ops-search closed-doors-state '((opened A-D true) (opened C-F true) (unlocked A-B false)) operations
+                    :world world :debug true))
+  )
+
+(defn test-nine []
+  "Test nine opens door A-D, door C-F, door A-B
    and picks up key-C-F
 
+  Elapsed time: unsolvable
    "
   (time (ops-search closed-doors-state '((opened A-D true) (opened C-F true) (opened A-B true) (holds R key-C-F)) operations
                     :world world :debug true))
 )
 
 
-(defn test-nine []
-  "Test six opens "
+(defn test-ten []
+  "Test ten tries to get the agent to move from the first room
+  to the furthest room away which is the deepest depth.
+
+  Elapsed time: unsolvable"
   (time (ops-search closed-doors-state '((in R J)) operations :world world :debug true))
 )
