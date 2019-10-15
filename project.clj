@@ -9,7 +9,6 @@
                  [org.clojars.cognesence/ops-search "1.0.1"]
                  [org.clojure/tools.trace "0.7.10"]
                  [com.clojure-goes-fast/clj-memory-meter "0.1.2"]
-                 [com.clojure-goes-fast/clj-memory-meter "0.1.2"]
                 ]
   :jvm-opts ["-Djdk.attach.allowAttachSelf"]
 )
