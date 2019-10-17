@@ -1,4 +1,4 @@
-(ns tuple-order
+(ns tuple-order.move
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
@@ -8,38 +8,38 @@
 
 (comment
   "I am going to create multiple sets of operators with the tuples
-  and operators in different orders to see if it improves the speed and efficency of the ops-searcher
+  and operators in different orders to see if it improves the speed and efficiency of the ops-searcher
   "
-)
+  )
 
 (def base-move-one
   "A map of operations that the agent can perform in the world
   This operator set only contains the move operator
 
-  we have placed the tuples in an order we assumed to be most efficent."
+  we have placed the tuples in an order we assumed to be most efficient."
   '{
     move
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door true)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (in ?agent ?room1)
-            )
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           (opened ?door true)
+           (unlocked ?door true)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           (in ?agent ?room1)
+           )
      :add
           (
-            (in ?agent ?room2)
-            )
+           (in ?agent ?room2)
+           )
      :del
           (
-            (in ?agent ?room1)
-            )
+           (in ?agent ?room1)
+           )
      :txt (?agent has moved from ?room1 to ?room2)
      }
     }
@@ -52,30 +52,28 @@
   We have rearranged the tuples with the '2 set tuples' at the bottom
   as an inital test to see if anything changes"
   '{
-
-
     move
     {
      :pre
           (
-            (opened ?door true)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (in ?agent ?room1)
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            )
+           (opened ?door true)
+           (unlocked ?door true)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           (in ?agent ?room1)
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           )
      :add
           (
-            (in ?agent ?room2)
-            )
+           (in ?agent ?room2)
+           )
      :del
           (
-            (in ?agent ?room1)
-            )
+           (in ?agent ?room1)
+           )
      :txt (?agent has moved from ?room1 to ?room2)
      }
     }
@@ -95,24 +93,24 @@
     {
      :pre
           (
-            (in ?agent ?room1)
-            (opened ?door true)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            )
+           (in ?agent ?room1)
+           (opened ?door true)
+           (unlocked ?door true)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           )
      :add
           (
-            (in ?agent ?room2)
-            )
+           (in ?agent ?room2)
+           )
      :del
           (
-            (in ?agent ?room1)
-            )
+           (in ?agent ?room1)
+           )
      :txt (?agent has moved from ?room1 to ?room2)
      }
     }
@@ -131,24 +129,24 @@
     {
      :pre
           (
-            (in ?agent ?room1)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (opened ?door true)
-            (unlocked ?door true)
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            )
+           (in ?agent ?room1)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           (opened ?door true)
+           (unlocked ?door true)
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           )
      :add
           (
-            (in ?agent ?room2)
-            )
+           (in ?agent ?room2)
+           )
      :del
           (
-            (in ?agent ?room1)
-            )
+           (in ?agent ?room1)
+           )
      :txt (?agent has moved from ?room1 to ?room2)
      }
     }
@@ -165,24 +163,24 @@
     {
      :pre
           (
-            (agent ?agent)
-            (in ?agent ?room1)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (opened ?door true)
-            (unlocked ?door true)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            )
+           (agent ?agent)
+           (in ?agent ?room1)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           (opened ?door true)
+           (unlocked ?door true)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           )
      :add
           (
-            (in ?agent ?room2)
-            )
+           (in ?agent ?room2)
+           )
      :del
           (
-            (in ?agent ?room1)
-            )
+           (in ?agent ?room1)
+           )
      :txt (?agent has moved from ?room1 to ?room2)
      }
     }
@@ -204,31 +202,31 @@
     {
      :pre
           (
-            (agent ?agent)
-            (in ?agent ?room1)
-            (connects ?door ?room1)
-            (door ?door)
-            ;entrypy reduction
-            (opened ?door true)
-            (unlocked ?door true)
-            (room ?room1)
-            (connects ?door ?room2)
-            (room ?room2)
-            )
+           (agent ?agent)
+           (in ?agent ?room1)
+           (connects ?door ?room1)
+           (door ?door)
+           ;entrypy reduction
+           (opened ?door true)
+           (unlocked ?door true)
+           (room ?room1)
+           (connects ?door ?room2)
+           (room ?room2)
+           )
      :add
           (
-            (in ?agent ?room2)
-            )
+           (in ?agent ?room2)
+           )
      :del
           (
-            (in ?agent ?room1)
-            )
+           (in ?agent ?room1)
+           )
      :txt (?agent has moved from ?room1 to ?room2)
      }
     }
   )
 
-(def state-one
+(def state-move
   "basic state for agent to move from one room to next"
   '#{
      (agent R)
@@ -266,8 +264,9 @@
      (unlocked D-E true)
 
      (in R A)
-    }
+     }
   )
+
 
 ;----------------------------------------------------
 ;----------------------------------------------------
@@ -275,32 +274,25 @@
 ;----------------------------------------------------
 ;----------------------------------------------------
 (defn test-one []
-  (time (ops-search state-one '((in R E)) base-move-one) )
+  (time (ops-search state-move '((in R B)) base-move-one) )
   )
 
 (defn test-two []
-  (time (ops-search state-one '((in R B)) base-move-two) )
+  (time (ops-search state-move '((in R B)) base-move-two) )
   )
 
 (defn test-three []
-  (time (ops-search state-one '((in R B)) base-move-three) )
+  (time (ops-search state-move '((in R B)) base-move-three) )
   )
 
 (defn test-four []
-  (time (ops-search state-one '((in R B)) base-move-four) )
+  (time (ops-search state-move '((in R B)) base-move-four) )
   )
 
 (defn test-five []
-  (time (ops-search state-one '((in R B)) base-move-five) )
+  (time (ops-search state-move '((in R B)) base-move-five) )
   )
 
 (defn test-six []
-  (time (ops-search state-one '((in R B)) base-move-six) )
+  (time (ops-search state-move '((in R B)) base-move-six) )
   )
-
-
-;--------------------------------------------------------------
-;--------------------------------------------------------------
-;----------------------Open------------------------------
-;----------------------------------------------------
-;----------------------------------------------------

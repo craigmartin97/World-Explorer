@@ -1,4 +1,4 @@
-(ns tuple-size
+(ns tuple-size.core
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
@@ -2850,12 +2850,12 @@
 ;----------------------------------
 ;----------------------------------
 (defn test-one-move-to-f []
-  "Elapsed time = 33161.8037 msecs"
+  "Elapsed time = 35046.1226 msecs"
   (time (ops-search state-one '((in R F)) operations :debug true))
   )
 
 (defn test-one-move-to-g []
-  "Elapsed time = 33161.8037 msecs"
+  "Elapsed time = 32687.3366 msecs"
   (time (ops-search state-one '((in R G)) operations :debug true))
   )
 
@@ -2876,12 +2876,12 @@
 ;---------------------------------
 
 (defn test-two-move-to-f []
-  "Elapsed time: 50253.8745 msecs"
+  "Elapsed time: 55081.366 msecs"
   (time (ops-search state-two '((in R F)) operations :debug true))
   )
 
 (defn test-two-move-to-g []
-  "Elapsed time = 51973.6485 msecs"
+  "Elapsed time = 54169.3132 msecs"
   (time (ops-search state-two '((in R G)) operations :debug true))
   )
 
@@ -2891,7 +2891,7 @@
   )
 
 (defn test-two-move-to-j []
-  "Elapsed time = 50254.3779 msecs"
+  "Elapsed time = 53801.971 msecs"
   (time (ops-search state-two '((in R J)) operations :debug true))
   )
 
@@ -2917,7 +2917,7 @@
   )
 
 (defn test-three-move-to-j []
-  "Elapsed time = 50254.3779 msecs"
+  "Elapsed time = 81786.3102 msecs"
   (time (ops-search state-three '((in R J)) operations :debug true))
   )
 
