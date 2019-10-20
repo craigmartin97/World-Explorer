@@ -163,16 +163,20 @@
                             (powered ?tele1 true)
                             (powered ?tele2 true)
                             )
+                     :add ((in ?agent ?room2))
+                     :del ((in ?agent ?room1))
+                     :txt ((?agent has transported from ?tele1 in ?room1 to ?tele2 in ?room2))
                      }
            power-up {:pre ((agent ?agent)
                             (room ?room)
                             (powerable ?powobj)
-                            (holdable ?holdobj)
                             (charger ?holdobj)
+                            (holdable ?holdobj)
                             (in ?agent ?room)
+                            (in ?powobj ?room)
                             (powered ?powobj false)
                             (holds ?agent ?holdobj))
-                     :add ((powered ? powobj true))
+                     :add ((powered ?powobj true))
                      :del ((powered ?powobj false))
                      :txt ((?agent uses the ?holdobj to charge the ?powobj))
                      }
@@ -224,11 +228,14 @@
   '#{(agent R)
      (room room-a)
      (room room-b)
+
      (door door-ab)
      (opened door-ab false)
      (unlocked door-ab true)
+
      (connects door-ab room-a)
      (connects door-ab room-b)
+
      (in R room-a)
      }
   )
@@ -274,6 +281,7 @@
      (room room-c)
      (room room-d)
      (room room-e)
+
      (door door-ab)
      (door door-bc)
      (door door-cd)
@@ -286,6 +294,7 @@
      (unlocked door-bc true)
      (unlocked door-cd true)
      (unlocked door-de true)
+
      (connects door-ab room-a)
      (connects door-ab room-b)
      (connects door-bc room-b)
@@ -294,6 +303,7 @@
      (connects door-cd room-d)
      (connects door-de room-d)
      (connects door-de room-e)
+
      (in R room-a)
      }
   )
@@ -364,6 +374,7 @@
      (key key-ab)
      (holdable key-ab)
      (in key-ab room-a)
+     (unlocks key-ab door-ab)
      }
   )
 
@@ -388,12 +399,102 @@
   )
 
 
-
 ;;;;;;;;;;;;;;
 ;;; TEST 4 ;;;
 ;;;;;;;;;;;;;;
 
 (def test-state-4
+  "Extended version of test-state-2."
+  '#{(agent R)
+     (room room-a)
+     (room room-b)
+     (room room-c)
+     (room room-d)
+     (room room-e)
+     (room room-f)
+     (room room-g)
+     (room room-h)
+     (room room-i)
+     (room room-j)
+
+     (door door-ab)
+     (door door-bc)
+     (door door-cd)
+     (door door-de)
+     (door door-ef)
+     (door door-fg)
+     (door door-gh)
+     (door door-hi)
+     (door door-ij)
+     (opened door-ab false)
+     (opened door-bc false)
+     (opened door-cd false)
+     (opened door-de false)
+     (opened door-ef false)
+     (opened door-fg false)
+     (opened door-gh false)
+     (opened door-hi false)
+     (opened door-ij false)
+     (unlocked door-ab true)
+     (unlocked door-bc true)
+     (unlocked door-cd true)
+     (unlocked door-de true)
+     (unlocked door-ef true)
+     (unlocked door-fg true)
+     (unlocked door-gh true)
+     (unlocked door-hi true)
+     (unlocked door-ij true)
+
+     (connects door-ab room-a)
+     (connects door-ab room-b)
+     (connects door-bc room-b)
+     (connects door-bc room-c)
+     (connects door-cd room-c)
+     (connects door-cd room-d)
+     (connects door-de room-d)
+     (connects door-de room-e)
+     (connects door-ef room-e)
+     (connects door-ef room-f)
+     (connects door-fg room-f)
+     (connects door-fg room-g)
+     (connects door-gh room-g)
+     (connects door-gh room-h)
+     (connects door-hi room-h)
+     (connects door-hi room-i)
+     (connects door-ij room-i)
+     (connects door-ij room-j)
+
+     (in R room-a)
+     }
+  )
+
+(defn test-4-very-short []
+  (time (ops-search test-state-4 '((in R room-j)) very-short-ops))
+  )
+
+(defn test-4-short []
+  (time (ops-search test-state-4 '((in R room-j)) short-ops))
+  )
+
+(defn test-4-base []
+  (time (ops-search test-state-4 '((in R room-j)) base-ops))
+  )
+
+(defn test-4-large []
+  (time (ops-search test-state-4 '((in R room-j)) large-ops))
+  )
+
+(defn test-4-very-large []
+  (time (ops-search test-state-4 '((in R room-j)) very-large-ops))
+  )
+
+
+;;;;;;;;;;;;;;
+;;; TEST 5 ;;;
+;;;;;;;;;;;;;;
+
+(def test-state-5
+  "Extended version of test-state-3."
   '#{(agent R)
      (room room-a)
      (room room-b)
@@ -459,25 +560,188 @@
      (key key-ab)
      (holdable key-ab)
      (in key-ab room-a)
+     (unlocks key-ab door-ab)
      }
   )
 
-(defn test-4-very-short []
-  (time (ops-search test-state-4 '((in R room-j)) very-short-ops))
+(defn test-5-very-short []
+  (time (ops-search test-state-5 '((in R room-j)) very-short-ops))
   )
 
-(defn test-4-short []
-  (time (ops-search test-state-4 '((in R room-j)) short-ops))
+(defn test-5-short []
+  (time (ops-search test-state-5 '((in R room-j)) short-ops))
   )
 
-(defn test-4-base []
-  (time (ops-search test-state-4 '((in R room-j)) base-ops))
+(defn test-5-base []
+  (time (ops-search test-state-5 '((in R room-j)) base-ops))
   )
 
-(defn test-4-large []
-  (time (ops-search test-state-4 '((in R room-j)) large-ops))
+(defn test-5-large []
+  (time (ops-search test-state-5 '((in R room-j)) large-ops))
   )
 
-(defn test-4-very-large []
-  (time (ops-search test-state-4 '((in R room-j)) very-large-ops))
+(defn test-5-very-large []
+  (time (ops-search test-state-5 '((in R room-j)) very-large-ops))
+  )
+
+
+;;;;;;;;;;;;;;
+;;; TEST 6 ;;;
+;;;;;;;;;;;;;;
+
+(def test-state-6
+  "Scenario which requires a key to be placed into room-e. Large and very-large ops will be able
+  to find the most optimal solution using the throw operator. Base ops can solve the issue with
+  drop but requires 2 additional moves. Very-short and short ops will not be able to solve this.
+
+  This test shows that having more operators can lead to more optimal paths if those operators
+  reduce the number of steps required to reach a goal."
+  '#{(agent R)
+     (room room-a)
+     (room room-b)
+     (room room-c)
+     (room room-d)
+     (room room-e)
+
+     (door door-ab)
+     (door door-bc)
+     (door door-cd)
+     (door door-de)
+     (opened door-ab true)
+     (opened door-bc true)
+     (opened door-cd true)
+     (opened door-de true)
+     (unlocked door-ab true)
+     (unlocked door-bc true)
+     (unlocked door-cd true)
+     (unlocked door-de true)
+
+     (connects door-ab room-a)
+     (connects door-ab room-b)
+     (connects door-bc room-b)
+     (connects door-bc room-c)
+     (connects door-cd room-c)
+     (connects door-cd room-d)
+     (connects door-de room-d)
+     (connects door-de room-e)
+
+     (in R room-a)
+     (holds R nil)
+
+     (key key-cd)
+     (holdable key-cd)
+     (in key-cd room-a)
+     (unlocks key-cd door-cd)
+     }
+  )
+
+(defn test-6-very-short []
+  (time (ops-search test-state-6 '((in key-cd room-e)) very-short-ops))
+  )
+
+(defn test-6-short []
+  (time (ops-search test-state-6 '((in key-cd room-e)) short-ops))
+  )
+
+(defn test-6-base []
+  (time (ops-search test-state-6 '((in key-cd room-e)) base-ops))
+  )
+
+(defn test-6-large []
+  (time (ops-search test-state-6 '((in key-cd room-e)) large-ops))
+  )
+
+(defn test-6-very-large []
+  (time (ops-search test-state-6 '((in key-cd room-e)) very-large-ops))
+  )
+
+
+;;;;;;;;;;;;;;
+;;; TEST 7 ;;;
+;;;;;;;;;;;;;;
+
+(def test-state-7
+  "Test further displaying points made in test-state-6. In this case, very-large-ops
+  should complete the fastest as it offers the most optimal path of 3 moves.
+
+  All operation sets, excluding very-short-ops, can solve this problem"
+  '#{(agent R)
+     (room room-a)
+     (room room-b)
+     (room room-c)
+     (room room-d)
+     (room room-e)
+
+     (door door-ab)
+     (door door-bc)
+     (door door-cd)
+     (door door-de)
+     (opened door-ab false)
+     (opened door-bc false)
+     (opened door-cd false)
+     (opened door-de false)
+     (unlocked door-ab false)
+     (unlocked door-bc false)
+     (unlocked door-cd false)
+     (unlocked door-de false)
+
+     (connects door-ab room-a)
+     (connects door-ab room-b)
+     (connects door-bc room-b)
+     (connects door-bc room-c)
+     (connects door-cd room-c)
+     (connects door-cd room-d)
+     (connects door-de room-d)
+     (connects door-de room-e)
+
+     (teleporter tele-a)
+     (teleporter tele-e)
+     (powerable tele-a)
+     (powerable tele-e)
+     (in tele-a room-a)
+     (in tele-e room-e)
+     (powered tele-a false)
+     (powered tele-e true)
+     (teleporter-connection tele-a tele-e)
+     (teleporter-connection tele-e tele-a)
+
+     (in R room-a)
+     (holds R nil)
+
+     (key master-key)
+     (holdable master-key)
+     (in master-key room-a)
+     (unlocks master-key door-ab)
+     (unlocks master-key door-bc)
+     (unlocks master-key door-cd)
+     (unlocks master-key door-de)
+
+     (holdable hairpin)
+     (lockpick hairpin)
+     (in hairpin room-a)
+
+     (holdable power-bank)
+     (charger power-bank)
+     (in power-bank room-a)
+     }
+  )
+
+(defn test-7-very-short []
+  (time (ops-search test-state-7 '((in R room-e)) very-short-ops))
+  )
+
+(defn test-7-short []
+  (time (ops-search test-state-7 '((in R room-e)) short-ops))
+  )
+
+(defn test-7-base []
+  (time (ops-search test-state-7 '((in R room-e)) base-ops))
+  )
+
+(defn test-7-large []
+  (time (ops-search test-state-7 '((in R room-e)) large-ops))
+  )
+
+(defn test-7-very-large []
+  (time (ops-search test-state-7 '((in R room-e)) very-large-ops))
   )

@@ -185,7 +185,9 @@
   )
 
 (def extended-keyword-ops-a
-  "A map of operations that the agent can perform in the world"
+  "Similar to base-ops, but with the following changes to keywords:
+  (Opened ?door true/false) -> (Opened ?door) (Closed ?door)
+  (Unlocked ?door true/false) -> (Unlocked ?door) (Locked ?door)"
   '{
     open
     {
@@ -366,7 +368,11 @@
   )
 
 (def extended-keyword-ops-b
-  "A map of operations that the agent can perform in the world"
+  "Alternate version of extended-keyword-ops-a to ensure tuple lengths are the same:
+  (Opened ?door) -> (Opened ?door true)
+  (Close ?door) -> (Closed ?door true)
+  (Unlocked ?door) -> (Unlocked ?door true)
+  (Locked ?door) -> (Locked ?door true)"
   '{
     open
     {
