@@ -1,4 +1,4 @@
-(ns tuple-size.core
+(ns tuple-size.nine
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
@@ -13,24 +13,24 @@
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door false)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (in ?agent ?room1)
-            )
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           (opened ?door false)
+           (unlocked ?door true)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           (in ?agent ?room1)
+           )
      :add
           (
-            (opened ?door true)
-            )
+           (opened ?door true)
+           )
      :del
           (
-            (opened ?door false)
-            )
+           (opened ?door false)
+           )
      :txt (?agent has opened ?door)
      }
 
@@ -38,24 +38,24 @@
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door true)
-            (unlocked ?door true)
-            (in ?agent ?room1)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            )
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           (opened ?door true)
+           (unlocked ?door true)
+           (in ?agent ?room1)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           )
      :add
           (
-            (opened ?door false)
-            )
+           (opened ?door false)
+           )
      :del
           (
-            (opened ?door true)
-            )
+           (opened ?door true)
+           )
      :txt (?agent has closed ?door)
      }
 
@@ -63,29 +63,29 @@
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door false)
-            (unlocked ?door true)
-            (in ?agent ?room1)
-            (connects ?door ?room1)
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           (opened ?door false)
+           (unlocked ?door true)
+           (in ?agent ?room1)
+           (connects ?door ?room1)
 
 
-            (key ?key)
-            (holdable ?key)
-            (unlocks ?key ?door)
-            (holds ?agent ?key)
-            )
+           (key ?key)
+           (holdable ?key)
+           (unlocks ?key ?door)
+           (holds ?agent ?key)
+           )
      :add
           (
-            (unlocked ?door false)
-            )
+           (unlocked ?door false)
+           )
      :del
           (
-            (unlocked ?door true)
-            )
+           (unlocked ?door true)
+           )
      :txt (?agent has locked ?door)
      }
 
@@ -93,31 +93,31 @@
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door false)
-            (unlocked ?door false)
-            (in ?agent ?room1)
-            (connects ?door ?room1)
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           (opened ?door false)
+           (unlocked ?door false)
+           (in ?agent ?room1)
+           (connects ?door ?room1)
 
 
-            (holds ?agent ??_ ?key1 ??_)
-            (key ?key)
+           (holds ?agent ??_ ?key1 ??_)
+           (key ?key)
 
-            (holdable ?key)
-            (unlocks ?key ?door)
-            (holds ?agent ?key)
-            )
+           (holdable ?key)
+           (unlocks ?key ?door)
+           (holds ?agent ?key)
+           )
      :add
           (
-            (unlocked ?door true)
-            )
+           (unlocked ?door true)
+           )
      :del
           (
-            (unlocked ?door false)
-            )
+           (unlocked ?door false)
+           )
      :txt (?agent has unlocked ?door)
      }
 
@@ -125,24 +125,24 @@
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door true)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (in ?agent ?room1)
-            )
+           (agent ?agent)
+           (room ?room1)
+           (room ?room2)
+           (door ?door)
+           (opened ?door true)
+           (unlocked ?door true)
+           (connects ?door ?room1)
+           (connects ?door ?room2)
+           (in ?agent ?room1)
+           )
      :add
           (
-            (in ?agent ?room2)
-            )
+           (in ?agent ?room2)
+           )
      :del
           (
-            (in ?agent ?room1)
-            )
+           (in ?agent ?room1)
+           )
      :txt (?agent has moved from ?room1 to ?room2)
      }
 
@@ -150,22 +150,22 @@
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (holdable ?obj)
-            (in ?agent ?room1)
-            (holds ?agent ??x)
-            (in ?obj ?room1)
-            )
+           (agent ?agent)
+           (room ?room1)
+           (holdable ?obj)
+           (in ?agent ?room1)
+           (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
      :add
           (
-            (holds ?agent ??x ?obj)
-            )
+           (holds ?agent ??x ?obj)
+           )
      :del
           (
-            (holds ?agent ??x)
-            (in ?obj ?room1)
-            )
+           (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
      :txt (?agent picked up ?obj from ?room1)
      }
 
@@ -173,30 +173,30 @@
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (holdable ?obj)
-            (in ?agent ?room1)
-            (holds ?agent ??x ?obj ??y)
-            )
+           (agent ?agent)
+           (room ?room1)
+           (holdable ?obj)
+           (in ?agent ?room1)
+           (holds ?agent ??x ?obj ??y)
+           )
      :add
           (
-            (holds ?agent ??x ??y)
-            (in ?obj ?room1)
-            )
+           (holds ?agent ??x ??y)
+           (in ?obj ?room1)
+           )
      :del
           (
-            (holds ?agent ??x ?obj ??y)
-            )
+           (holds ?agent ??x ?obj ??y)
+           )
      :txt (?agent dropped ?obj in ?room1)
      }
     }
   )
 
-(def state-ten
+(def state-nine
   "basic state for agent to move from one room to next
 
-  The agent is now holding 65 keys"
+  The agent is now holding 35 keys"
   '#{
      (agent R)
      (room A)
@@ -535,12 +535,34 @@
 
             extra1 extra2 extra3 extra4 extra5 extra6 extra7 extra8 extra9 extra10
             extra11 extra12 extra13 extra14 extra15 extra16 extra17 extra18 extra19 extra20
-            extra21 extra22 extra23 extra24 extra25 extra26 extra27 extra28 extra29 extra30
-            extra31 extra32 extra33 extra34 extra35 extra36 extra37 extra38 extra39 extra40
-            extra41 extra42 extra43 extra44 extra45 extra46 extra47 extra48 extra49 extra50
             )
 
      (in R A)
      }
   )
 
+;---------------------------------
+;---------------------------------
+;--------------The agent holds 35 keys-------------------
+;---------------------------------
+;---------------------------------
+
+(defn test-nine-move-to-f []
+  "Elapsed time: 370538.5288 msecs"
+  (time (ops-search state-nine '((in R F)) operations :debug true))
+  )
+
+(defn test-nine-move-to-g []
+  "Elapsed time = 372445.4842 msecs"
+  (time (ops-search state-nine '((in R G)) operations :debug true))
+  )
+
+(defn test-nine-move-to-h []
+  "Elapsed time = 612853.4319 msecs"
+  (time (ops-search state-nine '((in R H)) operations :debug true))
+  )
+
+(defn test-nine-move-to-j []
+  "Elapsed time = 387729.7374 msecs"
+  (time (ops-search state-nine '((in R J)) operations :debug true))
+  )
