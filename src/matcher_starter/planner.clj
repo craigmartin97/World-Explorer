@@ -13,13 +13,18 @@
 (def operations
   "A map of operations that the agent can perform in the world"
   '{
+    :protect-x
+    { :name protect-x
+     :achieves (protected ?x ?c)
+     :add  ((protected ?x ?c)  )
+     }
     move
     {
      :name move-agent
      :achieves (in ?agent ?room2)
      :when ((agent ?agent)
-            (room ?room1)
-            (room ?room2)
+             (room ?room1)
+             (room ?room2)
             (door ?door)
             (opened ?door true)
             (unlocked ?door true)
@@ -28,12 +33,24 @@
              (:guard (not= (? room1) (? room2)))
 
             )
-     :post ((in ?agent ?room1))
+     :post (
+             (protected ?room1)
+             (protected ?room2)
+             (in ?agent ?room1)
+           )
      :pre()
-     :add((in ?agent ?room2))
-     :del((in ?agent ?room1))
-     :txt (?agent has moved from ?room1 to ?room2)
+     :add(
+           (in ?agent ?room2)
+         )
+     :del(
+           (in ?agent ?room1)
+           (protected ?room1)
+           (protected ?room2)
+         )
+     :txt (agent ?agent has moved from ?room1 to ?room2)
      }
+
+
     }
   )
 
@@ -206,7 +223,6 @@
   (print-goals @goalq)
 
   (if-let [goal (.poll @goalq)]
-
     (cond
       (map? goal) ;; it is a partially matched op
       (do
