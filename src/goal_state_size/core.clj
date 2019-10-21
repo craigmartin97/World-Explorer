@@ -327,7 +327,25 @@
 (defn test-five []
   "Move the agent from room A to room D and close the door behind and lock the door.
   The agent will then drop the key at the after locking the door
-  moves room -> closes door -> locks door -> drops key (total 4 ops)
+  close room A-B -> moves room -> closes door -> locks door -> drops key (total 5 ops)
+
+  Elapsed time: unsolvable in reasonable time (left for over 1 hour)"
+  (time (ops-search move-A-D-all-unlocked '((opened A-B false) (in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations :debug true))
+  )
+
+(defn test-six []
+  "Move the agent from room A to room D and close the door behind and lock the door.
+  The agent will then drop the key at the after locking the door
+  close room A-B -> moves room -> closes door -> locks door -> drops key (total 6 ops)
+
+  Elapsed time: unsolvable in reasonable time (left for over 1 hour)"
+  (time (ops-search move-A-D-all-unlocked '((opened A-C false) (opened A-B false) (in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations :debug true))
+  )
+
+(defn test-contradiction []
+  "Move the agent from room A to room D and close the door behind and lock the door.
+  The agent will then drop the key at the after locking the door
+  pick up -> moves room -> closes door -> locks door -> drops key (total 5 ops)
 
   Elapsed time: unsolvable in reasonable time (left for over 1 hour)"
   (time (ops-search move-A-D-all-unlocked '((holds R key-A-D) (in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations :debug true))

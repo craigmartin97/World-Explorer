@@ -1,4 +1,4 @@
-(ns Planner
+(ns matcher-starter.planner
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
@@ -25,8 +25,10 @@
             (unlocked ?door true)
             (connects ?door ?room1)
             (connects ?door ?room2)
-            (in ?agent ?room1))
-     :post ()
+             (:guard (not= (? room1) (? room2)))
+
+            )
+     :post ((in ?agent ?room1))
      :pre()
      :add((in ?agent ?room2))
      :del((in ?agent ?room1))
@@ -40,7 +42,7 @@
 (def move-A-D-all-unlocked
   "A more advanced scenario"
   '#{
-     ;define agent
+     ;define agentLL
      (agent R)
      ;define rooms
      (room A)
@@ -89,7 +91,7 @@
      ;define where agent is in which room
      (in R A)
      ;define the state of the doors, open or closed
-     (opened A-B false)
+     (opened A-B true)
      (opened A-C true)
      (opened A-D true)
      (opened B-E true)
