@@ -7,7 +7,8 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://G:\University\Year Three\AI\SlidingDoors\resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://G:\University\Year Three\AI\SlidingDoors\dev-resources" isTestSource="false" />
+      <sourceFolder url="file://D:\IntellijProjects\World-Explorer\dev-resources" isTestSource="false" />
+      <sourceFolder url="file://D:\IntellijProjects\World-Explorer\resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
