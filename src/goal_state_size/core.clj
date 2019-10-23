@@ -377,6 +377,49 @@
   )
 
 
+;------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------
+;--------------------------------------------------Telling it to do this that are already true----------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------
+
+(defn test-one-already-true []
+  "Move the agent from room A to room D
+  A move from one room to another
+
+  Elapsed time: 3046.6834 msecs
+  "
+  (time (ops-search move-A-D-all-unlocked '(
+                                            (opened A-B true)
+                                            (opened A-C true)
+
+                                            (in R D)
+                                           ) operations :debug true))
+  )
+
+(defn test-two-already-true []
+  "Move the agent from room A to room D and close the door behind
+
+  Elapsed time: 24457.5182 msecs"
+  (time (ops-search move-A-D-all-unlocked '(
+                                            (opened A-B true)
+                                            (opened A-C true)
+
+                                            (in R D) (opened A-D false)) operations :debug true))
+  )
+
+(defn test-three-already-true []
+  "Move the agent from room A to room D and close the door behind and lock the door
+  Also specify that things that I know to already to be true in the goal state to see if this affects the time complexity
+
+  Elapsed time: 375506.917 msecs"
+  (time (ops-search move-A-D-all-unlocked '((opened A-B true)
+                                            (opened A-C true)
+
+
+                                            (in R D) (opened A-D false) (unlocked A-D false)) operations :debug true))
+  )
+
 ;-----------------------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------------------------------------------

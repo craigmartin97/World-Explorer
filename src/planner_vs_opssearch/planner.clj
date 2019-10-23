@@ -1,4 +1,4 @@
-(ns matcher-starter.planner
+(ns planner_vs_opssearch.planner
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
@@ -7,142 +7,106 @@
             )
   )
 
-;(planner move-A-D-all-unlocked '(in R D) operations)
-;(planner move-A-D-all-unlocked '(opened A-B true) operations)
+
+
+;----------------------------------------------------------
 
 (def operations
   "A map of operations that the agent can perform in the world"
   '{
-
-    :move
-    {
-     :name     move-agent
-     :achieves (in ?agent ?room2)
-     :when     ((agent ?agent)
-                 (room ?room1)
-                 (room ?room2)
-                 (door ?door)
-                 (connects ?door ?room1)
-                 (connects ?door ?room2)
-                 (protected ??visited-rooms)
-                 (:guard (not= (? room1) (? room2)))
-                 (:guard (not
-                           (some (fn [x]
-                                   (println (str "PRT X: " x "  AND R2: " (? room2)))
-                                   (= (compare x (? room2)) 0)
-                                   )
-
-                                 (? visited-rooms))
-                           ))
-
-                 (comment
-                   one tuple that will have one protected tuple, which stores all the
-                   protected rooms that have been visited using the double ?? matcher
-
-                   add a guard that will check that the protected tuple doesnt contain the room
-                   you are trying to move to
-
-                   when picking up key del current protected tuple and add empty tuple in its place.
-
-                 )
-
-               )
-     :post     (
-                 (in ?agent ?room1)
-                 (opened ?door true)
-                 (unlocked ?door true)
-                )
-     :pre      ()
-     :add      (
-                 (in ?agent ?room2)
-                 ;(protected ??visited-rooms ?room1)
-               )
-     :del      (
-                 (in ?agent ?room1)
-                 ; visit room , add room as protected
-                 ; get to key clean all protected out
-               )
-     :txt      (agent ?agent has moved from ?room1 to ?room2)
-     }
-    }
-  )
-
-
-(def operations2
-
-  "A map of operations that the agent can perform in the world"
-
-  '{
-    :protect-move
-    { :name protect-move
-     :achieves (protected ?x ?c)
-     :add  ((protected ?x ?c)  )
-     }
-    :move
+    move
     {
      :name move-agent
      :achieves (in ?agent ?room2)
      :when (
              (agent ?agent)
+             (in ?agent ?room1)
              (room ?room1)
              (room ?room2)
              (door ?door)
-
-             (connects ?door ?room1)
-             (connects ?door ?room2)
-             (protected ??visited-rooms)
-
-             (:guard
-               (do
-                 (println (str "Room1: " (? room1) " Room2: " (? room2) " Visi Rooms: " (? visited-rooms)))
-                 (and
-                   (not= (? room1) (? room2))
-                   (not
-                     (and
-                       (some (fn [x]
-                               (= (compare x (? room2)) 0)
-                             )
-
-                             (? visited-rooms)
-                       )
-
-
-                       (some (fn [x]
-                               (= (compare x (? room1)) 0)
-                             )
-
-                             (? visited-rooms)
-                       )
-                     )
-                   )
-                 )
-               )
-             )
+             (:guard (not= (? room1) (? room2)))
            )
      :post (
-             (in ?agent ?room1)
              (opened ?door true)
              (unlocked ?door true)
+
            )
-     :pre()
-     :add(
-           (protected ??visited-rooms ?room1)
-           (in ?agent ?room2)
-         )
-     :del(
-           (in ?agent ?room1)
-         )
+     :pre ()
+     :add (
+            (in ?agent ?room2)
+          )
+     :del (
+            (in ?agent ?room1)
+          )
      :txt (agent ?agent has moved from ?room1 to ?room2)
-
-     }
     }
+    pickup
+    {
+     :name pickup-obj
+     :achieves (holds ?agent ?obj)
+     :when (
+             (in ?obj ?room1)
+             (holdable ?obj)
+             (agent ?agent)
+             (room ?room1)
+             (holds ?agent ??x)
+           )
+     :post ((in ?agent ?room1))
+     :pre ()
+     :add (
+            (holds ?agent ??x)
+            (holds ?agent ?obj)
+          )
+     :del (
+            (holds ?agent ??x)
+            (in ?obj ?room1)
+          )
+     :txt (?agent picked up ?obj from ?room1)
 
-  )
+    }
+    drop
+    {
+     :name drop-obj
+     :achieves (drops ?agent ?obj)
+     :when (
+             (in ?agent ?room1)
+             (agent ?agent)
+             (holdable ?obj)
+             (room ?room1)
+             )
+     :post (
 
-;test one - (time (ops-search move-A-D-all-unlocked '((in R K)) operations))
-;test two - (time (ops-search move-A-D-all-unlocked '((in R K) (opened )) operations))
-(def move-A-D-all-unlocked
-  "A more advanced scenario"
+             (holds ?agent ?obj)
+           )
+     :pre ()
+     :add ((in ?obj ?room1))
+     :del ((holds ?agent ?obj))
+     :txt (?agent dropped ?obj in ?room1)
+     }
+
+    move-obj
+    {
+     :name move-obj
+     :achieves (in ?obj ?room1)
+     :when (
+             (agent ?agent)
+             (holdable ?obj)
+             (room ?room1)
+             )
+     :post ((in ?agent ?room1)
+             (holds ?agent ?obj))
+     :pre ()
+     :add ((in ?obj ?room1))
+     :del ((holds ?agent ?obj))
+     :txt (?agent dropped ?obj in ?room1)
+     }
+
+
+
+   }
+)
+
+(def state
   '#{
      ;define agentLL
      (agent R)
@@ -159,7 +123,6 @@
      (room J)
      (room K)
 
-     ;define doors
      (door A-B)
      (door A-C)
      (door A-D)
@@ -171,31 +134,6 @@
      (door E-I)
      (door I-J)
 
-     (protected)
-     ;define connections (connects door room)
-     (connects A-B A)
-     (connects A-B B)
-     (connects A-C A)
-     (connects A-C C)
-     (connects A-D A)
-     (connects A-D D)
-     (connects B-E B)
-     (connects B-E E)
-     (connects C-F C)
-     (connects C-F F)
-     (connects D-K D)
-     (connects D-K K)
-     (connects E-G E)
-     (connects E-G G)
-     (connects E-I E)
-     (connects E-I I)
-     (connects G-H G)
-     (connects G-H H)
-     (connects I-J I)
-     (connects I-J J)
-     ;define where agent is in which room
-     (in R A)
-     ;define the state of the doors, open or closed
      (opened A-B true)
      (opened A-C true)
      (opened A-D true)
@@ -206,7 +144,7 @@
      (opened G-H true)
      (opened E-I true)
      (opened I-J true)
-     ;define if the doors are locked or unlocked
+
      (unlocked A-B true)
      (unlocked A-C true)
      (unlocked A-D true)
@@ -217,38 +155,32 @@
      (unlocked G-H true)
      (unlocked E-I true)
      (unlocked I-J true)
-     ;specify keys for the doors
-     (key key-B-E)
-     (holdable key-B-E)
-     (unlocks key-B-E B-E)
-     (in key-B-E B)
 
-     ;(key key-A-D)
-     ;(holdable key-A-D)
-     ;(unlocks key-A-D A-D)
-     ;(in key-A-D A)
-
-     ;test 1-4
-     ;(holds R key-A-D)
-
-     ;test 5
+     (in R A)
      (holds R nil)
-     }
-  )
 
-(def basic
+     (holdable key)
+     (in key D)
 
-  '#{
-     (room A)
-     (room B)
-     (room C)
-     (room D)
+     (holdable dog)
+     (in dog A)
 
-     (door A-B)
-     (door B-C)
-     (door C-D)
+     (holdable cat)
+     (in cat A)
 
-     })
+     (holdable mouse)
+     (in mouse A)
+
+
+    }
+)
+
+
+
+
+
+
+
 
 (defn ui-out [win & str]
   (apply  println str))
@@ -388,3 +320,38 @@
    :cmds  (concat (:cmds current) (:cmd newp)),
    :txt   (concat (:txt current) (:txt newp))
    })
+
+
+
+
+;-------------------------------------------------------------------
+;-------------------------------------------------------------------
+;--------------------------------tests-----------------------------------
+;-------------------------------------------------------------------
+;-------------------------------------------------------------------
+
+
+(defn move-to-d []
+  "Making the agent move to D"
+  (time (planner state '(in R D) operations))
+  )
+
+(defn move-to-j []
+  "Making the agent move to J"
+  (time (planner state '(in R J) operations))
+  )
+
+(defn pick-up-dog []
+  "Agent picks up the dog which is in the same room"
+  (time (planner state '(holds R dog) operations))
+  )
+
+(defn pickup-key []
+  "Agent moves to the correct room where the key is and then picks it up"
+  (time (planner state '(holds R key) operations))
+  )
+
+(defn drop-key []
+  "Agent moves to the correct room where the key is and then picks it up, and then drops is again"
+  (time (planner state '(drops R key) operations))
+  )
