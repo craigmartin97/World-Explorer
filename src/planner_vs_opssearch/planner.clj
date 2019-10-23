@@ -8,8 +8,285 @@
   )
 
 
+(comment
+  drop
+  {
+   :name drop-obj
+   :achieves (drops ?agent ?obj)
+   :when (
+           (in ?agent ?room1)
+           (agent ?agent)
+           (holdable ?obj)
+           (room ?room1)
+           )
+   :post (
 
+           (holds ?agent ?obj)
+           )
+   :pre ()
+   :add ((in ?obj ?room1))
+   :del ((holds ?agent ?obj))
+   :txt (?agent dropped ?obj in ?room1)
+   }
+
+
+  open
+  {
+   :name open
+   :achieves (opened ?door true)
+   :when (
+           (agent ?agent)
+           (connects ?door ?room1)
+           (door ?door)
+           (opened ?door false)
+           (unlocked ?door true)
+           (room ?room1)
+           (room ?room2)
+           (in ?agent ?room1)
+           )
+   :post (
+
+           )
+   :pre ()
+   :add (
+          (opened ?door true)
+          )
+   :del (
+          (opened ?door false)
+          )
+   :txt (?agent has opened ?door)
+
+   }
+
+
+  (door doorA)
+  (door doorB)
+  (door doorC)
+  (door doorD)
+  (door doorE)
+  (door doorF)
+  (door doorG)
+  (door doorH)
+  (door doorI)
+  (door doorJ)
+  (door doorK)
+
+  (connects doorA A)
+  (connects doorB B)
+  (connects doorC C)
+  (connects doorD D)
+  (connects doorE E)
+  (connects doorF F)
+  (connects doorG G)
+  (connects doorH H)
+  (connects doorI I)
+  (connects doorJ J)
+  (connects doorK K)
+
+
+  ;(opened doorA false)
+  (opened doorA true)
+  (opened doorB true)
+  (opened doorC true)
+  (opened doorD true)
+  (opened doorE true)
+  (opened doorF true)
+  (opened doorG true)
+  (opened doorH true)
+  (opened doorI true)
+  (opened doorJ true)
+  (opened doorK true)
+
+  (unlocked doorA true)
+  (unlocked doorB true)
+  (unlocked doorC true)
+  (unlocked doorD true)
+  (unlocked doorE true)
+  (unlocked doorF true)
+  (unlocked doorG true)
+  (unlocked doorH true)
+  (unlocked doorI true)
+  (unlocked doorJ true)
+  (unlocked doorK true)
+  )
 ;----------------------------------------------------------
+(comment
+
+  "To add in below"
+
+  WITH PROTECT Operations
+  "This operator is our attempt at solving the dead end problem, but is a start in the
+  right direction. This ensures that the agent doesnt do the same thing again."
+  (def operations
+    "A map of operations that the agent can perform in the world"
+    '{
+      protect
+      {
+       :name protect-obj
+       :achieves (protect ?obj)
+       :when ((protected ??picked))
+       :add ((protected ??picked ?obj))
+       :del ((protected ??picked))
+       }
+      move
+      {
+       :name move-agent
+       :achieves (in ?agent ?room2)
+       :when (
+               (agent ?agent)
+               (in ?agent ?room1)
+               ;  (connects ?door ?room1)
+               (room ?room1)
+               (room ?room2)
+               ; (door ?door)
+               (:guard (not= (? room1) (? room2)))
+               ; (:guard (println (? door)) )
+               )
+       :post (
+               ; (opened ?door true)
+               ;  (unlocked ?door true)
+               )
+       :pre ()
+       :add (
+              (in ?agent ?room2)
+              )
+       :del (
+              (in ?agent ?room1)
+              )
+       :txt (agent ?agent has moved from ?room1 to ?room2)
+       }
+      pickup
+      {
+       :name pickup-obj
+       :achieves (holds ?agent ??x ?obj)
+       :when (
+               (in ?obj ?room1)
+               (holdable ?obj)
+               (agent ?agent)
+               (room ?room1)
+               (protected ??picked)
+               (:guard (not (some #(= % (? obj)) (? picked))))
+               (:guard (not (println "THE OBJECT " (? obj) " IS IN ROOM " (? room1))))
+               )
+       :post ((protect ?obj)
+               (holds ?agent ??x)
+               (in ?agent ?room1))
+       :pre ()
+       :add (
+              (holds ?agent ??x ?obj)
+              ;(holds ?agent ?obj)
+              )
+       :del (
+              (holds ?agent ??x)
+              (in ?obj ?room1)
+              )
+       :txt (?agent picked up ?obj from ?room1)
+
+       }
+      move-obj
+      {
+       :name move-obj
+       :achieves (in ?obj ?room1)
+       :when (
+               (agent ?agent)
+               (holdable ?obj)
+               (room ?room1)
+               )
+       :post (
+               (holds ?agent ?obj)
+               (in ?agent ?room1)
+               )
+       :pre ()
+       :add ((in ?obj ?room1))
+       :del ((holds ?agent ?obj))
+       :txt (?agent dropped ?obj in ?room1)
+       }
+
+      }
+    )
+
+
+
+  WITH GUARD operations
+  "The guard verifies that we dont do the same room twice."
+  (def operations
+    "A map of operations that the agent can perform in the world"
+    '{
+      move
+      {
+       :name move-agent
+       :achieves (in ?agent ?room2)
+       :when (
+               (agent ?agent)
+               (in ?agent ?room1)
+               ;  (connects ?door ?room1)
+               (room ?room1)
+               (room ?room2)
+               ; (door ?door)
+               (:guard (not= (? room1) (? room2)))
+               ; (:guard (println (? door)) )
+               )
+       :post (
+               ; (opened ?door true)
+               ;  (unlocked ?door true)
+               )
+       :pre ()
+       :add (
+              (in ?agent ?room2)
+              )
+       :del (
+              (in ?agent ?room1)
+              )
+       :txt (agent ?agent has moved from ?room1 to ?room2)
+       }
+      pickup
+      {
+       :name pickup-obj
+       :achieves (holds ?agent ??x ?obj)
+       :when (
+               (in ?obj ?room1)
+               (holdable ?obj)
+               (agent ?agent)
+               (room ?room1)
+               (:guard (not (some #(= % (? obj)) (? x))))
+               )
+       :post ((holds ?agent ??x)
+               (in ?agent ?room1))
+       :pre ()
+       :add (
+              (holds ?agent ??x ?obj)
+              ;(holds ?agent ?obj)
+              )
+       :del (
+              (holds ?agent ??x)
+              (in ?obj ?room1)
+              )
+       :txt (?agent picked up ?obj from ?room1)
+
+       }
+      move-obj
+      {
+       :name move-obj
+       :achieves (in ?obj ?room1)
+       :when (
+               (agent ?agent)
+               (holdable ?obj)
+               (room ?room1)
+               )
+       :post (
+               (holds ?agent ?obj)
+               (in ?agent ?room1)
+               )
+       :pre ()
+       :add ((in ?obj ?room1))
+       :del ((holds ?agent ?obj))
+       :txt (?agent dropped ?obj in ?room1)
+       }
+
+      }
+    )
+
+)
 
 (def operations
   "A map of operations that the agent can perform in the world"
@@ -21,15 +298,15 @@
      :when (
              (agent ?agent)
              (in ?agent ?room1)
+             ;  (connects ?door ?room1)
              (room ?room1)
              (room ?room2)
-             (door ?door)
-             (:guard (not= (? room1) (? room2)))
+             ; (door ?door)
+             ; (:guard (println (? door)) )
            )
      :post (
-             (opened ?door true)
-             (unlocked ?door true)
-
+             ; (opened ?door true)
+             ;  (unlocked ?door true)
            )
      :pre ()
      :add (
@@ -43,19 +320,19 @@
     pickup
     {
      :name pickup-obj
-     :achieves (holds ?agent ?obj)
+     :achieves (holds ?agent ??x ?obj)
      :when (
-             (in ?obj ?room1)
-             (holdable ?obj)
              (agent ?agent)
              (room ?room1)
-             (holds ?agent ??x)
+             (holdable ?obj)
+             (in ?obj ?room1)
            )
-     :post ((in ?agent ?room1))
+     :post ((holds ?agent ??x)
+             (in ?agent ?room1))
      :pre ()
      :add (
-            (holds ?agent ??x)
-            (holds ?agent ?obj)
+            (holds ?agent ??x ?obj)
+            ;(holds ?agent ?obj)
           )
      :del (
             (holds ?agent ??x)
@@ -64,44 +341,24 @@
      :txt (?agent picked up ?obj from ?room1)
 
     }
-    drop
+    drop-obj
     {
      :name drop-obj
-     :achieves (drops ?agent ?obj)
-     :when (
-             (in ?agent ?room1)
-             (agent ?agent)
-             (holdable ?obj)
-             (room ?room1)
-             )
-     :post (
-
-             (holds ?agent ?obj)
-           )
-     :pre ()
-     :add ((in ?obj ?room1))
-     :del ((holds ?agent ?obj))
-     :txt (?agent dropped ?obj in ?room1)
-     }
-
-    move-obj
-    {
-     :name move-obj
      :achieves (in ?obj ?room1)
      :when (
              (agent ?agent)
              (holdable ?obj)
              (room ?room1)
              )
-     :post ((in ?agent ?room1)
-             (holds ?agent ?obj))
+     :post (
+             (holds ?agent ?obj)
+             (in ?agent ?room1)
+           )
      :pre ()
      :add ((in ?obj ?room1))
      :del ((holds ?agent ?obj))
      :txt (?agent dropped ?obj in ?room1)
      }
-
-
 
    }
 )
@@ -123,39 +380,6 @@
      (room J)
      (room K)
 
-     (door A-B)
-     (door A-C)
-     (door A-D)
-     (door B-E)
-     (door C-F)
-     (door D-K)
-     (door E-G)
-     (door G-H)
-     (door E-I)
-     (door I-J)
-
-     (opened A-B true)
-     (opened A-C true)
-     (opened A-D true)
-     (opened B-E true)
-     (opened C-F true)
-     (opened D-K true)
-     (opened E-G true)
-     (opened G-H true)
-     (opened E-I true)
-     (opened I-J true)
-
-     (unlocked A-B true)
-     (unlocked A-C true)
-     (unlocked A-D true)
-     (unlocked B-E true)
-     (unlocked C-F true)
-     (unlocked D-K true)
-     (unlocked E-G true)
-     (unlocked G-H true)
-     (unlocked E-I true)
-     (unlocked I-J true)
-
      (in R A)
      (holds R nil)
 
@@ -171,15 +395,8 @@
      (holdable mouse)
      (in mouse A)
 
-
     }
 )
-
-
-
-
-
-
 
 
 (defn ui-out [win & str]
@@ -353,5 +570,30 @@
 
 (defn drop-key []
   "Agent moves to the correct room where the key is and then picks it up, and then drops is again"
-  (time (planner state '(drops R key) operations))
+  (time (planner state '(in key E) operations))
+  )
+
+(defn drop-dog []
+  "Agent will pick up the dog and then drop the dog in the same room"
+  (time (planner state '(in dog F) operations))
+  )
+
+(defn move-key []
+  "Agent moves to the correct room, picks up the key and moves it to another room"
+  (time (planner state '(in key B) operations))
+  )
+
+(defn open-door []
+  "Agent opens a door"
+  (time (planner state '(opened doorA true) operations))
+  )
+
+(defn open-door-and-move []
+  "Agent opens a door and moves to another room"
+  (time (planner state '(in R C) operations))
+  )
+
+(defn open-door-move-andmove-obj []
+  "Open a door, move and move an object"
+  (time (planner state '(in dog C) operations))
   )

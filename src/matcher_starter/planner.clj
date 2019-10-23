@@ -13,7 +13,6 @@
 (def operations
   "A map of operations that the agent can perform in the world"
   '{
-
     :move
     {
      :name     move-agent
@@ -73,11 +72,7 @@
   "A map of operations that the agent can perform in the world"
 
   '{
-    :protect-move
-    { :name protect-move
-     :achieves (protected ?x ?c)
-     :add  ((protected ?x ?c)  )
-     }
+
     :move
     {
      :name move-agent
@@ -88,13 +83,15 @@
              (room ?room2)
              (door ?door)
 
+             (in ?agent ?room1)
+
              (connects ?door ?room1)
              (connects ?door ?room2)
              (protected ??visited-rooms)
 
              (:guard
                (do
-                 (println (str "Room1: " (? room1) " Room2: " (? room2) " Visi Rooms: " (? visited-rooms)))
+                 ;(println (str "Room1: " (? room1) " Room2: " (? room2) " Visi Rooms: " (? visited-rooms)))
                  (and
                    (not= (? room1) (? room2))
                    (not
@@ -105,7 +102,6 @@
 
                              (? visited-rooms)
                        )
-
 
                        (some (fn [x]
                                (= (compare x (? room1)) 0)
@@ -120,7 +116,7 @@
              )
            )
      :post (
-             (in ?agent ?room1)
+
              (opened ?door true)
              (unlocked ?door true)
            )
