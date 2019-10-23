@@ -399,8 +399,7 @@
 )
 
 
-(defn ui-out [win & str]
-  (apply  println str))
+
 
 ;===================================================
 ; based on: strips-search-1a.clj from SHRDLU model
@@ -439,7 +438,8 @@
 ;    push-all( expand (:post op), goal-stack )
 
 
-
+(defn ui-out [win & str]
+  (apply  println str))
 
 (defn print-goals [q]
   (if (not (empty? q))
@@ -593,7 +593,7 @@
   (time (planner state '(in R C) operations))
   )
 
-(defn open-door-move-andmove-obj []
+(defn open-door-move-and-move-obj []
   "Open a door, move and move an object"
   (time (planner state '(in dog C) operations))
   )

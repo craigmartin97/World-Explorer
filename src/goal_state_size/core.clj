@@ -9,9 +9,6 @@
 
 (use 'clojure.tools.trace)
 
-
-
-
 (def operations
   "A map of operations that the agent can perform in the world"
   '{
