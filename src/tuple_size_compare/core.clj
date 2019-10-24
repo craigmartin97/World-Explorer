@@ -699,3 +699,347 @@
                                     pear glove hat scarf tea coffee
                                     ) planner-operations))
   )
+
+
+
+;------------------------------------
+;------------------------------------
+;---------------R holds items---------------------
+;------------------------------------
+;------------------------------------
+(def state-r-holds-one
+  '#{
+     ;define agentLL
+     (agent R)
+     ;define rooms
+     (room A)
+     (room B)
+     (room C)
+     (room D)
+     (room E)
+     (room F)
+     (room G)
+     (room H)
+     (room I)
+     (room J)
+     (room K)
+
+     (in R A)
+     (holds R key)
+
+     (holdable key)
+     ; (in key D)
+
+     (holdable dog)
+     (in dog A)
+
+     (holdable cat)
+     (in cat A)
+
+     (holdable mouse)
+     (in mouse A)
+
+     (holdable phone)
+     (in phone B)
+
+     (holdable cup)
+     (in cup F)
+
+     (holdable glass)
+     (in glass K)
+
+     (holdable remote)
+     (in remote I)
+
+     (holdable water)
+     (in water I)
+
+     (holdable watch)
+     (in watch G)
+
+     (holdable case)
+     (in case E)
+
+     (holdable keyboard)
+     (in keyboard K)
+
+     (holdable screen)
+     (in screen J)
+
+     (holdable chair)
+     (in chair A)
+
+     (holdable folder)
+     (in folder D)
+
+     (holdable apple)
+     (in apple D)
+
+     (holdable mango)
+     (in mango G)
+
+     (holdable pear)
+     (in pear H)
+
+     (holdable glove)
+     (in glove I)
+
+     (holdable hat)
+     (in hat B)
+
+     (holdable scarf)
+     (in scarf C)
+
+     (holdable tea)
+     (in tea C)
+
+     (holdable coffee)
+     (in coffee D)
+
+     }
+  )
+
+;------------------------------------------
+;------------------------------------------
+;------------------Tests------------------------
+;------------------------------------------
+;------------------------------------------
+
+(defn planner-r-holds-one []
+  "Elapsed time: 2.0196 msecs"
+  (time (planner state-r-holds-one '(in R F) planner-operations))
+  )
+
+(defn ops-r-holds-one []
+  "Elapsed time: 209.2194 msecs"
+  (time (ops-search state-r-holds-one '((in R F)) operations))
+  )
+
+;--------------------------------------
+;--------------------------------------
+;-----------------R holds many---------------------
+;--------------------------------------
+;--------------------------------------
+
+(def state-r-holds-many
+  '#{
+     ;define agentLL
+     (agent R)
+     ;define rooms
+     (room A)
+     (room B)
+     (room C)
+     (room D)
+     (room E)
+     (room F)
+     (room G)
+     (room H)
+     (room I)
+     (room J)
+     (room K)
+
+     (in R A)
+     (holds R key dog cat mouse phone)
+
+     (holdable key)
+     ;(in key D)
+
+     (holdable dog)
+     ;(in dog A)
+
+     (holdable cat)
+     ;(in cat A)
+
+     (holdable mouse)
+     ;(in mouse A)
+
+     (holdable phone)
+     ;(in phone B)
+
+     (holdable cup)
+     (in cup F)
+
+     (holdable glass)
+     (in glass K)
+
+     (holdable remote)
+     (in remote I)
+
+     (holdable water)
+     (in water I)
+
+     (holdable watch)
+     (in watch G)
+
+     (holdable case)
+     (in case E)
+
+     (holdable keyboard)
+     (in keyboard K)
+
+     (holdable screen)
+     (in screen J)
+
+     (holdable chair)
+     (in chair A)
+
+     (holdable folder)
+     (in folder D)
+
+     (holdable apple)
+     (in apple D)
+
+     (holdable mango)
+     (in mango G)
+
+     (holdable pear)
+     (in pear H)
+
+     (holdable glove)
+     (in glove I)
+
+     (holdable hat)
+     (in hat B)
+
+     (holdable scarf)
+     (in scarf C)
+
+     (holdable tea)
+     (in tea C)
+
+     (holdable coffee)
+     (in coffee D)
+
+     }
+  )
+
+;------------------------------------------
+;------------------------------------------
+;------------------Tests------------------------
+;------------------------------------------
+;------------------------------------------
+
+(defn planner-r-holds-many []
+  "Elapsed time:3.2187 msecs"
+  (time (planner state-r-holds-many '(in R F) planner-operations))
+  )
+
+(defn ops-r-holds-many []
+  "Elapsed time: 131.5909 msecs"
+  (time (ops-search state-r-holds-many '((in R F)) operations))
+  )
+
+;-----------------------------------------
+;-----------------------------------------
+;-------------------Holds all----------------------
+;-----------------------------------------
+;-----------------------------------------
+
+(def state-r-holds-all
+  '#{
+     ;define agentLL
+     (agent R)
+     ;define rooms
+     (room A)
+     (room B)
+     (room C)
+     (room D)
+     (room E)
+     (room F)
+     (room G)
+     (room H)
+     (room I)
+     (room J)
+     (room K)
+
+     (in R A)
+     (holds R key dog cat mouse phone cup glass remote water watch case keyboard coffee tea screen chair
+            folder apple mango pear glove hat scarf)
+
+     (holdable key)
+     ;(in key D)
+
+     (holdable dog)
+     ;(in dog A)
+
+     (holdable cat)
+     ;(in cat A)
+
+     (holdable mouse)
+     ;(in mouse A)
+
+     (holdable phone)
+     ;(in phone B)
+
+     (holdable cup)
+     ;(in cup F)
+
+     (holdable glass)
+     ;(in glass K)
+
+     (holdable remote)
+     ;(in remote I)
+
+     (holdable water)
+     ;(in water I)
+
+     (holdable watch)
+     ;(in watch G)
+
+     (holdable case)
+     ;(in case E)
+
+     (holdable keyboard)
+     ;(in keyboard K)
+
+     (holdable screen)
+     ;(in screen J)
+
+     (holdable chair)
+     ;(in chair A)
+
+     (holdable folder)
+     ; (in folder D)
+
+     (holdable apple)
+     ; (in apple D)
+
+     (holdable mango)
+     ; (in mango G)
+
+     (holdable pear)
+     ; (in pear H)
+
+     (holdable glove)
+     ;  (in glove I)
+
+     (holdable hat)
+     ;  (in hat B)
+
+     (holdable scarf)
+     ;  (in scarf C)
+
+     (holdable tea)
+     ;  (in tea C)
+
+     (holdable coffee)
+     ;  (in coffee D)
+
+     }
+  )
+
+;------------------------------------------
+;------------------------------------------
+;------------------Tests------------------------
+;------------------------------------------
+;------------------------------------------
+
+(defn planner-r-holds-many []
+  "Elapsed time:2.9925 msecs"
+  (time (planner state-r-holds-all '(in R F) planner-operations))
+  )
+
+(defn ops-r-holds-many []
+  "Elapsed time: 75.5913 msecs"
+  (time (ops-search state-r-holds-all '((in R F)) operations))
+  )
