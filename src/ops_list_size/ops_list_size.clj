@@ -131,12 +131,12 @@
                     :txt (?agent has destroyed ?obj)
                     }
            throw {:pre ((agent ?agent)
-                         (holdable ?obj)
                          (room ?room1)
                          (room ?room2)
                          (door ?door)
-                         (holds ?agent ?obj)
+                         (holdable ?obj)
                          (in ?agent ?room1)
+                         (holds ?agent ?obj)
                          (connects ?door ?room1)
                          (connects ?door ?room2)
                          (unlocked ?door true)
@@ -413,9 +413,6 @@
      (room room-e)
      (room room-f)
      (room room-g)
-     (room room-h)
-     (room room-i)
-     (room room-j)
 
      (door door-ab)
      (door door-bc)
@@ -423,27 +420,18 @@
      (door door-de)
      (door door-ef)
      (door door-fg)
-     (door door-gh)
-     (door door-hi)
-     (door door-ij)
      (opened door-ab false)
      (opened door-bc false)
      (opened door-cd false)
      (opened door-de false)
      (opened door-ef false)
      (opened door-fg false)
-     (opened door-gh false)
-     (opened door-hi false)
-     (opened door-ij false)
      (unlocked door-ab true)
      (unlocked door-bc true)
      (unlocked door-cd true)
      (unlocked door-de true)
      (unlocked door-ef true)
      (unlocked door-fg true)
-     (unlocked door-gh true)
-     (unlocked door-hi true)
-     (unlocked door-ij true)
 
      (connects door-ab room-a)
      (connects door-ab room-b)
@@ -457,35 +445,29 @@
      (connects door-ef room-f)
      (connects door-fg room-f)
      (connects door-fg room-g)
-     (connects door-gh room-g)
-     (connects door-gh room-h)
-     (connects door-hi room-h)
-     (connects door-hi room-i)
-     (connects door-ij room-i)
-     (connects door-ij room-j)
 
      (in R room-a)
      }
   )
 
 (defn test-4-very-short []
-  (time (ops-search test-state-4 '((in R room-j)) very-short-ops))
+  (time (ops-search test-state-4 '((in R room-g)) very-short-ops))
   )
 
 (defn test-4-short []
-  (time (ops-search test-state-4 '((in R room-j)) short-ops))
+  (time (ops-search test-state-4 '((in R room-g)) short-ops))
   )
 
 (defn test-4-base []
-  (time (ops-search test-state-4 '((in R room-j)) base-ops))
+  (time (ops-search test-state-4 '((in R room-g)) base-ops))
   )
 
 (defn test-4-large []
-  (time (ops-search test-state-4 '((in R room-j)) large-ops))
+  (time (ops-search test-state-4 '((in R room-g)) large-ops))
   )
 
 (defn test-4-very-large []
-  (time (ops-search test-state-4 '((in R room-j)) very-large-ops))
+  (time (ops-search test-state-4 '((in R room-g)) very-large-ops))
   )
 
 
@@ -503,9 +485,6 @@
      (room room-e)
      (room room-f)
      (room room-g)
-     (room room-h)
-     (room room-i)
-     (room room-j)
 
      (door door-ab)
      (door door-bc)
@@ -513,27 +492,18 @@
      (door door-de)
      (door door-ef)
      (door door-fg)
-     (door door-gh)
-     (door door-hi)
-     (door door-ij)
      (opened door-ab false)
      (opened door-bc false)
      (opened door-cd false)
      (opened door-de false)
      (opened door-ef false)
      (opened door-fg false)
-     (opened door-gh false)
-     (opened door-hi false)
-     (opened door-ij false)
      (unlocked door-ab true)
      (unlocked door-bc true)
      (unlocked door-cd true)
      (unlocked door-de true)
      (unlocked door-ef true)
      (unlocked door-fg true)
-     (unlocked door-gh true)
-     (unlocked door-hi true)
-     (unlocked door-ij true)
 
      (connects door-ab room-a)
      (connects door-ab room-b)
@@ -547,12 +517,6 @@
      (connects door-ef room-f)
      (connects door-fg room-f)
      (connects door-fg room-g)
-     (connects door-gh room-g)
-     (connects door-gh room-h)
-     (connects door-hi room-h)
-     (connects door-hi room-i)
-     (connects door-ij room-i)
-     (connects door-ij room-j)
 
      (in R room-a)
      (holds R nil)
@@ -565,23 +529,23 @@
   )
 
 (defn test-5-very-short []
-  (time (ops-search test-state-5 '((in R room-j)) very-short-ops))
+  (time (ops-search test-state-5 '((in R room-g)) very-short-ops))
   )
 
 (defn test-5-short []
-  (time (ops-search test-state-5 '((in R room-j)) short-ops))
+  (time (ops-search test-state-5 '((in R room-g)) short-ops))
   )
 
 (defn test-5-base []
-  (time (ops-search test-state-5 '((in R room-j)) base-ops))
+  (time (ops-search test-state-5 '((in R room-g)) base-ops))
   )
 
 (defn test-5-large []
-  (time (ops-search test-state-5 '((in R room-j)) large-ops))
+  (time (ops-search test-state-5 '((in R room-g)) large-ops))
   )
 
 (defn test-5-very-large []
-  (time (ops-search test-state-5 '((in R room-j)) very-large-ops))
+  (time (ops-search test-state-5 '((in R room-g)) very-large-ops))
   )
 
 
@@ -596,63 +560,63 @@
 
   This test shows that having more operators can lead to more optimal paths if those operators
   reduce the number of steps required to reach a goal."
-  '#{(agent R)
-     (room room-a)
-     (room room-b)
-     (room room-c)
-     (room room-d)
-     (room room-e)
+    '#{(agent R)
+       (room room-a)
+       (room room-b)
+       (room room-c)
+       (room room-d)
+       (room room-e)
 
-     (door door-ab)
-     (door door-bc)
-     (door door-cd)
-     (door door-de)
-     (opened door-ab true)
-     (opened door-bc true)
-     (opened door-cd true)
-     (opened door-de true)
-     (unlocked door-ab true)
-     (unlocked door-bc true)
-     (unlocked door-cd true)
-     (unlocked door-de true)
+       (door door-ab)
+       (door door-bc)
+       (door door-cd)
+       (door door-de)
+       (opened door-ab true)
+       (opened door-bc true)
+       (opened door-cd true)
+       (opened door-de true)
+       (unlocked door-ab true)
+       (unlocked door-bc true)
+       (unlocked door-cd true)
+       (unlocked door-de true)
 
-     (connects door-ab room-a)
-     (connects door-ab room-b)
-     (connects door-bc room-b)
-     (connects door-bc room-c)
-     (connects door-cd room-c)
-     (connects door-cd room-d)
-     (connects door-de room-d)
-     (connects door-de room-e)
+       (connects door-ab room-a)
+       (connects door-ab room-b)
+       (connects door-bc room-b)
+       (connects door-bc room-c)
+       (connects door-cd room-c)
+       (connects door-cd room-d)
+       (connects door-de room-d)
+       (connects door-de room-e)
 
-     (in R room-a)
-     (holds R nil)
+       (in R room-a)
+       (holds R nil)
 
-     (key key-cd)
-     (holdable key-cd)
-     (in key-cd room-a)
-     (unlocks key-cd door-cd)
-     }
-  )
+       (key key-ab)
+       (holdable key-ab)
+       (in key-ab room-a)
+       (unlocks key-ab door-ab)
+       }
+    )
 
 (defn test-6-very-short []
-  (time (ops-search test-state-6 '((in key-cd room-e)) very-short-ops))
+  (time (ops-search test-state-6 '((in key-ab room-e)) very-short-ops))
   )
 
 (defn test-6-short []
-  (time (ops-search test-state-6 '((in key-cd room-e)) short-ops))
+  (time (ops-search test-state-6 '((in key-ab room-e)) short-ops))
   )
 
 (defn test-6-base []
-  (time (ops-search test-state-6 '((in key-cd room-e)) base-ops))
+  (time (ops-search test-state-6 '((in key-ab room-e)) base-ops))
   )
 
 (defn test-6-large []
-  (time (ops-search test-state-6 '((in key-cd room-e)) large-ops))
+  (time (ops-search test-state-6 '((in key-ab room-e)) large-ops))
   )
 
 (defn test-6-very-large []
-  (time (ops-search test-state-6 '((in key-cd room-e)) very-large-ops))
+  (time (ops-search test-state-6 '((in key-ab room-e)) very-large-ops))
   )
 
 
