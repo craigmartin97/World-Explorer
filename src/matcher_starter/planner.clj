@@ -63,6 +63,26 @@
                                    (println (str "PRT X: " x "  AND R2: " (? room2)))
                                    (= (compare x (? room2)) 0)
                                    )
+  (def operations
+    "A map of operations that the agent can perform in the world"
+    '{
+      :move
+      {
+       :name     move-agent
+       :achieves (in ?agent ?room2)
+       :when     ((agent ?agent)
+                   (room ?room1)
+                   (room ?room2)
+                   (door ?door)
+                   (connects ?door ?room1)
+                   (connects ?door ?room2)
+                   (protected ??visited-rooms)
+                   (:guard (not= (? room1) (? room2)))
+                   (:guard (not
+                             (some (fn [x]
+                                     (println (str "PRT X: " x "  AND R2: " (? room2)))
+                                     (= (compare x (? room2)) 0)
+                                     )
 
                                  (? visited-rooms))
                            ))

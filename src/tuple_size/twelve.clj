@@ -1,4 +1,4 @@
-(ns tuple-size.eleven
+(ns tuple-size.twelve
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
@@ -580,6 +580,8 @@
             extra21 extra22 extra23 extra24 extra25 extra26 extra27 extra28 extra29 extra30
             extra31 extra32 extra33 extra34 extra35 extra36 extra37 extra38 extra39 extra40
             extra41 extra42 extra43 extra44 extra45 extra46 extra47 extra48 extra49 extra50
+            extra51 extra52 extra53 extra54 extra55 extra56 extra57 extra58 extra59 extra60
+            extra61 extra62 extra63 extra64 extra65 extra66 extra67 extra68 extra69 extra70
             )
 
      (in R A)
@@ -592,22 +594,22 @@
 ;---------------------------------
 ;---------------------------------
 
-(defn test-eleven-move-to-f []
+(defn test-twelve-move-to-f []
   "Elapsed time: 98290.4615 msecs"
   (time (ops-search state '((in R F)) operations :debug true))
   )
 
-(defn test-eleven-move-to-g []
+(defn test-twelve-move-to-g []
   "Elapsed time = 450450.1081 msecs"
   (time (ops-search state '((in R G)) operations :debug true))
   )
 
-(defn test-eleven-move-to-h []
+(defn test-twelve-move-to-h []
   "Elapsed time = 612853.4319 msecs"
   (time (ops-search state '((in R H)) operations :debug true))
   )
 
-(defn test-eleven-move-to-j []
+(defn test-twelve-move-to-j []
   "Elapsed time = 50254.3779 msecs"
   (time (ops-search state '((in R J)) operations :debug true))
   )

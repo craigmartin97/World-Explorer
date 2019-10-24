@@ -5,300 +5,783 @@
             )
   )
 
-(def operation-pickup-one
+(def operations
+  "A map of operations that the agent can perform in the world"
   '{
     pickup
     {
      :pre
           (
-            (agent ?agent)
-            (room ?room1)
-            (holdable ?obj)
-            (in ?agent ?room1)
-            (holds ?agent ??x)
-            (in ?obj ?room1)
-            )
+           (agent ?agent)
+           (room ?room1)
+           (holdable ?obj)
+           (in ?agent ?room1)
+           (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
      :add
           (
-            (holds ?agent ??x ?obj)
-            )
+           (holds ?agent ?obj)
+           (holds ?agent ??x)
+
+           )
      :del
           (
-            (holds ?agent ??x)
-            (in ?obj ?room1)
-            )
+           (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
      :txt (?agent picked up ?obj from ?room1)
      }
-   })
-
-(def operation-pickup-two
-  '{
-    pickup
-    {
-     :pre
-          (
-            (agent ?agent)
-            (in ?agent ?room1)
-            (room ?room1)
-            (holdable ?obj)
-            (holds ?agent nil)
-            (in ?obj ?room1)
-            )
-     :add
-          (
-            (holds ?agent ?obj)
-            )
-     :del
-          (
-            (holds ?agent nil)
-            (in ?obj ?room1)
-            )
-     :txt (?agent picked up ?obj from ?room1)
-     }
-    })
-
-(def operation-pickup-three
-  '{
-    pickup
-    {
-     :pre
-          (
-            (agent ?agent)
-            (in ?agent ?room1)
-            (room ?room1)
-            (holds ?agent nil)
-            (holdable ?obj)
-            (in ?obj ?room1)
-            )
-     :add
-          (
-            (holds ?agent ?obj)
-            )
-     :del
-          (
-            (holds ?agent nil)
-            (in ?obj ?room1)
-            )
-     :txt (?agent picked up ?obj from ?room1)
-     }
-    })
-
-(def operation-pickup-four
-  '{
-    pickup
-    {
-     :pre
-          (
-            (agent ?agent)
-            (in ?agent ?room1)
-            (room ?room1)
-            (in ?obj ?room1)
-            (holds ?agent ?obj)
-            (holdable ?obj)
-            )
-     :add
-          (
-            (holds ?agent ?obj)
-            )
-     :del
-          (
-            (holds ?agent nil)
-            (in ?obj ?room1)
-            )
-     :txt (?agent picked up ?obj from ?room1)
-     }
-    })
-
-(def small-state
-  '#{
-     (agent R)
-     (room A)
-     (in R A)
-     (holds R nil)
-
-     (in key A)
-     (holdable key)
-
     }
   )
 
-(def medium-state
+(def operations-two
+  "A map of operations that the agent can perform in the world"
+  '{
+    pickup
+    {
+     :pre
+          (
+           (in ?agent ?room1)
+           (agent ?agent)
+           (room ?room1)
+           (holdable ?obj)
+           (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
+     :add
+          (
+           (holds ?agent ?obj)
+           (holds ?agent ??x)
+
+           )
+     :del
+          (
+           (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
+     :txt (?agent picked up ?obj from ?room1)
+     }
+    }
+  )
+
+(def operations-three
+     "A map of operations that the agent can perform in the world"
+     '{
+       pickup
+       {
+        :pre
+             (
+              (in ?agent ?room1)
+              (holds ?agent ??x)
+              (in ?obj ?room1)
+              (agent ?agent)
+              (room ?room1)
+              (holdable ?obj)
+
+              )
+        :add
+             (
+              (holds ?agent ?obj)
+              (holds ?agent ??x)
+
+              )
+        :del
+             (
+              (holds ?agent ??x)
+              (in ?obj ?room1)
+              )
+        :txt (?agent picked up ?obj from ?room1)
+        }
+       }
+     )
+
+(def operations-four
+  "A map of operations that the agent can perform in the world"
+  '{
+    pickup
+    {
+     :pre
+          (
+           (in ?obj ?room1)
+           (holdable ?obj)
+           (in ?agent ?room1)
+           (holds ?agent ??x)
+           (agent ?agent)
+           (room ?room1)
+           )
+     :add
+          (
+           (holds ?agent ?obj)
+           (holds ?agent ??x)
+
+           )
+     :del
+          (
+           (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
+     :txt (?agent picked up ?obj from ?room1)
+     }
+    }
+  )
+
+;---------------------------------------------------------------
+;---------------------------------------------------------------
+;---------------------------States------------------------------------
+;---------------------------------------------------------------
+;---------------------------------------------------------------
+
+(def state-pickup-one
+  "Small state"
   '#{
      (agent R)
      (room A)
      (in R A)
      (holds R nil)
 
+     (holdable key)
+     (in key A)
+     })
 
-     (key key-A-B)
-     (key key-A-C)
-     (key key-A-D)
-     (key key-C-D)
-     (key key-C-E)
-     (key key-D-E)
-
-
-     (holdable key-A-B)
-     (holdable key-A-C)
-     (holdable key-A-D)
-     (holdable key-C-D)
-     (holdable key-C-E)
-     (holdable key-D-E)
-
-
-     (in key-A-B A)
-     (in key-A-C A)
-     (in key-A-D A)
-     (in key-C-D A)
-     (in key-C-E A)
-     (in key-D-E A)
-
-
-     }
-  )
-
-(def large-state
+(def state-pickup-two
+  "State with 4 objects"
   '#{
      (agent R)
      (room A)
      (in R A)
      (holds R nil)
 
-     (key key-A-B)
-     (key key-A-C)
-     (key key-A-D)
-     (key key-C-D)
-     (key key-C-E)
-     (key key-D-E)
-     (key key-D-J)
-     (key key-D-F)
-     (key key-B-F)
-     (key key-D-G)
-     (key key-F-G)
-     (key key-E-H)
-     (key key-G-H)
-     (key key-G-I)
-     (key key-I-J)
-     (key key-H-J)
+     (holdable key)
+     (in key A)
 
-     (holdable key-A-B)
-     (holdable key-A-C)
-     (holdable key-A-D)
-     (holdable key-C-D)
-     (holdable key-C-E)
-     (holdable key-D-E)
-     (holdable key-D-J)
-     (holdable key-D-F)
-     (holdable key-B-F)
-     (holdable key-D-G)
-     (holdable key-F-G)
-     (holdable key-E-H)
-     (holdable key-G-H)
-     (holdable key-G-I)
-     (holdable key-I-J)
-     (holdable key-H-J)
+     (holdable dog)
+     (in dog A)
 
-     (in key-A-B A)
-     (in key-A-C A)
-     (in key-A-D A)
-     (in key-C-D A)
-     (in key-C-E A)
-     (in key-D-E A)
-     (in key-D-J A)
-     (in key-D-F A)
-     (in key-B-F A)
-     (in key-D-G A)
-     (in key-F-G A)
-     (in key-E-H A)
-     (in key-G-H A)
-     (in key-G-I A)
-     (in key-I-J A)
-     (in key-H-J A)
-     }
+     (holdable cat)
+     (in cat A)
+
+     (holdable mouse)
+     (in mouse A)
+     })
+
+(def state-pickup-three
+  "State with 6 objects"
+  '#{
+     (agent R)
+     (room A)
+     (in R A)
+     (holds R nil)
+
+     (holdable key)
+     (in key A)
+
+     (holdable dog)
+     (in dog A)
+
+     (holdable cat)
+     (in cat A)
+
+     (holdable mouse)
+     (in mouse A)
+
+     (holdable case)
+     (in case A)
+
+     (holdable remote)
+     (in remote A)
+     })
+
+(def state-pickup-four
+  "State with 8 objects"
+  '#{
+     (agent R)
+     (room A)
+     (in R A)
+     (holds R nil)
+
+     (holdable key)
+     (in key A)
+
+     (holdable dog)
+     (in dog A)
+
+     (holdable cat)
+     (in cat A)
+
+     (holdable mouse)
+     (in mouse A)
+
+     (holdable case)
+     (in case A)
+
+     (holdable remote)
+     (in remote A)
+
+     (holdable hammer)
+     (in hammer A)
+
+     (holdable watch)
+     (in watch A)
+     })
+
+(def state-pickup-five
+  "state with 12 objects"
+  '#{
+     (agent R)
+     (room A)
+     (in R A)
+     (holds R nil)
+
+     (holdable key)
+     (in key A)
+
+     (holdable dog)
+     (in dog A)
+
+     (holdable cat)
+     (in cat A)
+
+     (holdable mouse)
+     (in mouse A)
+
+     (holdable case)
+     (in case A)
+
+     (holdable remote)
+     (in remote A)
+
+     (holdable hammer)
+     (in hammer A)
+
+     (holdable watch)
+     (in watch A)
+
+     (holdable chips)
+     (in chips A)
+
+     (holdable mango)
+     (in mango A)
+
+     (holdable apple)
+     (in apple A)
+
+     (holdable olive)
+     (in olive A)
+     })
+
+(def state-pickup-six
+  "state with 24 objects"
+  '#{
+     (agent R)
+     (room A)
+     (in R A)
+     (holds R nil)
+
+     (holdable key)
+     (in key A)
+
+     (holdable dog)
+     (in dog A)
+
+     (holdable cat)
+     (in cat A)
+
+     (holdable mouse)
+     (in mouse A)
+
+     (holdable case)
+     (in case A)
+
+     (holdable remote)
+     (in remote A)
+
+     (holdable hammer)
+     (in hammer A)
+
+     (holdable watch)
+     (in watch A)
+
+     (holdable chips)
+     (in chips A)
+
+     (holdable mango)
+     (in mango A)
+
+     (holdable apple)
+     (in apple A)
+
+     (holdable olive)
+     (in olive A)
+
+     (holdable guitar)
+     (in guitar A)
+
+     (holdable drum)
+     (in drum A)
+
+     (holdable phone)
+     (in phone A)
+
+     (holdable cpu)
+     (in cpu A)
+
+     (holdable poster)
+     (in poster A)
+
+     (holdable pen)
+     (in pen A)
+
+     (holdable calc)
+     (in calc A)
+
+     (holdable pc)
+     (in pc A)
+
+     (holdable glass)
+     (in glass A)
+
+     (holdable coffee)
+     (in coffee A)
+
+     (holdable tea)
+     (in tea A)
+
+     (holdable football)
+     (in football A)
+     })
+
+;----------------------------------------------------------------
+;----------------------------------------------------------------
+;---------------------------tests-------------------------------------
+;----------------------------------------------------------------
+;----------------------------------------------------------------
+
+;----------------------------------------------------------------
+;-----------------------------tests with base operations-----------------------------------
+;----------------------------------------------------------------
+
+
+(defn test-one []
+  "Elapsed time: 3.6934 msecs
+
+  Agent picks up 1 object"
+  (time (ops-search state-pickup-one '((holds R key)) operations :debug true))
   )
 
-(defn test-small-one []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search small-state '((holds R key)) operation-pickup-one :debug true))
+(defn test-two []
+  "Elapsed time: 7661.6265 msecs
+
+  Agent picks up 4 objects"
+  (time (ops-search state-pickup-two '((holds R key)
+                                          (holds R dog)
+                                          (holds R cat)
+                                          (holds R mouse)
+                                          ) operations :debug true))
   )
 
-(defn test-small-two []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search small-state '((holds R key)) operation-pickup-two :debug true))
-  )
+(defn test-three []
+  "
+  Elapsed time: unsolvable msecs
 
-(defn test-small-three []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search small-state '((holds R key)) operation-pickup-three :debug true))
-  )
-
-(defn test-small-four []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search small-state '((holds R key)) operation-pickup-four :debug true))
+  Agent picks up 6 objects"
+  (time (ops-search state-pickup-three '(
+                                              (holds R key)
+                                              (holds R dog)
+                                              (holds R cat)
+                                              (holds R mouse)
+                                              (holds R case)
+                                              (holds R remote)
+                                              ) operations :debug true))
   )
 
 
+(defn test-four []
+  "Elapsed time: unsolvable msecs
 
-;---------------------------------------------------------
-;---------------------------------------------------------
-;---------------------------------------------------------
-;---------------------------------------------------------
-;---------------------------------------------------------
-
-(defn test-medium-one []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search medium-state '((holds R key-A-B)) operation-pickup-one :debug true))
+  Agent picks up 8 objects"
+  (time (ops-search state-pickup-four '(
+                                              (holds R key)
+                                              (holds R dog)
+                                              (holds R cat)
+                                              (holds R mouse)
+                                              (holds R case)
+                                              (holds R remote)
+                                              (holds R hammer)
+                                              (holds R watch)
+                                              ) operations :debug true))
   )
 
-(defn test-medium-two []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search medium-state '((holds R key) (holds R sledgehammer) (holds R knife) (holds R rock) (holds R lever) (holds R torch)) operation-pickup-two :debug true))
+(defn test-five []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 12 objects"
+  (time (ops-search state-pickup-five '(
+                                              (holds R key)
+                                              (holds R dog)
+                                              (holds R cat)
+                                              (holds R mouse)
+                                              (holds R case)
+                                              (holds R remote)
+                                              (holds R hammer)
+                                              (holds R watch)
+                                              (holds R chips)
+                                              (holds R mango)
+                                              (holds R apple)
+                                              (holds R olive)
+                                              ) operations :debug true))
   )
 
-(defn test-medium-three []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search medium-state '((holds R key) (holds R sledgehammer) (holds R knife) (holds R rock) (holds R lever) (holds R torch)) operation-pickup-three :debug true))
+
+(defn test-six []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         (holds R chips)
+                                         (holds R mango)
+                                         (holds R apple)
+                                         (holds R olive)
+                                         (holds R guitar)
+                                         (holds R drum)
+                                         (holds R phone)
+                                         (holds R cpu)
+                                         (holds R poster)
+                                         (holds R pen)
+                                         (holds R calc)
+                                         (holds R pc)
+                                         (holds R glass)
+                                         (holds R coffee)
+                                         (holds R tea)
+                                         (holds R football)
+                                        ) operations :debug true))
   )
 
-(defn test-medium-four []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search medium-state '((holds R key) (holds R sledgehammer) (holds R knife) (holds R rock) (holds R lever) (holds R torch)) operation-pickup-four :debug true))
+;----------------------------------------------------------------
+;-----------------------------tests with  operations two-----------------------------------
+;----------------------------------------------------------------
+
+(defn test-seven []
+  "Elapsed time: 3.3458 msecs
+
+  Agent picks up 1 object"
+  (time (ops-search state-pickup-one '((holds R key)) operations-two :debug true))
   )
 
-;---------------------------------------------------------
-;---------------------------------------------------------
-;---------------------------------------------------------
-;---------------------------------------------------------
-;---------------------------------------------------------
+(defn test-eight []
+  "Elapsed time: 7661.6265 msecs
 
-(defn test-large-one []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search large-state '((holds R key-A-B)) operation-pickup-one :debug true))
+  Agent picks up 4 objects"
+  (time (ops-search state-pickup-two '((holds R key)
+                                       (holds R dog)
+                                       (holds R cat)
+                                       (holds R mouse)
+                                       ) operations-two :debug true))
   )
 
-(defn test-large-two []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search large-state '((holds R key)) operation-pickup-two :debug true))
+(defn test-nine []
+  "
+  Elapsed time: unsolvable msecs
+
+  Agent picks up 6 objects"
+  (time (ops-search state-pickup-three '(
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         ) operations-two :debug true))
   )
 
-(defn test-large-three []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search large-state '((holds R key)) operation-pickup-three :debug true))
+
+(defn test-ten []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 8 objects"
+  (time (ops-search state-pickup-four '(
+                                        (holds R key)
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        (holds R case)
+                                        (holds R remote)
+                                        (holds R hammer)
+                                        (holds R watch)
+                                        ) operations-two :debug true))
   )
 
-(defn test-large-four []
-  "The agent picks up a single key
-  Elapsed Time: 5.8 msecs"
-  (time (ops-search large-state '((holds R key)) operation-pickup-four :debug true))
+(defn test-eleven []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 12 objects"
+  (time (ops-search state-pickup-five '(
+                                        (holds R key)
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        (holds R case)
+                                        (holds R remote)
+                                        (holds R hammer)
+                                        (holds R watch)
+                                        (holds R chips)
+                                        (holds R mango)
+                                        (holds R apple)
+                                        (holds R olive)
+                                        ) operations-two :debug true))
+  )
+
+
+(defn test-twelve []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
+                                       (holds R key)
+                                       (holds R dog)
+                                       (holds R cat)
+                                       (holds R mouse)
+                                       (holds R case)
+                                       (holds R remote)
+                                       (holds R hammer)
+                                       (holds R watch)
+                                       (holds R chips)
+                                       (holds R mango)
+                                       (holds R apple)
+                                       (holds R olive)
+                                       (holds R guitar)
+                                       (holds R drum)
+                                       (holds R phone)
+                                       (holds R cpu)
+                                       (holds R poster)
+                                       (holds R pen)
+                                       (holds R calc)
+                                       (holds R pc)
+                                       (holds R glass)
+                                       (holds R coffee)
+                                       (holds R tea)
+                                       (holds R football)
+                                       ) operations-two :debug true))
+  )
+
+;----------------------------------------------------------------
+;-----------------------------tests with  operations three-----------------------------------
+;----------------------------------------------------------------
+
+(defn test-thirteen []
+  "Elapsed time: 3.3458 msecs
+
+  Agent picks up 1 object"
+  (time (ops-search state-pickup-one '((holds R key)) operations-three :debug true))
+  )
+
+(defn test-fourteen []
+  "Elapsed time: 7661.6265 msecs
+
+  Agent picks up 4 objects"
+  (time (ops-search state-pickup-two '((holds R key)
+                                       (holds R dog)
+                                       (holds R cat)
+                                       (holds R mouse)
+                                       ) operations-three :debug true))
+  )
+
+(defn test-fifteen []
+  "
+  Elapsed time: unsolvable msecs
+
+  Agent picks up 6 objects"
+  (time (ops-search state-pickup-three '(
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         ) operations-three :debug true))
+  )
+
+
+(defn test-sixteen []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 8 objects"
+  (time (ops-search state-pickup-four '(
+                                        (holds R key)
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        (holds R case)
+                                        (holds R remote)
+                                        (holds R hammer)
+                                        (holds R watch)
+                                        ) operations-three :debug true))
+  )
+
+(defn test-seventeen []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 12 objects"
+  (time (ops-search state-pickup-five '(
+                                        (holds R key)
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        (holds R case)
+                                        (holds R remote)
+                                        (holds R hammer)
+                                        (holds R watch)
+                                        (holds R chips)
+                                        (holds R mango)
+                                        (holds R apple)
+                                        (holds R olive)
+                                        ) operations-three :debug true))
+  )
+
+
+(defn test-eighteen []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
+                                       (holds R key)
+                                       (holds R dog)
+                                       (holds R cat)
+                                       (holds R mouse)
+                                       (holds R case)
+                                       (holds R remote)
+                                       (holds R hammer)
+                                       (holds R watch)
+                                       (holds R chips)
+                                       (holds R mango)
+                                       (holds R apple)
+                                       (holds R olive)
+                                       (holds R guitar)
+                                       (holds R drum)
+                                       (holds R phone)
+                                       (holds R cpu)
+                                       (holds R poster)
+                                       (holds R pen)
+                                       (holds R calc)
+                                       (holds R pc)
+                                       (holds R glass)
+                                       (holds R coffee)
+                                       (holds R tea)
+                                       (holds R football)
+                                       ) operations-three :debug true))
+  )
+
+;----------------------------------------------------------------
+;-----------------------------tests with  operations four-----------------------------------
+;----------------------------------------------------------------
+
+(defn test-nineteen []
+  "Elapsed time: 3.3458 msecs
+
+  Agent picks up 1 object"
+  (time (ops-search state-pickup-one '((holds R key)) operations-four :debug true))
+  )
+
+(defn test-twenty []
+  "Elapsed time: 7661.6265 msecs
+
+  Agent picks up 4 objects"
+  (time (ops-search state-pickup-two '((holds R key)
+                                       (holds R dog)
+                                       (holds R cat)
+                                       (holds R mouse)
+                                       ) operations-four :debug true))
+  )
+
+(defn test-twenty-one []
+  "
+  Elapsed time: 1423077.7891 msecs msecs
+
+  Agent picks up 6 objects"
+  (time (ops-search state-pickup-three '(
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         ) operations-four :debug true))
+  )
+
+
+(defn test-twenty-two []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 8 objects"
+  (time (ops-search state-pickup-four '(
+                                        (holds R key)
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        (holds R case)
+                                        (holds R remote)
+                                        (holds R hammer)
+                                        (holds R watch)
+                                        ) operations-four :debug true))
+  )
+
+(defn test-twenty-three []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 12 objects"
+  (time (ops-search state-pickup-five '(
+                                        (holds R key)
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        (holds R case)
+                                        (holds R remote)
+                                        (holds R hammer)
+                                        (holds R watch)
+                                        (holds R chips)
+                                        (holds R mango)
+                                        (holds R apple)
+                                        (holds R olive)
+                                        ) operations-four :debug true))
+  )
+
+
+(defn test-twenty-four []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
+                                       (holds R key)
+                                       (holds R dog)
+                                       (holds R cat)
+                                       (holds R mouse)
+                                       (holds R case)
+                                       (holds R remote)
+                                       (holds R hammer)
+                                       (holds R watch)
+                                       (holds R chips)
+                                       (holds R mango)
+                                       (holds R apple)
+                                       (holds R olive)
+                                       (holds R guitar)
+                                       (holds R drum)
+                                       (holds R phone)
+                                       (holds R cpu)
+                                       (holds R poster)
+                                       (holds R pen)
+                                       (holds R calc)
+                                       (holds R pc)
+                                       (holds R glass)
+                                       (holds R coffee)
+                                       (holds R tea)
+                                       (holds R football)
+                                       ) operations-four :debug true))
   )
