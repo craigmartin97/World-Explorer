@@ -10,6 +10,38 @@
 ;(planner move-A-D-all-unlocked '(in R D) operations)
 ;(planner move-A-D-all-unlocked '(opened A-B true) operations)
 
+(def josh-ops
+  '{protect {:name protect
+             :achieves (protected ?x)
+             :when     ((protected ??visited))
+             :add      ((protected ??visited ?x))
+             :del      ((protected ??visited))
+             }
+    move {:name move-agent
+          :achieves (in ?agent ?room2)
+          :when ((agent ?agent)
+                 (door ?door)
+                 (room ?room1)
+                 (room ?room2)
+                 (:guard (not= (? room1) (? room2)))
+                 (protected ??visited)
+                 (:guard (and (not (some #(= % (? room1)) (? visited)))
+                              (not (some #(= % (? room2)) (? visited)))))
+                 (connects ?door ?room1)
+                 (connects ?door ?room2)
+                 )
+          :post ((protected ?room2)
+                 (in ?agent ?room1))
+          :pre ()
+          :add ((protected ??visited)
+                (in ?agent ?room2))
+          :del ((protected ??_)
+                (in ?agent ?room1))
+          :txt (?agent has moved from ?room1 to ?room2)
+    }
+  }
+)
+
 (def operations
   "A map of operations that the agent can perform in the world"
   '{
@@ -141,6 +173,8 @@
 (def move-A-D-all-unlocked
   "A more advanced scenario"
   '#{
+     ;define protection for rooms
+     (protected)
      ;define agentLL
      (agent R)
      ;define rooms
@@ -168,7 +202,6 @@
      (door E-I)
      (door I-J)
 
-     (protected)
      ;define connections (connects door room)
      (connects A-B A)
      (connects A-B B)
@@ -215,10 +248,10 @@
      (unlocked E-I true)
      (unlocked I-J true)
      ;specify keys for the doors
-     (key key-B-E)
-     (holdable key-B-E)
-     (unlocks key-B-E B-E)
-     (in key-B-E B)
+     ;(key key-B-E)
+     ;(holdable key-B-E)
+     ;(unlocks key-B-E B-E)
+     ;(in key-B-E B)
 
      ;(key key-A-D)
      ;(holdable key-A-D)
@@ -229,7 +262,7 @@
      ;(holds R key-A-D)
 
      ;test 5
-     (holds R nil)
+     ;(holds R nil)
      }
   )
 
