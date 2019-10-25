@@ -1,4 +1,4 @@
-(ns tuple-order.move
+(ns tuple-order_ops.move
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]

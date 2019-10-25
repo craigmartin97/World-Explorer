@@ -1,8 +1,48 @@
-;--------------------------------------------
-;--------------------------------------------
-;------------------Planner--------------------------
-;--------------------------------------------
-;--------------------------------------------
+(ns optimal-route.core
+  (:require [org.clojars.cognesence.breadth-search.core :refer :all]
+            [org.clojars.cognesence.matcher.core :refer :all]
+            [org.clojars.cognesence.ops-search.core :refer :all]
+            [clojure.set :refer :all]
+
+            )
+  )
+
+;===================================================
+; based on: strips-search-1a.clj from SHRDLU model
+; naming changes only
+;===================================================
+
+
+;these operators can have all of these slots...
+;{ :name put-on
+;  :achieves (on ?x ?y)
+;  :when   ( (at ?x ?sx) (at ?y ?sy) (:guard (not= (? sx) (? sy))) )
+;  :post   ( (protected ?sx) (protected ?sy)
+;            (cleartop ?x)
+;            (cleartop ?y)
+;            (hand empty) )
+;  :pre ()
+;  :del ( (at ?x ?sx)
+;         (cleartop ?y)
+;         (protected ?sx)
+;         (protected ?sy) )
+;  :add ( (at ?x ?sy)
+;         (on ?x ?y) )
+;  :cmd ( (pick-from ?sx)
+;         (drop-at ?sy) )
+;  :txt (put ?x on ?y)
+;  }
+;
+;NB: in this example the ops have unique :achieves + :when
+;
+;They are processed as follows...
+;
+;goal <- (pop goal-stack)
+;match (:achieves op) goal
+;  match (:when op) BD
+;    push( expand op , goal-stack )
+;    push-all( expand (:post op), goal-stack )
+
 
 (defn ui-out [win & str]
   (apply  println str))
@@ -104,12 +144,11 @@
    :txt   (concat (:txt current) (:txt newp))
    })
 
-;---------------------------------------------------------------------
-;---------------------------------------------------------------------
-;------------------------------planner implementation---------------------------------------
-;---------------------------------------------------------------------
-;---------------------------------------------------------------------
-
+;-------------------------------------------------------------
+;-------------------------------------------------------------
+;----------------------------Operations---------------------------------
+;-------------------------------------------------------------
+;-------------------------------------------------------------
 
 (def planner-operations
   "A map of operations that the agent can perform in the world"
@@ -186,14 +225,70 @@
     }
   )
 
+(def ops-operations-efficent
+  "A map of operations that the agent can perform in the world
+  In this ops list the agent will pick up the items in the most efficent order"
+  '{
+    move { :pre ((agent ?agent)
+                 (in ?agent ?room1)
+                 (room ?room1)
+                 (room ?room2)
+                 )
+          :add ((in ?agent ?room2))
+          :del ((in ?agent ?room1))
+          :txt (?agent has moved from ?room1 to ?room2)
+          }
 
-;--------------------------------------------------------------------
-;--------------------------------------------------------------------
-;-------------------------------Opssearch implementation-------------------------------------
-;--------------------------------------------------------------------
-;--------------------------------------------------------------------
+    pickup
+    {
+     :pre
+          (
+           (agent ?agent)
+           (room ?room1)
+           (holdable ?obj)
+           (in ?agent ?room1)
+           ; (holds ?agent ??x)
+           (in ?obj ?room1)
+           )
+     :add
+          (
+           (holds ?agent ?obj)
+           )
+     :del
+          (
+           (holds ?agent nil)
+           (in ?obj ?room1)
+           )
+     :txt (?agent picked up ?obj from ?room1)
+     }
 
-(def ops-search-operations
+    drop
+    {
+     :pre
+          (
+           (agent ?agent)
+           (room ?room1)
+           (holdable ?obj)
+           (in ?agent ?room1)
+           (holds ?agent ?obj)
+           )
+     :add
+          (
+           (holds ?agent nil)
+           (in ?obj ?room1)
+           )
+     :del
+          (
+           (holds ?agent ?obj)
+           )
+     :txt (?agent dropped ?obj in ?room1)
+     }
+    }
+  )
+
+(def ops-operations-inefficent
+  "In this ops list the agent wont pick up the objects in the most
+  efficent order"
   '{move { :pre ((agent ?agent)
                  (in ?agent ?room1)
                  (room ?room1)
@@ -210,7 +305,10 @@
                   (in ?obj ?room1)
                   (holds ?agent ??x))
             :add ((holds ?agent ??x ?obj))
-            :del ((holds ?agent ??x))
+            :del (
+                  (in ?obj ?room1)
+                  (holds ?agent ??x)
+                  )
             :txt (?agent picked up ?obj from ?room1)
             }
     drop {:pre ((agent ?agent)
@@ -224,12 +322,6 @@
           }
 
     })
-
-;---------------------------------------------------------------
-;---------------------------------------------------------------
-;--------------------------Small State-------------------------------------
-;---------------------------------------------------------------
-;---------------------------------------------------------------
 
 (def state
   '#{
@@ -249,7 +341,7 @@
      (room K)
 
      (in R A)
-     (holds R nil)
+     (holds R)
 
      (holdable key)
      (in key D)
@@ -266,28 +358,40 @@
      }
   )
 
-;---------------------------------------------------------------------------
-;---------------------------------------------------------------------------
-;--------------------------------------Tests for ops-search-------------------------------------
-;--------------------------------------------Basic move-------------------------------
-;---------------------------------------------------------------------------
+;------------------------------------
+;------------------------------------
+;------------------tests------------------
+;------------------------------------
+;------------------------------------
 
-(defn ops-move-to-c []
-  "Elapsed time:17.0598 msecs"
-  (time (ops-search state '((in R C)) ops-search-operations))
+(defn planner-logical-order []
+  "the agent will pick up the objects in a logical order
+  the items are stated in the goal state in a logical efficent order
+
+  The agent will pick up the dog and cat then move and pick up the key"
+  (time (planner state '(holds R dog cat key) planner-operations))
   )
 
-(defn ops-move-to-k []
-  "Elapsed time:32.6117 msecs"
-  (time (ops-search state '((in R K)) ops-search-operations))
+(defn planner-illogical-order []
+  "Items are added in an inefficent order
+
+  Planner here will move to the key first and pick it upm then move all the way back and pick up the dog and cat"
+  (time (planner state '(holds R key dog cat) planner-operations))
   )
 
-(defn planner-move-to-c []
-  "Elapsed time:3.0696 msecs"
-  (time (planner state '(in R C) planner-operations))
+(defn ops-logical-order-efficent []
+  "The agent uses ops-search and pick up the dog then the cat then the key"
+  (time (ops-search state '((holds R dog) (holds R cat) (holds R key)) ops-operations-efficent))
   )
 
-(defn planner-move-to-k []
-  "Elapsed time:12.1147 msecs"
-  (time (planner state '(in R K) planner-operations))
+(defn ops-illogical-order-efficent []
+  "The agent uses ops-search and pick up the dog then the cat then the key
+  even though they are specified in a illogical order"
+  (time (ops-search state '( (holds R key) (holds R dog) (holds R cat) ) ops-operations-efficent))
+  )
+
+(defn ops-illogical-order-inefficent []
+  "The agent uses ops-search and pick up the dog then the cat then the key
+  even though they are specified in a illogical order"
+  (time (ops-search state '( (holds R key dog cat) ) ops-operations-inefficent))
   )

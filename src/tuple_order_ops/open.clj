@@ -1,4 +1,4 @@
-(ns tuple-order.close
+(ns tuple-order_ops.open
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
@@ -8,17 +8,17 @@
 
 ;---------------------------------------------------------------
 ;---------------------------------------------------------------
-;--------------------------Operations for close-------------------------------------
+;--------------------------Operations for open-------------------------------------
 ;---------------------------------------------------------------
 ;---------------------------------------------------------------
 
-(def base-closed-one
+(def base-opened-one
   "A map of operations that the agent can perform in the world
   This operator set only contains the open operator
 
-  we have placed the tuples in an order we assumed to be most efficent."
+  we have placed the tuples in an order we assumed to be most efficient."
   '{
-    closed
+    open
     {
      :pre
           (
@@ -26,34 +26,35 @@
            (room ?room1)
            (room ?room2)
            (door ?door)
-           (opened ?door true)
+           (opened ?door false)
            (unlocked ?door true)
-           (in ?agent ?room1)
            (connects ?door ?room1)
            (connects ?door ?room2)
+           (in ?agent ?room1)
            )
      :add
           (
-           (opened ?door false)
+           (opened ?door true)
            )
      :del
           (
-           (opened ?door true)
+           (opened ?door false)
            )
-     :txt (?agent has closed ?door)
+     :txt (?agent has opened ?door)
      }
     }
   )
 
-(def base-closed-two
+(def base-opened-two
   "A map of operations that the agent can perform in the world
   This operator set only contains the open operator
 
   The (in ?agent ?room1) has been moved to the top so the
-  test it will elimate many other options of rooms that it could be
+  test it will eliminate other rooms that the agent isnt in.
+  Therefore the rest of the queries will and checks will all remain using the same room.
   "
   '{
-    closed
+    open
     {
      :pre
           (
@@ -62,38 +63,40 @@
            (room ?room1)
            (room ?room2)
            (door ?door)
-           (opened ?door true)
+           (opened ?door false)
            (unlocked ?door true)
-
            (connects ?door ?room1)
            (connects ?door ?room2)
+
            )
      :add
           (
-           (opened ?door false)
+           (opened ?door true)
            )
      :del
           (
-           (opened ?door true)
+           (opened ?door false)
            )
-     :txt (?agent has closed ?door)
+     :txt (?agent has opened ?door)
      }
     }
   )
 
-(def base-closed-three
+(def base-opened-three
   "A map of operations that the agent can perform in the world
   This operator set only contains the open operator
 
-    The (connects ?door ?room1) has been moved further up the list
+  The (connects ?door ?room1) has been moved further up the list
+  as to eliminate any other doors being checks as it can only be a handful
+  of doors connected to room1 which we have already found.
 
-    as to eliminate any other doors being checks as it can only be a handful
-    of doors connected to room1 which we have already found.
-    Once this door has been found we then validate it is a door, and check if the door
-    is opened and locked.\n\n  Finally, we check that the room1 is a room and that the door connects to room2 as well.
+  Once this door has been found we then validate it is a door, and check if the door
+  is opened and locked.
+
+  Finally, we check that the room1 is a room and that the door connects to room2 as well.
   "
   '{
-    closed
+    open
     {
      :pre
           (
@@ -101,8 +104,7 @@
            (in ?agent ?room1)
            (connects ?door ?room1)
            (door ?door)
-
-           (opened ?door true)
+           (opened ?door false)
            (unlocked ?door true)
            (room ?room1)
            (connects ?door ?room2)
@@ -110,18 +112,18 @@
            )
      :add
           (
-           (opened ?door false)
+           (opened ?door true)
            )
      :del
           (
-           (opened ?door true)
+           (opened ?door false)
            )
-     :txt (?agent has closed ?door)
+     :txt (?agent has opened ?door)
      }
     }
   )
 
-(def state-closed
+(def state-opened
   "basic state for agent to move from one room to next"
   '#{
      (agent R)
@@ -148,10 +150,10 @@
      (connects D-E D)
      (connects D-E E)
 
-     (opened A-B true)
-     (opened B-C true)
-     (opened C-D true)
-     (opened D-E true)
+     (opened A-B false)
+     (opened B-C false)
+     (opened C-D false)
+     (opened D-E false)
 
      (unlocked A-B true)
      (unlocked B-C true)
@@ -164,23 +166,23 @@
 
 ;--------------------------------------------------------------
 ;--------------------------------------------------------------
-;----------------------------tests for closed----------------------------------
+;----------------------------tests for open----------------------------------
 ;--------------------------------------------------------------
 ;--------------------------------------------------------------
 
-(defn test-closed-one []
-  "Elapsed time: 41.553 msecs"
-  (time (ops-search state-closed '((opened A-B false)) base-closed-one) )
+(defn test-open-one []
+  "Elapsed time: 69.1724 msecs"
+  (time (ops-search state-opened '((opened A-B true)) base-opened-one) )
   )
 
-(defn test-closed-two []
-  "Elapsed time: 10.2528 msecs"
-  (time (ops-search state-closed '((opened A-B false)) base-closed-two) )
+(defn test-open-two []
+  "Elapsed time: 10.3939 msecs"
+  (time (ops-search state-opened '((opened A-B true)) base-opened-two) )
   )
 
-(defn test-closed-three []
-  "Elapsed time: 1.5414 msecs"
-  (time (ops-search state-closed '((opened A-B false)) base-closed-three) )
+(defn test-open-three []
+  "Elapsed time: 1.6453 msecs"
+  (time (ops-search state-opened '((opened A-B true)) base-opened-three) )
   )
 
 ;--------------------------------------------------------------
@@ -189,8 +191,8 @@
 ;--------------------------------------------------------------
 ;--------------------------------------------------------------
 
-(def advanced-state-closed
-  "basic state for agent to move from one room to next"
+(def advanced-state-open
+  "more advanced state to test a more challenging scenario"
   '#{
      (agent R)
      (room A)
@@ -224,23 +226,23 @@
      (door C-K)
 
      ;status of door
-     (opened A-B true)
-     (opened A-C true)
-     (opened A-D true)
-     (opened A-E true)
-     (opened A-F true)
-     (opened B-G true)
-     (opened B-H true)
-     (opened B-I true)
-     (opened C-G true)
-     (opened C-H true)
-     (opened C-I true)
-     (opened D-H true)
-     (opened D-I true)
-     (opened D-J true)
-     (opened E-I true)
-     (opened C-J true)
-     (opened C-K true)
+     (opened A-B false)
+     (opened A-C false)
+     (opened A-D false)
+     (opened A-E false)
+     (opened A-F false)
+     (opened B-G false)
+     (opened B-H false)
+     (opened B-I false)
+     (opened C-G false)
+     (opened C-H false)
+     (opened C-I false)
+     (opened D-H false)
+     (opened D-I false)
+     (opened D-J false)
+     (opened E-I false)
+     (opened C-J false)
+     (opened C-K false)
 
      (unlocked A-B true)
      (unlocked A-C true)
@@ -320,23 +322,23 @@
      }
   )
 
-;--------------------------------------------------------------
-;--------------------------------------------------------------
-;----------------------------advanced tests for closed----------------------------------
-;--------------------------------------------------------------
-;--------------------------------------------------------------
+;-----------------------------------------
+;-----------------------------------------
+;------------------Tests for open adv scenraio-----------------------
+;-----------------------------------------
+;-----------------------------------------
 
-(defn adv-test-closed-one []
+(defn adv-test-opened-one []
   "Elapsed time: 41.553 msecs"
-  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-one) )
+  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-one) )
   )
 
-(defn adv-test-closed-two []
+(defn adv-test-opened-two []
   "Elapsed time: 10.2528 msecs"
-  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-two) )
+  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-two) )
   )
 
-(defn adv-test-closed-three []
+(defn adv-test-opened-three []
   "Elapsed time: 1.5414 msecs"
-  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-three) )
+  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-three) )
   )
