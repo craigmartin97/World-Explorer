@@ -1034,7 +1034,7 @@
 ;------------------------------------------
 ;------------------------------------------
 
-(defn planner-r-holds-many []
+(defn planner-r-holds-many []                               ; must change limit
   "Elapsed time:2.9925 msecs"
   (time (planner state-r-holds-all '(in R F) planner-operations))
   )
