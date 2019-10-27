@@ -5,182 +5,104 @@
 
 (def base-ops
   "A map of operations that the agent can perform in the world"
-  '{
-    open
-    {
-     :pre
-          (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door false)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (in ?agent ?room1)
-            )
-     :add
-          (
-            (opened ?door true)
-            )
-     :del
-          (
-            (opened ?door false)
-            )
-     :txt (?agent has opened ?door)
-     }
-
-    closed
-    {
-     :pre
-          (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door true)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (in ?agent ?room1)
-            )
-     :add
-          (
-            (opened ?door false)
-            )
-     :del
-          (
-            (opened ?door true)
-            )
-     :txt (?agent has closed ?door)
-     }
-
-    lock
-    {
-     :pre
-          (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (key ?key)
-            (holdable ?key)
-            (holds ?agent ?key)
-            (unlocks ?key ?door)
-            (opened ?door false)
-            (unlocked ?door true)
-            (in ?agent ?room1)
-            (connects ?door ?room1)
-            )
-     :add
-          (
-            (unlocked ?door false)
-            )
-     :del
-          (
-            (unlocked ?door true)
-            )
-     :txt (?agent has locked ?door)
-     }
-
-    unlock
-    {
-     :pre
-          (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (key ?key)
-            (holdable ?key)
-            (holds ?agent ?key)
-            (unlocks ?key ?door)
-            (opened ?door false)
-            (unlocked ?door false)
-            (in ?agent ?room1)
-            (connects ?door ?room1)
-            )
-     :add
-          (
-            (unlocked ?door true)
-            )
-     :del
-          (
-            (unlocked ?door false)
-            )
-     :txt (?agent has unlocked ?door)
-     }
-
-    move
-    {
-     :pre
-          (
-            (agent ?agent)
-            (room ?room1)
-            (room ?room2)
-            (door ?door)
-            (opened ?door true)
-            (unlocked ?door true)
-            (connects ?door ?room1)
-            (connects ?door ?room2)
-            (in ?agent ?room1)
-            )
-     :add
-          (
-            (in ?agent ?room2)
-            )
-     :del
-          (
-            (in ?agent ?room1)
-            )
-     :txt (?agent has moved from ?room1 to ?room2)
-     }
-
-    pickup
-    {
-     :pre
-          (
-            (agent ?agent)
-            (room ?room1)
-            (holdable ?obj)
-            (in ?agent ?room1)
-            (holds ?agent nil)
-            (in ?obj ?room1)
-            )
-     :add
-          (
-            (holds ?agent ?obj)
-            )
-     :del
-          (
-            (holds ?agent nil)
-            (in ?obj ?room1)
-            )
-     :txt (?agent picked up ?obj from ?room1)
-     }
-
-    drop
-    {
-     :pre
-          (
-            (agent ?agent)
-            (room ?room1)
-            (holdable ?obj)
-            (in ?agent ?room1)
-            (holds ?agent ?obj)
-            )
-     :add
-          (
-            (holds ?agent nil)
-            (in ?obj ?room1)
-            )
-     :del
-          (
-            (holds ?agent ?obj)
-            )
-     :txt (?agent dropped ?obj in ?room1)
-     }
+  '{open {:pre ((agent ?agent)
+                (room ?room1)
+                (room ?room2)
+                (door ?door)
+                (opened ?door false)
+                (unlocked ?door true)
+                (connects ?door ?room1)
+                (connects ?door ?room2)
+                (in ?agent ?room1)
+                )
+          :add ((opened ?door true))
+          :del ((opened ?door false))
+          :txt (?agent has opened ?door)
+          }
+    closed {:pre ((agent ?agent)
+                  (room ?room1)
+                  (room ?room2)
+                  (door ?door)
+                  (opened ?door true)
+                  (unlocked ?door true)
+                  (connects ?door ?room1)
+                  (connects ?door ?room2)
+                  (in ?agent ?room1)
+                  )
+            :add ((opened ?door false))
+            :del ((opened ?door true))
+            :txt (?agent has closed ?door)
+            }
+    lock {:pre ((agent ?agent)
+                (room ?room1)
+                (room ?room2)
+                (door ?door)
+                (key ?key)
+                (holdable ?key)
+                (holds ?agent ?key)
+                (unlocks ?key ?door)
+                (opened ?door false)
+                (unlocked ?door true)
+                (in ?agent ?room1)
+                (connects ?door ?room1)
+                )
+          :add ((unlocked ?door false))
+          :del ((unlocked ?door true))
+          :txt (?agent has locked ?door)
+          }
+    unlock {:pre ((agent ?agent)
+                  (room ?room1)
+                  (door ?door)
+                  (key ?key)
+                  (holdable ?key)
+                  (holds ?agent ?key)
+                  (unlocks ?key ?door)
+                  (opened ?door false)
+                  (unlocked ?door false)
+                  (in ?agent ?room1)
+                  (connects ?door ?room1)
+                  )
+            :add ((unlocked ?door true))
+            :del ((unlocked ?door false))
+            :txt (?agent has unlocked ?door)
+            }
+    move {:pre ((agent ?agent)
+                (room ?room1)
+                (room ?room2)
+                (door ?door)
+                (opened ?door true)
+                (unlocked ?door true)
+                (connects ?door ?room1)
+                (connects ?door ?room2)
+                (in ?agent ?room1)
+                )
+          :add ((in ?agent ?room2))
+          :del ((in ?agent ?room1))
+          :txt (?agent has moved from ?room1 to ?room2)
+          }
+    pickup {:pre ((agent ?agent)
+                  (room ?room1)
+                  (holdable ?obj)
+                  (in ?agent ?room1)
+                  (holds ?agent nil)
+                  (in ?obj ?room1)
+                  )
+            :add ((holds ?agent ?obj))
+            :del ((holds ?agent nil)
+                  (in ?obj ?room1))
+            :txt (?agent picked up ?obj from ?room1)
+            }
+    drop {:pre ((agent ?agent)
+                (room ?room1)
+                (holdable ?obj)
+                (in ?agent ?room1)
+                (holds ?agent ?obj)
+                )
+          :add ((holds ?agent nil)
+                (in ?obj ?room1))
+          :del ((holds ?agent ?obj))
+          :txt (?agent dropped ?obj in ?room1)
+          }
     }
   )
 

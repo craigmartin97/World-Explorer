@@ -8,7 +8,6 @@
 (def op-lock-one
   '{lock {:pre ((agent ?agent)
                  (room ?room1)
-                 (room ?room2)
                  (door ?door)
                  (opened ?door false)
                  (unlocked ?door true)
