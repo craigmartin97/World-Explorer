@@ -5,9 +5,9 @@
     <output-test url="file://$MODULE_DIR$/target/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://D:\Educational\^UNIVERSITY\Year 3\2019-2020\KBAI\ICA 1 Repo\World-Explorer\resources" isTestSource="false" />
-      <sourceFolder url="file://D:\Educational\^UNIVERSITY\Year 3\2019-2020\KBAI\ICA 1 Repo\World-Explorer\dev-resources" isTestSource="false" />
+      <sourceFolder url="file://G:\University\Year Three\AI\World-Explorer\resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://G:\University\Year Three\AI\World-Explorer\dev-resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
