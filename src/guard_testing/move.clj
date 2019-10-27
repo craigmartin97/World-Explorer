@@ -23,7 +23,7 @@
     }
   )
 
-(def op-move-guarded-1
+(def op-move-guarded-one
      '{move {:pre ((agent ?agent)
                    (room ?room1)
                    (room ?room2)
@@ -42,7 +42,7 @@
        }
      )
 
-(def op-move-guarded-2
+(def op-move-guarded-two
   '{move {:pre ((agent ?agent)
                 (room ?room1)
                 (room ?room2)
@@ -193,24 +193,36 @@
   (time (ops-search state-move-small '((in R B)) op-move-base))
   )
 
-(defn test-move-guarded-small []
-  (time (ops-search state-move-small '((in R B)) op-move-guarded))
-  )
-
-
 (defn test-move-base-medium []
   (time (ops-search state-move-medium '((in R E)) op-move-base))
   )
-
-(defn test-move-guarded-medium []
-  (time (ops-search state-move-medium '((in R E)) op-move-guarded))
-  )
-
 
 (defn test-move-base-large []
   (time (ops-search state-move-large '((in R J)) op-move-base))
   )
 
-(defn test-move-guarded-large []
-  (time (ops-search state-move-large '((in R J)) op-move-guarded))
+
+(defn test-move-guarded-one-small []
+  (time (ops-search state-move-small '((in R B)) op-move-guarded-one))
+  )
+
+(defn test-move-guarded-one-medium []
+  (time (ops-search state-move-medium '((in R E)) op-move-guarded-one))
+  )
+
+(defn test-move-guarded-one-large []
+  (time (ops-search state-move-large '((in R J)) op-move-guarded-one))
+  )
+
+
+(defn test-move-guarded-two-small []
+  (time (ops-search state-move-small '((in R B)) op-move-guarded-two))
+  )
+
+(defn test-move-guarded-two-medium []
+  (time (ops-search state-move-medium '((in R E)) op-move-guarded-two))
+  )
+
+(defn test-move-guarded-two-large []
+  (time (ops-search state-move-large '((in R J)) op-move-guarded-two))
   )
