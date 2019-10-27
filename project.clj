@@ -11,4 +11,6 @@
                  [com.clojure-goes-fast/clj-memory-meter "0.1.2"]
                 ]
   :jvm-opts ["-Djdk.attach.allowAttachSelf"]
+  :dev-dependencies [[swank-clojure "1.2.1"]]
+  :main [foo.handler]
 )
