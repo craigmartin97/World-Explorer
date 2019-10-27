@@ -124,8 +124,7 @@
 
 (def state-throw-large
   "basic state for agent to move from one room to next"
-  '#{
-     (agent R)
+  '#{(agent R)
 
      (room A)
      (room B)
