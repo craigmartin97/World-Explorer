@@ -6,65 +6,77 @@
 (comment "Guard that room 1 and room 2 aren't the same room.")
 
 (def op-throw-base
-  '{throw {:pre ((agent ?agent)
-                 (room ?room1)
-                 (room ?room2)
-                 (door ?door)
-                 (holdable ?obj)
-                 (in ?agent ?room1)
-                 (holds ?agent ?obj)
-                 (connects ?door ?room1)
-                 (connects ?door ?room2)
-                 (unlocked ?door true)
-                 (opened ?door true))
-           :add ((in ?obj ?room2))
-           :del ((holds ?agent ?obj))
-           :txt ((?agent throws the ?obj into ?room2))
-           }
-      }
+  '{throw
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ?obj)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (unlocked ?door true)
+            (opened ?door true))
+     :add ((in ?obj ?room2)
+            )
+     :del ((holds ?agent ?obj)
+            )
+     :txt ((?agent throws the ?obj into ?room2)
+            )
+     }
+    }
   )
 
 (def op-throw-guarded-one
-  '{throw {:pre ((agent ?agent)
-                 (room ?room1)
-                 (room ?room2)
-                 (door ?door)
-                 (holdable ?obj)
-                 (in ?agent ?room1)
-                 (holds ?agent ?obj)
-                 (connects ?door ?room1)
-                 (connects ?door ?room2)
-                 (unlocked ?door true)
-                 (opened ?door true)
-                 (:guard (not= (? room1) (? room2)))
-                 )
-           :add ((in ?obj ?room2))
-           :del ((holds ?agent ?obj))
-           :txt ((?agent throws the ?obj into ?room2))
-           }
+  '{throw
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ?obj)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (unlocked ?door true)
+            (opened ?door true)
+            (:guard (not= (? room1) (? room2)))
+            )
+     :add ((in ?obj ?room2)
+            )
+     :del ((holds ?agent ?obj)
+            )
+     :txt ((?agent throws the ?obj into ?room2)
+            )
+     }
     }
-)
+  )
 
 (def op-throw-guarded-two
-  '{throw {:pre ((agent ?agent)
-                 (room ?room1)
-                 (room ?room2)
-                 (:guard (not= (? room1) (? room2)))
-                 (door ?door)
-                 (holdable ?obj)
-                 (in ?agent ?room1)
-                 (holds ?agent ?obj)
-                 (connects ?door ?room1)
-                 (connects ?door ?room2)
-                 (unlocked ?door true)
-                 (opened ?door true)
-                 )
-           :add ((in ?obj ?room2))
-           :del ((holds ?agent ?obj))
-           :txt ((?agent throws the ?obj into ?room2))
-           }
+  '{throw
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (:guard (not= (? room1) (? room2)))
+            (door ?door)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ?obj)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (unlocked ?door true)
+            (opened ?door true)
+            )
+     :add ((in ?obj ?room2)
+            )
+     :del ((holds ?agent ?obj)
+            )
+     :txt ((?agent throws the ?obj into ?room2)
+            )
+     }
     }
-)
+  )
 
 
 
@@ -169,11 +181,11 @@
   )
 
 (defn test-throw-base-medium []
-  (time (ops-search state-throw-medium '((in key B)(in lever B)(in rock B)(in sledgehammer B)(in chocolate B)) op-throw-base))
+  (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-base))
   )
 
 (defn test-throw-base-large []
-  (time (ops-search state-throw-large '((in key B)(in lever B)(in rock B)(in sledgehammer B)(in chocolate B)(in phone B)(in ladder B)(in knife B)(in torch B)(in journal B)) op-throw-base))
+  (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-base))
   )
 
 
@@ -182,11 +194,11 @@
   )
 
 (defn test-throw-guarded-one-medium []
-  (time (ops-search state-throw-medium '((in key B)(in lever B)(in rock B)(in sledgehammer B)(in chocolate B)) op-throw-guarded-one))
+  (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-guarded-one))
   )
 
 (defn test-throw-guarded-one-large []
-  (time (ops-search state-throw-large '((in key B)(in lever B)(in rock B)(in sledgehammer B)(in chocolate B)(in phone B)(in ladder B)(in knife B)(in torch B)(in journal B)) op-throw-guarded-one))
+  (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-guarded-one))
   )
 
 
@@ -195,9 +207,9 @@
   )
 
 (defn test-throw-guarded-two-medium []
-  (time (ops-search state-throw-medium '((in key B)(in lever B)(in rock B)(in sledgehammer B)(in chocolate B)) op-throw-guarded-two))
+  (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-guarded-two))
   )
 
 (defn test-throw-guarded-two-large []
-  (time (ops-search state-throw-large '((in key B)(in lever B)(in rock B)(in sledgehammer B)(in chocolate B)(in phone B)(in ladder B)(in knife B)(in torch B)(in journal B)) op-throw-guarded-two))
+  (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-guarded-two))
   )

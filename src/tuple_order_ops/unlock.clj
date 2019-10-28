@@ -6,82 +6,86 @@
   )
 
 (def op-unlock-one
-  '{unlock {:pre ((agent ?agent)
-                   (room ?room1)
-                   (door ?door)
-                   (opened ?door false)
-                   (unlocked ?door false)
-                   (in ?agent ?room1)
-                   (connects ?door ?room1)
-                   (key ?key)
-                   (holdable ?key)
-                   (unlocks ?key ?door)
-                   (holds ?agent ?key)
-                   )
-            :add ((unlocked ?door true))
-            :del ((unlocked ?door false))
-            :txt (?agent has unlocked ?door)
-            }
+  '{unlock
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door false)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (key ?key)
+            (holdable ?key)
+            (unlocks ?key ?door)
+            (holds ?agent ?key)
+            )
+     :add ((unlocked ?door true))
+     :del ((unlocked ?door false))
+     :txt (?agent has unlocked ?door)
+     }
     }
   )
 
 (def op-unlock-two
-  '{lock {:pre ((in ?agent ?room1)
-                 (agent ?agent)
-                 (room ?room1)
-                 (holds ?agent ?key)
-                 (key ?key)
-                 (holdable ?key)
-                 (connects ?door ?room1)
-                 (door ?door)
-                 (opened ?door false)
-                 (unlocked ?door false)
-                 (unlocks ?key ?door)
-                 )
-          :add ((unlocked ?door true))
-          :del ((unlocked ?door false))
-          :txt (?agent has unlocked ?door)
-          }
+  '{lock
+    {:pre ((in ?agent ?room1)
+            (agent ?agent)
+            (room ?room1)
+            (holds ?agent ?key)
+            (key ?key)
+            (holdable ?key)
+            (connects ?door ?room1)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door false)
+            (unlocks ?key ?door)
+            )
+     :add ((unlocked ?door true))
+     :del ((unlocked ?door false))
+     :txt (?agent has unlocked ?door)
+     }
     }
   )
 
 (def op-unlock-three
-  '{lock {:pre ((holds ?agent ?key)
-                 (agent ?agent)
-                 (key ?key)
-                 (holdable ?key)
-                 (in ?agent ?room1)
-                 (room ?room1)
-                 (connects ?door ?room1)
-                 (door ?door)
-                 (unlocks ?key ?door)
-                 (unlocked ?door false)
-                 (opened ?door false)
-                 )
-          :add ((unlocked ?door true))
-          :del ((unlocked ?door false))
-          :txt (?agent has unlocked ?door)
-          }
+  '{lock
+    {:pre ((holds ?agent ?key)
+            (agent ?agent)
+            (key ?key)
+            (holdable ?key)
+            (in ?agent ?room1)
+            (room ?room1)
+            (connects ?door ?room1)
+            (door ?door)
+            (unlocks ?key ?door)
+            (unlocked ?door false)
+            (opened ?door false)
+            )
+     :add ((unlocked ?door true))
+     :del ((unlocked ?door false))
+     :txt (?agent has unlocked ?door)
+     }
     }
   )
 
 (def op-unlock-four
-  '{lock {:pre ((holds ?agent ?key)
-                 (in ?agent ?room1)
-                 (unlocks ?key ?door)
-                 (connects ?door ?room1)
-                 (unlocked ?door false)
-                 (opened ?door false)
-                 (agent ?agent)
-                 (key ?key)
-                 (holdable ?key)
-                 (room ?room1)
-                 (door ?door)
-                 )
-          :add ((unlocked ?door true))
-          :del ((unlocked ?door false))
-          :txt (?agent has unlocked ?door)
-          }
+  '{lock
+    {:pre ((holds ?agent ?key)
+            (in ?agent ?room1)
+            (unlocks ?key ?door)
+            (connects ?door ?room1)
+            (unlocked ?door false)
+            (opened ?door false)
+            (agent ?agent)
+            (key ?key)
+            (holdable ?key)
+            (room ?room1)
+            (door ?door)
+            )
+     :add ((unlocked ?door true))
+     :del ((unlocked ?door false))
+     :txt (?agent has unlocked ?door)
+     }
     }
   )
 
@@ -90,22 +94,23 @@
   that the agent is holding a key. If we added the ability to hold other things, this saves against pointless checks.
   Are some checks irrelevant if the scenario is extended? Why does the key have to be unlocking a door and not a chest
   or other object? "
-  '{lock {:pre ((holds ?agent ?key)
-                 (agent ?agent)
-                 (key ?key)
-                 (holdable ?key)
-                 (in ?agent ?room1)
-                 (unlocks ?key ?door)
-                 (connects ?door ?room1)
-                 (unlocked ?door false)
-                 (opened ?door false)
-                 (room ?room1)
-                 (door ?door)
-                 )
-          :add ((unlocked ?door true))
-          :del ((unlocked ?door false))
-          :txt (?agent has unlocked ?door)
-          }
+  '{lock
+    {:pre ((holds ?agent ?key)
+            (agent ?agent)
+            (key ?key)
+            (holdable ?key)
+            (in ?agent ?room1)
+            (unlocks ?key ?door)
+            (connects ?door ?room1)
+            (unlocked ?door false)
+            (opened ?door false)
+            (room ?room1)
+            (door ?door)
+            )
+     :add ((unlocked ?door true))
+     :del ((unlocked ?door false))
+     :txt (?agent has unlocked ?door)
+     }
     }
   )
 
@@ -297,11 +302,11 @@
   )
 
 (defn test-unlock-one-medium []
-  (time (ops-search state-unlock-medium '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)) op-unlock-one))
+  (time (ops-search state-unlock-medium '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true)) op-unlock-one))
   )
 
 (defn test-unlock-one-large []
-  (time (ops-search state-unlock-large '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)(unlocked A-F true)(unlocked A-G true)(unlocked A-H true)(unlocked A-I true)(unlocked A-J true)) op-unlock-one))
+  (time (ops-search state-unlock-large '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true) (unlocked A-F true) (unlocked A-G true) (unlocked A-H true) (unlocked A-I true) (unlocked A-J true)) op-unlock-one))
   )
 
 
@@ -311,11 +316,11 @@
   )
 
 (defn test-unlock-two-medium []
-  (time (ops-search state-unlock-medium '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)) op-unlock-two))
+  (time (ops-search state-unlock-medium '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true)) op-unlock-two))
   )
 
 (defn test-unlock-two-large []
-  (time (ops-search state-unlock-large '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)(unlocked A-F true)(unlocked A-G true)(unlocked A-H true)(unlocked A-I true)(unlocked A-J true)) op-unlock-two))
+  (time (ops-search state-unlock-large '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true) (unlocked A-F true) (unlocked A-G true) (unlocked A-H true) (unlocked A-I true) (unlocked A-J true)) op-unlock-two))
   )
 
 
@@ -325,11 +330,11 @@
   )
 
 (defn test-unlock-three-medium []
-  (time (ops-search state-unlock-medium '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)) op-unlock-three))
+  (time (ops-search state-unlock-medium '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true)) op-unlock-three))
   )
 
 (defn test-unlock-three-large []
-  (time (ops-search state-unlock-large '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)(unlocked A-F true)(unlocked A-G true)(unlocked A-H true)(unlocked A-I true)(unlocked A-J true)) op-unlock-three))
+  (time (ops-search state-unlock-large '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true) (unlocked A-F true) (unlocked A-G true) (unlocked A-H true) (unlocked A-I true) (unlocked A-J true)) op-unlock-three))
   )
 
 
@@ -339,11 +344,11 @@
   )
 
 (defn test-unlock-four-medium []
-  (time (ops-search state-unlock-medium '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)) op-unlock-four))
+  (time (ops-search state-unlock-medium '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true)) op-unlock-four))
   )
 
 (defn test-unlock-four-large []
-  (time (ops-search state-unlock-large '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)(unlocked A-F true)(unlocked A-G true)(unlocked A-H true)(unlocked A-I true)(unlocked A-J true)) op-unlock-four))
+  (time (ops-search state-unlock-large '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true) (unlocked A-F true) (unlocked A-G true) (unlocked A-H true) (unlocked A-I true) (unlocked A-J true)) op-unlock-four))
   )
 
 
@@ -353,9 +358,9 @@
   )
 
 (defn test-unlock-five-medium []
-  (time (ops-search state-unlock-medium '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)) op-unlock-five))
+  (time (ops-search state-unlock-medium '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true)) op-unlock-five))
   )
 
 (defn test-unlock-five-large []
-  (time (ops-search state-unlock-large '((unlocked A-B true)(unlocked A-C true)(unlocked A-D true)(unlocked A-E true)(unlocked A-F true)(unlocked A-G true)(unlocked A-H true)(unlocked A-I true)(unlocked A-J true)) op-unlock-five))
+  (time (ops-search state-unlock-large '((unlocked A-B true) (unlocked A-C true) (unlocked A-D true) (unlocked A-E true) (unlocked A-F true) (unlocked A-G true) (unlocked A-H true) (unlocked A-I true) (unlocked A-J true)) op-unlock-five))
   )

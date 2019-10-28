@@ -20,26 +20,20 @@
   '{
     closed
     {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           )
-     :add
-          (
-           (opened ?door false)
-           )
-     :del
-          (
-           (opened ?door true)
-           )
+     :pre ((agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door true)
+            (unlocked ?door true)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            )
+     :add ((opened ?door false)
+            )
+     :del ((opened ?door true)
+            )
      :txt (?agent has closed ?door)
      }
     }
@@ -55,27 +49,20 @@
   '{
     closed
     {
-     :pre
-          (
-           (agent ?agent)
-           (in ?agent ?room1)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           )
-     :add
-          (
-           (opened ?door false)
-           )
-     :del
-          (
-           (opened ?door true)
-           )
+     :pre ((agent ?agent)
+            (in ?agent ?room1)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door true)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            )
+     :add ((opened ?door false)
+            )
+     :del ((opened ?door true)
+            )
      :txt (?agent has closed ?door)
      }
     }
@@ -95,27 +82,20 @@
   '{
     closed
     {
-     :pre
-          (
-           (agent ?agent)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (door ?door)
-
-           (opened ?door true)
-           (unlocked ?door true)
-           (room ?room1)
-           (connects ?door ?room2)
-           (room ?room2)
-           )
-     :add
-          (
-           (opened ?door false)
-           )
-     :del
-          (
-           (opened ?door true)
-           )
+     :pre ((agent ?agent)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (door ?door)
+            (opened ?door true)
+            (unlocked ?door true)
+            (room ?room1)
+            (connects ?door ?room2)
+            (room ?room2)
+            )
+     :add ((opened ?door false)
+            )
+     :del ((opened ?door true)
+            )
      :txt (?agent has closed ?door)
      }
     }
@@ -170,17 +150,17 @@
 
 (defn test-closed-one []
   "Elapsed time: 41.553 msecs"
-  (time (ops-search state-closed '((opened A-B false)) base-closed-one) )
+  (time (ops-search state-closed '((opened A-B false)) base-closed-one))
   )
 
 (defn test-closed-two []
   "Elapsed time: 10.2528 msecs"
-  (time (ops-search state-closed '((opened A-B false)) base-closed-two) )
+  (time (ops-search state-closed '((opened A-B false)) base-closed-two))
   )
 
 (defn test-closed-three []
   "Elapsed time: 1.5414 msecs"
-  (time (ops-search state-closed '((opened A-B false)) base-closed-three) )
+  (time (ops-search state-closed '((opened A-B false)) base-closed-three))
   )
 
 ;--------------------------------------------------------------
@@ -328,15 +308,15 @@
 
 (defn adv-test-closed-one []
   "Elapsed time: 41.553 msecs"
-  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-one) )
+  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-one))
   )
 
 (defn adv-test-closed-two []
   "Elapsed time: 10.2528 msecs"
-  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-two) )
+  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-two))
   )
 
 (defn adv-test-closed-three []
   "Elapsed time: 1.5414 msecs"
-  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-three) )
+  (time (ops-search advanced-state-closed '((opened A-B false)) base-closed-three))
   )

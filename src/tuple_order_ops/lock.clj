@@ -298,11 +298,11 @@
   )
 
 (defn test-lock-one-medium []
-  (time (ops-search state-lock-medium '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)) op-lock-one))
+  (time (ops-search state-lock-medium '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false)) op-lock-one))
   )
 
 (defn test-lock-one-large []
-  (time (ops-search state-lock-large '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)(unlocked A-F false)(unlocked A-G false)(unlocked A-H false)(unlocked A-I false)(unlocked A-J false)) op-lock-one))
+  (time (ops-search state-lock-large '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false) (unlocked A-F false) (unlocked A-G false) (unlocked A-H false) (unlocked A-I false) (unlocked A-J false)) op-lock-one))
   )
 
 
@@ -312,11 +312,11 @@
   )
 
 (defn test-lock-two-medium []
-  (time (ops-search state-lock-medium '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)) op-lock-two))
+  (time (ops-search state-lock-medium '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false)) op-lock-two))
   )
 
 (defn test-lock-two-large []
-  (time (ops-search state-lock-large '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)(unlocked A-F false)(unlocked A-G false)(unlocked A-H false)(unlocked A-I false)(unlocked A-J false)) op-lock-two))
+  (time (ops-search state-lock-large '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false) (unlocked A-F false) (unlocked A-G false) (unlocked A-H false) (unlocked A-I false) (unlocked A-J false)) op-lock-two))
   )
 
 
@@ -326,11 +326,11 @@
   )
 
 (defn test-lock-three-medium []
-  (time (ops-search state-lock-medium '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)) op-lock-three))
+  (time (ops-search state-lock-medium '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false)) op-lock-three))
   )
 
 (defn test-lock-three-large []
-  (time (ops-search state-lock-large '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)(unlocked A-F false)(unlocked A-G false)(unlocked A-H false)(unlocked A-I false)(unlocked A-J false)) op-lock-three))
+  (time (ops-search state-lock-large '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false) (unlocked A-F false) (unlocked A-G false) (unlocked A-H false) (unlocked A-I false) (unlocked A-J false)) op-lock-three))
   )
 
 
@@ -340,11 +340,11 @@
   )
 
 (defn test-lock-four-medium []
-  (time (ops-search state-lock-medium '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)) op-lock-four))
+  (time (ops-search state-lock-medium '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false)) op-lock-four))
   )
 
 (defn test-lock-four-large []
-  (time (ops-search state-lock-large '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)(unlocked A-F false)(unlocked A-G false)(unlocked A-H false)(unlocked A-I false)(unlocked A-J false)) op-lock-four))
+  (time (ops-search state-lock-large '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false) (unlocked A-F false) (unlocked A-G false) (unlocked A-H false) (unlocked A-I false) (unlocked A-J false)) op-lock-four))
   )
 
 
@@ -354,9 +354,9 @@
   )
 
 (defn test-lock-five-medium []
-  (time (ops-search state-lock-medium '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)) op-lock-five))
+  (time (ops-search state-lock-medium '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false)) op-lock-five))
   )
 
 (defn test-lock-five-large []
-  (time (ops-search state-lock-large '((unlocked A-B false)(unlocked A-C false)(unlocked A-D false)(unlocked A-E false)(unlocked A-F false)(unlocked A-G false)(unlocked A-H false)(unlocked A-I false)(unlocked A-J false)) op-lock-five))
+  (time (ops-search state-lock-large '((unlocked A-B false) (unlocked A-C false) (unlocked A-D false) (unlocked A-E false) (unlocked A-F false) (unlocked A-G false) (unlocked A-H false) (unlocked A-I false) (unlocked A-J false)) op-lock-five))
   )

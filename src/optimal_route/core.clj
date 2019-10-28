@@ -16,59 +16,44 @@
 (def ops-operations-efficent
   "A map of operations that the agent can perform in the world
   In this ops list the agent will pick up the items in the most efficent order"
-  '{
-    move { :pre ((agent ?agent)
-                 (in ?agent ?room1)
-                 (room ?room1)
-                 (room ?room2)
-                 )
-          :add ((in ?agent ?room2))
-          :del ((in ?agent ?room1))
-          :txt (?agent has moved from ?room1 to ?room2)
-          }
-
-    pickup
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           ; (holds ?agent ??x)
-           (in ?obj ?room1)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           )
-     :del
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :txt (?agent picked up ?obj from ?room1)
+  '{move
+    {:pre ((agent ?agent)
+            (in ?agent ?room1)
+            (room ?room1)
+            (room ?room2)
+            )
+     :add ((in ?agent ?room2))
+     :del ((in ?agent ?room1))
+     :txt (?agent has moved from ?room1 to ?room2)
      }
 
+    pickup
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+
+            (in ?obj ?room1)
+            )
+     :add ((holds ?agent ?obj)
+            )
+     :del ((holds ?agent nil)
+            (in ?obj ?room1)
+            )
+     :txt (?agent picked up ?obj from ?room1)
+     }
     drop
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent ?obj)
-           )
-     :add
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :del
-          (
-           (holds ?agent ?obj)
-           )
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ?obj)
+            )
+     :add ((holds ?agent nil)
+            (in ?obj ?room1)
+            )
+     :del ((holds ?agent ?obj)
+            )
      :txt (?agent dropped ?obj in ?room1)
      }
     }
@@ -77,38 +62,40 @@
 (def ops-operations-inefficent
   "In this ops list the agent wont pick up the objects in the most
   efficent order"
-  '{move { :pre ((agent ?agent)
-                 (in ?agent ?room1)
-                 (room ?room1)
-                 (room ?room2)
-                 )
-          :add ((in ?agent ?room2))
-          :del ((in ?agent ?room1))
-          :txt (?agent has moved from ?room1 to ?room2)
-          }
-    pickup {:pre ((agent ?agent)
-                  (room ?room1)
-                  (holdable ?obj)
-                  (in ?agent ?room1)
-                  (in ?obj ?room1)
-                  (holds ?agent ??x))
-            :add ((holds ?agent ??x ?obj))
-            :del (
-                  (in ?obj ?room1)
-                  (holds ?agent ??x)
-                  )
-            :txt (?agent picked up ?obj from ?room1)
-            }
-    drop {:pre ((agent ?agent)
-                (room ?room1)
-                (holdable ?obj)
-                (in ?agent ?room1)
-                (holds ?agent ??x ?obj ??y))
-          :add ((holds ?agent ??x ??y) (in ?obj ?room1))
-          :del ((holds ?agent ??x ?obj ??y))
-          :txt (?agent dropped ?obj in ?room1)
-          }
-
+  '{
+    move
+    {:pre ((agent ?agent)
+            (in ?agent ?room1)
+            (room ?room1)
+            (room ?room2)
+            )
+     :add ((in ?agent ?room2))
+     :del ((in ?agent ?room1))
+     :txt (?agent has moved from ?room1 to ?room2)
+     }
+    pickup
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (in ?obj ?room1)
+            (holds ?agent ??x))
+     :add ((holds ?agent ??x ?obj))
+     :del ((in ?obj ?room1)
+            (holds ?agent ??x)
+            )
+     :txt (?agent picked up ?obj from ?room1)
+     }
+    drop
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ??x ?obj ??y))
+     :add ((holds ?agent ??x ??y) (in ?obj ?room1))
+     :del ((holds ?agent ??x ?obj ??y))
+     :txt (?agent dropped ?obj in ?room1)
+     }
     })
 
 ;--------------------------------------
@@ -181,11 +168,11 @@
 (defn ops-illogical-order-efficent []
   "The agent uses ops-search and pick up the dog then the cat then the key
   even though they are specified in a illogical order"
-  (time (ops-search state '( (holds R key) (holds R dog) (holds R cat) ) ops-operations-efficent))
+  (time (ops-search state '((holds R key) (holds R dog) (holds R cat)) ops-operations-efficent))
   )
 
 (defn ops-illogical-order-inefficent []
   "The agent uses ops-search and pick up the dog then the cat then the key
   even though they are specified in a illogical order"
-  (time (ops-search state '( (holds R key dog cat) ) ops-operations-inefficent))
+  (time (ops-search state '((holds R key dog cat)) ops-operations-inefficent))
   )

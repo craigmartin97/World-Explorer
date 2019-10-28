@@ -1,10 +1,10 @@
-(ns ops-list-size.ops-list-size-planner
+(ns ops-list-size.ops-vs-planner.operations
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
             [planner.planner :refer :all]))
 
-(def opssearch-very-short-ops
+(def very-short-ops-opssearch
   '{move
     {:pre ((agent ?agent)
             (room ?room1)
@@ -29,8 +29,8 @@
      }
   )
 
-(def opssearch-short-ops
-  (merge opssearch-very-short-ops
+(def short-ops-opssearch
+  (merge very-short-ops-opssearch
          '{drop-obj
            {:pre ((holdable ?obj)
                    (room ?room1)
@@ -56,8 +56,8 @@
            })
   )
 
-(def opssearch-medium-ops
-  (merge opssearch-short-ops
+(def medium-ops-opssearch
+  (merge short-ops-opssearch
          '{unequip
            {:pre ((wearable ?obj)
                   (wears ?agent ?obj)
@@ -95,8 +95,8 @@
            })
   )
 
-(def opssearch-large-ops
-  (merge opssearch-medium-ops
+(def large-ops-opssearch
+  (merge medium-ops-opssearch
          '{gild
            {:pre ((in ?agent ?room)
                   (in ?struct ?room)
@@ -126,8 +126,8 @@
             }
            }))
 
-(def opssearch-very-large-ops
-  (merge opssearch-large-ops
+(def very-large-ops-opssearch
+  (merge large-ops-opssearch
          '{deliverance
            {:pre ((in ?agent ?room)
                   (in ?altar ?room)
@@ -183,7 +183,7 @@
 
 
 
-(def planner-very-short-ops
+(def very-short-ops-planner
   '{move
     {
      :name move-agent
@@ -216,8 +216,8 @@
     }
   )
 
-(def planner-short-ops
-  (merge planner-very-short-ops
+(def short-ops-planner
+  (merge very-short-ops-planner
          '{drop-obj
            {:name drop-obj
             :achieves (in ?obj ?room1)
@@ -247,8 +247,8 @@
            })
   )
 
-(def planner-medium-ops
-  (merge planner-short-ops
+(def medium-ops-planner
+  (merge short-ops-planner
          '{unequip
            {:name unequip
             :achieves (holds ?agent ?obj)
@@ -296,8 +296,8 @@
            })
   )
 
-(def planner-large-ops
-  (merge planner-medium-ops
+(def large-ops-planner
+  (merge medium-ops-planner
          '{gild
            {:name     gild
             :achieves (gilded ?struct)
@@ -336,8 +336,8 @@
            }
          ))
 
-(def planner-very-large-ops
-  (merge planner-large-ops
+(def very-large-ops-planner
+  (merge large-ops-planner
          '{deliverance
            {:name     deliverance
             :achieves (blessed ?agent)
@@ -397,208 +397,3 @@
             :txt (The transcednant ?agent1 focuses their holy spirit into a benediction which fully revitalise ?agent2)
             }
            }))
-
-
-
-
-(def test-state-one
-  '#{(agent R)
-
-     (room A)
-     (room B)
-
-     (in R A)
-     })
-
-
-
-(def test-state-two
-  '#{(agent R)
-
-     (room A)
-     (room B)
-     (room C)
-     (room D)
-     (room E)
-
-     (holdable halonic-garb)
-
-     (in R A)
-     (in halonic-garb B)
-     })
-
-
-
-(def test-state-three
-  '#{(agent R)
-     (wears R nil)
-
-     (room A)
-     (room B)
-     (room C)
-     (room D)
-     (room E)
-
-     (holdable gold-leaf)
-     (holdable cake)
-     (holdable book)
-     (holdable wedding-dress)
-     (holdable business-suit)
-     (holdable rags)
-     (holdable halonic-garb)
-
-     (wearable wedding-dress)
-     (wearable business-suit)
-     (wearable rags)
-     (wearable halonic-garb)
-
-     (holy halonic-garb)
-
-     (in R A)
-     (in halonic-garb B)
-     (in cake C)
-     (in wedding-dress C)
-     (in business-suit C)
-     (in rags D)
-     (in book D)
-     (in gold-leaf D)
-     })
-
-
-
-(def test-state-four
-  '#{(agent R)
-     (wears R nil)
-
-     (room A)
-     (room B)
-     (room C)
-     (room D)
-     (room E)
-
-     (holdable gold-leaf)
-     (holdable cake)
-     (holdable book)
-     (holdable wedding-dress)
-     (holdable business-suit)
-     (holdable rags)
-     (holdable halonic-garb)
-
-     (wearable wedding-dress)
-     (wearable business-suit)
-     (wearable rags)
-     (wearable halonic-garb)
-
-     (holy halonic-garb)
-
-     (altar altar)
-     (demonic altar)
-     (structure altar)
-
-     (in R A)
-     (in halonic-garb B)
-     (in cake C)
-     (in wedding-dress C)
-     (in business-suit C)
-     (in rags D)
-     (in book D)
-     (in gold-leaf D)
-     (in altar A)
-     })
-
-
-(def test-state-five
-  '#{(agent R)
-     (wears R nil)
-
-     (demon behemoth)
-     (demon ahriman)
-     (demon nabriales)
-
-     (wounded priest)
-     (wounded saint)
-     (wounded vicar)
-
-     (room A)
-     (room B)
-     (room C)
-     (room D)
-     (room E)
-
-     (holdable gold-leaf)
-     (holdable cake)
-     (holdable book)
-     (holdable wedding-dress)
-     (holdable business-suit)
-     (holdable rags)
-     (holdable halonic-garb)
-
-     (wearable wedding-dress)
-     (wearable business-suit)
-     (wearable rags)
-     (wearable halonic-garb)
-
-     (holy halonic-garb)
-
-     (altar altar)
-     (demonic altar)
-     (structure altar)
-
-     (in R A)
-     (in behemoth C)
-     (in priest C)
-     (in ahriman D)
-     (in vicar D)
-     (in nabriales E)
-     (in saint E)
-     (in halonic-garb B)
-     (in cake C)
-     (in wedding-dress C)
-     (in business-suit C)
-     (in rags D)
-     (in book D)
-     (in gold-leaf D)
-     (in altar A)
-     })
-
-
-
-(def test-state-six
-  '#{(agent R)
-     (wears R nil)
-
-     (wounded priest)
-
-     (room A)
-     (room B)
-     (room C)
-
-     (holdable gold-leaf)
-     (holdable halonic-garb)
-
-     (wearable halonic-garb)
-
-     (holy halonic-garb)
-
-     (altar altar)
-     (demonic altar)
-     (structure altar)
-
-     (in R A)
-     (in priest C)
-     (in halonic-garb B)
-     (in gold-leaf B)
-     (in altar A)
-     })
-
-(defn t-os []
-  (time (ops-search test-state-six '((agent priest)) opssearch-very-large-ops))
-  )
-
-(defn t-pl []
-  (time (planner test-state-six '(agent priest) planner-very-large-ops))
-  )
-
-
-
-
