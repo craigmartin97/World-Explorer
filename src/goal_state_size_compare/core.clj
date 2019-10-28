@@ -206,7 +206,7 @@
   (time (ops-search state '((holds R dog)) operations))
   )
 
-(defn planner-pickup-dog []
+(defn planner-pickup-dog []                                 ;faster
   "Agent picks up the dog from room A using planner
 
   Elapsed time:4.4539 msecs"
@@ -225,7 +225,7 @@
   (time (ops-search state '((holds R dog cat)) ops-search-compare-operations))
   )
 
-(defn planner-pickup-dog-cat []
+(defn planner-pickup-dog-cat []                             ;faster
   "Agent picks up the dog and cat from room A using planner
 
   Elapsed time:6.091 msecs"
@@ -244,7 +244,7 @@
   (time (ops-search state '((holds R dog cat mouse)) ops-search-compare-operations))
   )
 
-(defn planner-pickup-dog-cat-mouse []
+(defn planner-pickup-dog-cat-mouse []                       ;faster
   "Agent picks up the dog, cat and mouse from room A using planner
 
   Elapsed time:11.057 msecs"
@@ -257,14 +257,14 @@
 ;-----------------------------
 
 (defn ops-pickup-key []
-  "Agent picks up dog, cat and mouse using ops-search
+  "Agent picks up key using ops-search
 
   Elapsed time: 25.3425 msecs"
   (time (ops-search state '((holds R key)) ops-search-compare-operations))
   )
 
-(defn planner-pickup-key []
-  "Agent picks up the dog, cat and mouse from room A using planner
+(defn planner-pickup-key []                                 ;faster
+  "Agent picks up the key from room A using planner
 
   Elapsed time:4.0412 msecs"
   (time (planner state '(holds R key) planner-operations))

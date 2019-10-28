@@ -168,7 +168,8 @@
                    )
             :del ((holds ?agent ?obj)
                    )
-            :txt ((?agent throws the ?obj into ?room2))}
+            :txt ((?agent throws the ?obj into ?room2))
+            }
            }
          )
   )
