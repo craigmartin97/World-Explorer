@@ -18,7 +18,7 @@
 
 ;; Pass the handler to Jetty on port 8080
 (defn -main []
-  (println "Hello World!!!")
-   (test-one-move-to-f)
+
+  (test-one-move-to-f)
   ; (test-eleven-move-to-f)
   )
