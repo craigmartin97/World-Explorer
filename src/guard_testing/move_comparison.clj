@@ -211,7 +211,33 @@
   (time (planner state-small '(visited R A B) op-move-guarded-two-planner))
   )
 
+;-----------------------------------------------------------------
 
+(defn test-move-small-two-base-search []
+  (time (ops-search state-medium '((visited R A B C D E)) op-move-base-search))
+  )
+
+(defn test-move-small-two-guarded-one-search []
+  (time (ops-search state-medium '((visited R A B C D E)) op-move-guarded-one-search))
+  )
+
+(defn test-move-small-two-guarded-two-search []
+  (time (ops-search state-medium '((visited R A B C D E)) op-move-guarded-two-search))
+  )
+
+(defn test-move-small-two-base-planner []
+  (time (planner state-medium '(visited R A B C D E) op-move-base-planner))
+  )
+
+(defn test-move-small-two-guarded-one-planner []
+  (time (planner state-medium '(visited R A B C D E) op-move-guarded-one-planner))
+  )
+
+(defn test-move-small-two-guarded-two-planner []
+  (time (planner state-medium '(visited R A B C D E) op-move-guarded-two-planner))
+  )
+
+;-----------------------------------------------------------------
 
 (defn test-move-medium-base-search []
   (time (ops-search state-medium '((visited R A B C D E F G)) op-move-base-search))
@@ -237,7 +263,7 @@
   (time (planner state-medium '(visited R A B C D E F G) op-move-guarded-two-planner))
   )
 
-
+;-----------------------------------------------------------------
 
 (defn test-move-large-base-search []
   (time (ops-search state-large '((visited R A B C D E F G H I J K L M N O)) op-move-base-search))
