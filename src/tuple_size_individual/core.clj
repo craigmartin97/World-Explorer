@@ -18,64 +18,55 @@
   "A map of operations that the agent can perform in the world"
   '{
     move
-    {
-     :name move-agent
+    {:name     move-agent
      :achieves (in ?agent ?room2)
-     :when (
-            (agent ?agent)
-            (in ?agent ?room1)
-            (room ?room1)
-            (room ?room2)
-            )
-     :post ()
-     :pre ()
-     :add (
-           (in ?agent ?room2)
-           )
-     :del (
-           (in ?agent ?room1)
-           )
-     :txt (agent ?agent has moved from ?room1 to ?room2)
+     :when     ((agent ?agent)
+                 (in ?agent ?room1)
+                 (room ?room1)
+                 (room ?room2)
+                 )
+     :post     ()
+     :pre      ()
+     :add      ((in ?agent ?room2)
+                 )
+     :del      ((in ?agent ?room1)
+                 )
+     :txt      (agent ?agent has moved from ?room1 to ?room2)
      }
     pickup
-    {
-     :name pickup-obj
+    {:name     pickup-obj
      :achieves (holds ?agent ?obj)
-     :when (
-            (agent ?agent)
-            (room ?room1)
-            (holdable ?obj)
-            (in ?obj ?room1)
-            )
-     :post (
-            (in ?agent ?room1))
-     :pre ()
-     :add (
-           (holds ?agent ?obj)
-           )
-     :del (
-           (in ?obj ?room1)
-           )
-     :txt (?agent picked up ?obj from ?room1)
+     :when     ((agent ?agent)
+                 (room ?room1)
+                 (holdable ?obj)
+                 (in ?obj ?room1)
+                 )
+     :post     ((in ?agent ?room1)
+                 )
+     :pre      ()
+     :add      ((holds ?agent ?obj)
+                 )
+     :del      ((in ?obj ?room1)
+                 )
+     :txt      (?agent picked up ?obj from ?room1)
 
      }
     drop-obj
-    {
-     :name drop-obj
+    {:name     drop-obj
      :achieves (in ?obj ?room1)
-     :when (
-            (agent ?agent)
-            (holdable ?obj)
-            (room ?room1)
-            )
-     :post (
-            (holds ?agent ?obj)
-            (in ?agent ?room1)
-            )
-     :pre ()
-     :add ((in ?obj ?room1))
-     :del ((holds ?agent ?obj))
-     :txt (?agent dropped ?obj in ?room1)
+     :when     ((agent ?agent)
+                 (holdable ?obj)
+                 (room ?room1)
+                 )
+     :post     ((holds ?agent ?obj)
+                 (in ?agent ?room1)
+                 )
+     :pre      ()
+     :add      ((in ?obj ?room1)
+                 )
+     :del      ((holds ?agent ?obj)
+                 )
+     :txt      (?agent dropped ?obj in ?room1)
      }
 
     }
@@ -91,68 +82,45 @@
   "A map of operations that the agent can perform in the world"
   '{
     move
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (in ?agent ?room1)
-           )
-     :add
-          (
-           (in ?agent ?room2)
-           )
-     :del
-          (
-           (in ?agent ?room1)
-           )
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (in ?agent ?room1)
+            )
+     :add ((in ?agent ?room2)
+            )
+     :del ((in ?agent ?room1)
+            )
      :txt (?agent has moved from ?room1 to ?room2)
      }
 
     pickup
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (in ?obj ?room1)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           )
-     :del
-          (
-           (in ?obj ?room1)
-          )
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (in ?obj ?room1)
+            )
+     :add ((holds ?agent ?obj)
+            )
+     :del ((in ?obj ?room1)
+            )
      :txt (?agent picked up ?obj from ?room1)
      }
 
     drop
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent ?obj)
-           )
-     :add
-          (
-           (in ?obj ?room1)
-           )
-     :del
-          (
-           (holds ?agent ?obj)
-           )
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ?obj)
+            )
+     :add ((in ?obj ?room1)
+            )
+     :del ((holds ?agent ?obj)
+            )
      :txt (?agent dropped ?obj in ?room1)
      }
-
-
     }
   )
 
@@ -165,55 +133,55 @@
 
 
 (def state
-     '#{
-        (agent R)
-        (in R A)
-        (holds R)
+  '#{
+     (agent R)
+     (in R A)
+     (holds R)
 
-        (room A)
-        (room B)
-        (room C)
-        (room D)
-        (room E)
-        (room F)
-        (room G)
-        (room H)
-        (room I)
-        (room J)
-        (room K)
-        (room L)
-        (room M)
-        (room N)
-        (room O)
-        (room P)
-        (room Q)
-        (room R)
+     (room A)
+     (room B)
+     (room C)
+     (room D)
+     (room E)
+     (room F)
+     (room G)
+     (room H)
+     (room I)
+     (room J)
+     (room K)
+     (room L)
+     (room M)
+     (room N)
+     (room O)
+     (room P)
+     (room Q)
+     (room R)
 
-        (holdable key)
-        (in key A)
+     (holdable key)
+     (in key A)
 
-        (holdable badge)
-        (in badge D)
+     (holdable badge)
+     (in badge D)
 
-        (holdable gun)
-        (in gun F)
+     (holdable gun)
+     (in gun F)
 
-        (holdable knife)
-        (in knife R)
+     (holdable knife)
+     (in knife R)
 
-        (holdable sword)
-        (in sword M)
+     (holdable sword)
+     (in sword M)
 
-        (holdable shoe)
-        (in shoe K)
+     (holdable shoe)
+     (in shoe K)
 
-        (holdable meth)
-        (in meth B)
+     (holdable meth)
+     (in meth B)
 
-        (holdable coke)
-        (in coke C)
-        }
-     )
+     (holdable coke)
+     (in coke C)
+     }
+  )
 
 (def state-same-room
   '#{
@@ -293,7 +261,7 @@
   (time (ops-search state '((holds R key)) operations-multiple-tuples))
   )
 
-(defn ops-test-one-individual []                                 ;faster
+(defn ops-test-one-individual []                            ;faster
   "Ops search picks up one item
   Elapsed time: 70.296 msecs"
   (time (ops-search state '((holds R key)) ops-search-compare-operations))
@@ -307,7 +275,7 @@
   (time (ops-search state '((holds R key) (holds R knife)) operations-multiple-tuples))
   )
 
-(defn ops-test-two-individual []                                 ;faster
+(defn ops-test-two-individual []                            ;faster
   "Ops search tries to pick up two items
   Elapsed time: 2035.1713 msecs "
   (time (ops-search state '((holds R key knife)) ops-search-compare-operations))
@@ -321,7 +289,7 @@
   (time (ops-search state '((holds R key) (holds R knife) (holds R badge)) operations-multiple-tuples))
   )
 
-(defn ops-test-three-individual []                               ;faster
+(defn ops-test-three-individual []                          ;faster
   "Ops search tries too pick up three items
   Elapsed time: 31034.9759 msecs "
   (time (ops-search state '((holds R key knife badge)) ops-search-compare-operations))
@@ -368,14 +336,14 @@
   (time (ops-search state-same-room '((holds R key) (holds R knife) (holds R gun)) operations-multiple-tuples))
   )
 
-(defn ops-test-two-individual-same-room []                ;faster
+(defn ops-test-two-individual-same-room []                  ;faster
   "Ops search tries to pick up four items
   Elapsed time: 1600.8844 msecs "
   (time (ops-search state-same-room '((holds R key knife gun)) ops-search-compare-operations))
   )
 
 ;----------------------------------------------------------------------
-(defn ops-test-three-multi-same-room []                      ;faster
+(defn ops-test-three-multi-same-room []                     ;faster
   "Ops search tries to pick up 5 items
   Elapsed time: 3739.8172 msecs "
   (time (ops-search state-same-room '((holds R key) (holds R knife) (holds R badge) (holds R gun)) operations-multiple-tuples))
@@ -388,7 +356,7 @@
   )
 
 ;-----------------------------------------------------------
-(defn ops-test-four-multi-same-room []                       ;faster
+(defn ops-test-four-multi-same-room []                      ;faster
   "Ops search tries to pick up 5 items
   Elapsed time: 14629.6518 msecs "
   (time (ops-search state-same-room '((holds R key) (holds R knife) (holds R badge) (holds R gun) (holds R sword)) operations-multiple-tuples))

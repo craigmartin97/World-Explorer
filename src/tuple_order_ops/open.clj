@@ -20,26 +20,20 @@
   '{
     open
     {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           )
-     :add
-          (
-           (opened ?door true)
-           )
-     :del
-          (
-           (opened ?door false)
-           )
+     :pre ((agent ?agent)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
+            (in ?agent ?room1)
+            )
+     :add ((opened ?door true)
+            )
+     :del ((opened ?door false)
+            )
      :txt (?agent has opened ?door)
      }
     }
@@ -56,27 +50,21 @@
   '{
     open
     {
-     :pre
-          (
-           (agent ?agent)
-           (in ?agent ?room1)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
+     :pre ((agent ?agent)
+            (in ?agent ?room1)
+            (room ?room1)
+            (room ?room2)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door true)
+            (connects ?door ?room1)
+            (connects ?door ?room2)
 
-           )
-     :add
-          (
-           (opened ?door true)
-           )
-     :del
-          (
-           (opened ?door false)
-           )
+            )
+     :add ((opened ?door true)
+            )
+     :del ((opened ?door false)
+            )
      :txt (?agent has opened ?door)
      }
     }
@@ -98,26 +86,20 @@
   '{
     open
     {
-     :pre
-          (
-           (agent ?agent)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (room ?room1)
-           (connects ?door ?room2)
-           (room ?room2)
-           )
-     :add
-          (
-           (opened ?door true)
-           )
-     :del
-          (
-           (opened ?door false)
-           )
+     :pre ((agent ?agent)
+            (in ?agent ?room1)
+            (connects ?door ?room1)
+            (door ?door)
+            (opened ?door false)
+            (unlocked ?door true)
+            (room ?room1)
+            (connects ?door ?room2)
+            (room ?room2)
+            )
+     :add ((opened ?door true)
+            )
+     :del ((opened ?door false)
+            )
      :txt (?agent has opened ?door)
      }
     }
@@ -172,17 +154,17 @@
 
 (defn test-open-one []
   "Elapsed time: 69.1724 msecs"
-  (time (ops-search state-opened '((opened A-B true)) base-opened-one) )
+  (time (ops-search state-opened '((opened A-B true)) base-opened-one))
   )
 
 (defn test-open-two []
   "Elapsed time: 10.3939 msecs"
-  (time (ops-search state-opened '((opened A-B true)) base-opened-two) )
+  (time (ops-search state-opened '((opened A-B true)) base-opened-two))
   )
 
 (defn test-open-three []
   "Elapsed time: 1.6453 msecs"
-  (time (ops-search state-opened '((opened A-B true)) base-opened-three) )
+  (time (ops-search state-opened '((opened A-B true)) base-opened-three))
   )
 
 ;--------------------------------------------------------------
@@ -330,15 +312,15 @@
 
 (defn adv-test-opened-one []
   "Elapsed time: 41.553 msecs"
-  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-one) )
+  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-one))
   )
 
 (defn adv-test-opened-two []
   "Elapsed time: 10.2528 msecs"
-  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-two) )
+  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-two))
   )
 
 (defn adv-test-opened-three []
   "Elapsed time: 1.5414 msecs"
-  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-three) )
+  (time (ops-search advanced-state-open '((opened A-B true)) base-opened-three))
   )

@@ -121,11 +121,11 @@
   )
 
 (defn test-drop-one-medium []
-  (time (ops-search state-drop-medium '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)) op-drop-one))
+  (time (ops-search state-drop-medium '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A)) op-drop-one))
   )
 
 (defn test-drop-one-large []
-  (time (ops-search state-drop-large '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)(in phone A)(in ladder A)(in knife A)(in torch A)(in journal A)) op-drop-one))
+  (time (ops-search state-drop-large '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A) (in phone A) (in ladder A) (in knife A) (in torch A) (in journal A)) op-drop-one))
   )
 
 
@@ -134,11 +134,11 @@
   )
 
 (defn test-drop-two-medium []
-  (time (ops-search state-drop-medium '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)) op-drop-two))
+  (time (ops-search state-drop-medium '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A)) op-drop-two))
   )
 
 (defn test-drop-two-large []
-  (time (ops-search state-drop-large '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)(in phone A)(in ladder A)(in knife A)(in torch A)(in journal A)) op-drop-two))
+  (time (ops-search state-drop-large '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A) (in phone A) (in ladder A) (in knife A) (in torch A) (in journal A)) op-drop-two))
   )
 
 
@@ -147,11 +147,11 @@
   )
 
 (defn test-drop-three-medium []
-  (time (ops-search state-drop-medium '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)) op-drop-three))
+  (time (ops-search state-drop-medium '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A)) op-drop-three))
   )
 
 (defn test-drop-three-large []
-  (time (ops-search state-drop-large '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)(in phone A)(in ladder A)(in knife A)(in torch A)(in journal A)) op-drop-three))
+  (time (ops-search state-drop-large '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A) (in phone A) (in ladder A) (in knife A) (in torch A) (in journal A)) op-drop-three))
   )
 
 
@@ -160,9 +160,9 @@
   )
 
 (defn test-drop-four-medium []
-  (time (ops-search state-drop-medium '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)) op-drop-four))
+  (time (ops-search state-drop-medium '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A)) op-drop-four))
   )
 
 (defn test-drop-four-large []
-  (time (ops-search state-drop-large '((in key A)(in lever A)(in rock A)(in sledgehammer A)(in chocolate A)(in phone A)(in ladder A)(in knife A)(in torch A)(in journal A)) op-drop-four))
+  (time (ops-search state-drop-large '((in key A) (in lever A) (in rock A) (in sledgehammer A) (in chocolate A) (in phone A) (in ladder A) (in knife A) (in torch A) (in journal A)) op-drop-four))
   )
