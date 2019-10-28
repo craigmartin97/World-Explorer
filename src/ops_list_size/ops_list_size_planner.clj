@@ -21,11 +21,10 @@
              (holdable ?obj)
              (in ?obj ?room1)
              (in ?agent ?room1)
-             (holds ?agent ??x)
+             (holds ?agent ?obj)
              )
-      :add ((holds ?agent ??x ?obj))
-      :del ((holds ?agent ??x)
-            (in ?obj ?room1))
+      :add ((holds ?agent ?obj))
+      :del ((in ?obj ?room1))
       :txt (?agent picked up ?obj from ?room1)
       }
      }
@@ -38,23 +37,21 @@
                    (room ?room1)
                    (agent ?agent)
                    (in ?agent ?room1)
-                   (holds ?agent ??objs1 ?obj ??objs2)
+                   (holds ?agent ?obj)
                    )
-            :add ((in ?obj ?room1)
-                  (holds ?agent ??objs1 ??objs2))
-            :del ((holds ?agent ??objs1 ?obj ??objs2))
+            :add ((in ?obj ?room1))
+            :del ((holds ?agent ?obj))
             :txt (?agent dropped ?obj in ?room1)
             }
            equip
-           {:pre ((holds ?agent ??objs1 ?obj ??objs2)
+           {:pre ((holdable ?obj)
                   (wearable ?obj)
-                  (holdable ?obj)
-                  (wears ?agent ??wearables)
+                  (wears ?agent nil)
+                  (holds ?agent ?obj)
                   )
-            :add ((wears ?agent ??wearables ?obj)
-                  (holds ?agent ??objs1 ??objs2))
-            :del ((wears ?agent ??wearables)
-                  (holds ?agent ??objs1 ?obj ??objs2))
+            :add ((wears ?agent ?obj))
+            :del ((wears ?agent nil)
+                  (holds ?agent ?obj))
             :txt (?agent equips the ?obj)
             }
            })
@@ -63,22 +60,20 @@
 (def opssearch-medium-ops
   (merge opssearch-short-ops
          '{unequip
-           {:pre ((wears ?agent ??wears1 ?obj ??wears2)
+           {:pre ((wears ?agent ?obj)
                   (wearable ?obj)
                   (holdable ?obj)
-                  (holds ?agent ??objs)
-                  (?agent agent)
+                  (agent ?agent)
                   )
-            :add ((wears ?agent ??wears1 ??wears2)
-                  (holds ?agent ??objs ?obj))
-            :del ((wears ?agent ??wears1 ?obj ??wears2)
-                  (holds ?agent ??objs))
+            :add ((wears ?agent nil)
+                  (holds ?agent ?obj))
+            :del ((wears ?agent ?obj))
             :txt (?agent unequips the ?obj)
             }
            consecrate
-           {:pre ((wears ?agent ??wears1 ?wearing ??wears2)
+           {:pre ((wears ?agent ?wearing)
                   (holy ?wearing)
-                  (holds ?agent ??objs1 ?obj ??objs2)
+                  (holds ?agent ?obj)
                   (agent ?agent)
                   (holdable ?obj)
                   )
@@ -87,7 +82,7 @@
             :txt (?agent consecrates the ?obj)
             }
            purify
-           {:pre ((wears ?agent ??wears1 ?wearing ??wears2)
+           {:pre ((wears ?agent ?wearing)
                   (holy ?wearing)
                   (in ?agent ?room)
                   (in ?struct ?room)
@@ -106,20 +101,18 @@
          '{gild
            {:pre ((in ?agent ?room)
                   (in ?struct ?room)
-                  (holds ?agent ??objs1 gold-leaf ??objs2)
+                  (holds ?agent gold-leaf)
                   (pure ?struct)
                   (structure ?struct)
                   )
-            :add ((gilded ?struct)
-                  (holds ?agent ??objs1 ??objs2))
-            :del ((holds ?agent ??objs1 gold-leaf ??objs2))
+            :add ((gilded ?struct))
+            :del ()
             :txt (?agent has gilded the pure ?struct)
             }
            tribute
            {:pre ((in ?agent ?room)
                   (in ?altar ?room)
-                  (holds ?agent ??ag-holds1 ?obj ??ag-holds2)
-                  (holds ?altar ??alt-holds)
+                  (holds ?agent obj)
                   (agent ?agent)
                   (holdable ?obj)
                   (consecrated ?obj)
@@ -128,10 +121,8 @@
                   (gilded ?altar)
                   (structure ?altar)
                   )
-            :add ((holds ?altar ??alt-holds ?obj)
-                  (holds ?agent ??ag-holds1 ??ag-holds2))
-            :del ((holds ?altar ??alt-holds)
-                  (holds ?agent ??ag-holds1 ?obj ??ag-holds2))
+            :add ((holds ?altar ?obj))
+            :del ((holds ?agent ?obj))
             :txt (?agent has placed the ?obj on the ?altar in tribute)
             }
            }))
@@ -141,16 +132,15 @@
          '{deliverance
            {:pre ((in ?agent ?room)
                   (in ?altar ?room)
-                  (holds ?altar ??objs1 ?obj ??objs2)
+                  (holds ?altar ?obj)
                   (agent ?agent)
                   (altar ?altar)
                   (pure ?altar)
                   (gilded ?altar)
                   (structure ?altar)
                   )
-            :add ((blessed ?agent)
-                  (holds ?altar ??objs1 ??objs2))
-            :del ((holds ?altar ??objs1 ?obj ??objs2))
+            :add ((blessed ?agent))
+            :del ((holds ?altar ?obj))
             :txt (?agent has delivered the ?obj to a higher plane of existance)
             }
            transcend
@@ -192,8 +182,10 @@
 
 (def os-state
   '#{(agent R)
-     (in R B)
-     (holds R goblet diamond gold-leaf)
+     (in R A)
+     (holds R goblet)
+     (holds R diamond)
+     (holds R gold-leaf)
      (wears R halonic-garb)
 
      (room A)
@@ -207,32 +199,27 @@
      (holdable diamond)
      (holdable gold-leaf)
      (holdable halonic-garb)
-     (holdable halonic-biretta)
 
      (wearable halonic-garb)
-     (wearable halonic-biretta)
 
      (holy halonic-garb)
-     (holy halonic-biretta)
 
      (structure altar)
      (altar altar)
      (pure altar)
-     (holds altar)
-
-     (consecrated goblet)
 
      (in goblet A)
      (in diamond A)
      (in gold-leaf A)
      (in halonic-garb A)
-     (in halonic-biretta A)
      (in altar B)
      (in ahriman C)
      (in saint C)
      })
 
-
+(defn os-test []
+  (time (ops-search os-state '((agent saint)) opssearch-very-large-ops))
+  )
 
 
 
@@ -268,18 +255,16 @@
      }
      pickup
      {:name pickup-obj
-      :achieves (holds ?agent ??x ?obj)
+      :achieves (holds ?agent ?obj)
       :when ((agent ?agent)
              (room ?room1)
              (holdable ?obj)
              (in ?obj ?room1)
              )
-      :post ((holds ?agent ??x)
-             (in ?agent ?room1))
+      :post ((in ?agent ?room1))
       :pre ()
-      :add ((holds ?agent ??x ?obj))
-      :del ((holds ?agent ??x)
-            (in ?obj ?room1))
+      :add ((holds ?agent ?obj))
+      :del ((in ?obj ?room1))
       :txt (?agent picked up ?obj from ?room1)
       }
     }
@@ -303,15 +288,14 @@
             }
            equip
            {:name equip
-            :achieves (wears ?agent ??to-wear)
-            :when ((wears ?agent ??wearing)
-                   (holds ?agent ??holding)
+            :achieves (wears ?agent ?to-wear)
+            :when ((wears ?agent nil)
+                   (holdable ?to-wear)
                    )
-            :post ((holds ?agent ??holding ??to-wear))
-            :add ((wears ?agent ??wearing ??to-wear)
-                  (holds ?agent ??holding))
-            :del ((wears ?agent ??wearing)
-                  (holds ?agent ??holding ??to-wear))
+            :post ((holds ?agent ?to-wear))
+            :add ((wears ?agent ?to-wear))
+            :del ((wears ?agent nil)
+                  (holds ?agent ?to-wear))
             :txt (?agent equips the ?to-wear)
             }
            })
@@ -319,17 +303,29 @@
 
 (def planner-medium-ops
   (merge planner-short-ops
-         '{
+         '{unequip
+           {:name unequip
+            :achieves (holds ?agent ?obj)
+            :when ((wears ?agent ?obj)
+                   (agent ?agent)
+                   )
+            :post ()
+            :pre ()
+            :add ((wears ?agent nil)
+                  (holds ?agent ?obj))
+            :del ((wears ?agent ?obj))
+            :txt (?agent unequips the ?to-hold)
+            }
            consecrate
            {:name consecrate
             :achieves (consecrated ?obj)
-            :when ((wears ?agent ??wearing)
-                   (holy ?to-wear)
+            :when ((holy ?to-wear)
                    (agent ?agent)
                    (holdable ?obj)
-                   (holds R ??objs))
-            :post ((wears ?agent ??wearing ?to-wear)
-                   (holds ?agent ??objs ?obj))
+                   (:guard (not= (? to-wear) (? obj)))
+                   )
+            :post ((wears ?agent ?to-wear)
+                   (holds ?agent ?obj))
             :pre ()
             :add ((consecrated ?obj))
             :del (())
@@ -338,12 +334,11 @@
            purify
            {:name purify
             :achieves (pure ?struct)
-            :when ((wears ?agent ??wearing)
-                   (holy ?to-wear)
+            :when ((holy ?to-wear)
                    (agent ?agent)
                    (in ?struct ?room)
                    (structure ?struct))
-            :post ((wears ?agent ??wearing ?to-wear)
+            :post ((wears ?agent ?to-wear)
                    (in ?agent ?room))
             :pre ()
             :add ((pure ?struct))
@@ -359,36 +354,35 @@
            {:name     gild
             :achieves (gilded ?struct)
             :when     ((in ?struct ?room)
-                       (holds ?agent ??objs)
-                       (structure ?struct))
-            :post     ((holds ?agent ??objs gold-leaf)
-                       (in ?agent ?room)
-                       (pure ?struct))
+                       (structure ?struct)
+                       (agent ?agent)
+                       )
+            :post     ((holds ?agent gold-leaf)
+                       (pure ?struct)
+                       (in ?agent ?room))
             :pre      ()
-            :add      ((gilded ?struct)
-                       (holds ?agent ??objs))
-            :del      ((holds ?agent ??objs gold-leaf))
+            :add      ((gilded ?struct))
+            :del      ()
             :txt      (?agent has gilded the pure ?struct)
             }
            tribute
            {:name     tribute
-            :achieves (holds ?altar ??alt-holds ?obj)
+            :achieves (holds ?altar ?obj)
             :when     ((agent ?agent)
+                       (wears ?agent ?wearing)
                        (altar ?altar)
                        (in ?altar ?room)
-                       (holds ?altar ??alt-holds)
-                       (holds ?agent ??ag-holds)
                        (holdable ?obj)
-                       (structure ?altar))
-            :post     ((holds ?agent ??ag-holds ?obj)
+                       (:guard (not= (? wearing) (? obj)))
+                       (structure ?altar)
+                       )
+            :post     ((holds ?agent ?obj)
                        (consecrated ?obj)
                        (gilded ?altar)
                        (in ?agent ?room))
             :pre      ()
-            :add      ((holds ?altar ??alt-holds ?obj)
-                       (holds ?agent ??ag-holds))
-            :del      ((holds ?altar ??alt-holds)
-                       (holds ?agent ??ag-holds ?obj))
+            :add      ((holds ?altar ?obj))
+            :del      ((holds ?agent ?obj))
             :txt      (?agent has placed the ?obj on the ?altar in tribute)
             }
            }
@@ -399,20 +393,20 @@
          '{deliverance
            {:name     deliverance
             :achieves (blessed ?agent)
-            :when     ((holds ?altar ??objs)
+            :when     ((wears ?agent ?wearing)
                        (holdable ?obj)
                        (in ?altar ?room)
                        (agent ?agent)
+                       (:guard (not= (? wearing) (? obj)))
                        (altar ?altar)
                        (structure ?altar)
                        )
             :post     ((gilded ?altar)
-                       (holds ?altar ??objs ?obj)
+                       (holds ?altar ?obj)
                        (in ?agent ?room))
             :pre      ()
-            :add      ((blessed ?agent)
-                       (holds ?altar ??objs1 ??objs2))
-            :del      ((holds ?altar ??objs1 ?obj ??objs2))
+            :add      ((blessed ?agent))
+            :del      ((holds ?altar ?obj))
             :txt      (?agent has delivered the ?obj to a higher plane of existance)
             }
            transcend
@@ -460,7 +454,7 @@
   '#{(agent R)
      (in R A)
      (holds R)
-     (wears R)
+     (wears R nil)
 
      (room A)
      (room B)
