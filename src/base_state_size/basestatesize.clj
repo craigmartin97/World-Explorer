@@ -1,8 +1,9 @@
-(ns world-explorer
+(ns base-state-size.basestatesize
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
-            [matcher-starter.ops_search_base_ops :refer :all]
+            [matcher-starter.ops-search-base-ops :refer :all]
+            [planner.planner :refer :all]
             )
   )
 
@@ -876,3 +877,12 @@
 
 ;;Test three - run with state up to 52
 (time (ops-search base-state-fourteen '((in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations))
+
+(time (planner base-state-fourteen '((in R D)) planner-operations))
+
+;;Test two - run with state up to 52
+(time (planner base-state-fourteen '((in R D) (opened A-D false)) planner-operations))
+
+;;Test three - run with state up to 52
+(time (planner base-state-fourteen '((in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) planner-operations))
+
