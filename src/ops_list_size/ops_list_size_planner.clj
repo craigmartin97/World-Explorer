@@ -21,7 +21,6 @@
              (holdable ?obj)
              (in ?obj ?room1)
              (in ?agent ?room1)
-             (holds ?agent ?obj)
              )
       :add ((holds ?agent ?obj))
       :del ((in ?obj ?room1))
@@ -60,8 +59,8 @@
 (def opssearch-medium-ops
   (merge opssearch-short-ops
          '{unequip
-           {:pre ((wears ?agent ?obj)
-                  (wearable ?obj)
+           {:pre ((wearable ?obj)
+                  (wears ?agent ?obj)
                   (holdable ?obj)
                   (agent ?agent)
                   )
@@ -71,8 +70,8 @@
             :txt (?agent unequips the ?obj)
             }
            consecrate
-           {:pre ((wears ?agent ?wearing)
-                  (holy ?wearing)
+           {:pre ((holy ?wearing)
+                   (wears ?agent ?wearing)
                   (holds ?agent ?obj)
                   (agent ?agent)
                   (holdable ?obj)
@@ -82,8 +81,8 @@
             :txt (?agent consecrates the ?obj)
             }
            purify
-           {:pre ((wears ?agent ?wearing)
-                  (holy ?wearing)
+           {:pre ((holy ?wearing)
+                  (wears ?agent ?wearing)
                   (in ?agent ?room)
                   (in ?struct ?room)
                   (agent ?agent)
@@ -110,13 +109,13 @@
             :txt (?agent has gilded the pure ?struct)
             }
            tribute
-           {:pre ((in ?agent ?room)
-                  (in ?altar ?room)
-                  (holds ?agent obj)
+           {:pre ((altar ?altar)
                   (agent ?agent)
+                  (holds ?agent ?obj)
+                  (in ?agent ?room)
+                  (in ?altar ?room)
                   (holdable ?obj)
                   (consecrated ?obj)
-                  (altar ?altar)
                   (pure ?altar)
                   (gilded ?altar)
                   (structure ?altar)
@@ -132,7 +131,7 @@
          '{deliverance
            {:pre ((in ?agent ?room)
                   (in ?altar ?room)
-                  (holds ?altar ?obj)
+                   (holds ?altar ?obj)
                   (agent ?agent)
                   (altar ?altar)
                   (pure ?altar)
@@ -179,59 +178,6 @@
             :txt (The transcednant ?agent1 focuses their holy spirit into a benediction which fully revitalise ?agent2)
             }
            }))
-
-(def os-state
-  '#{(agent R)
-     (in R A)
-     (holds R goblet)
-     (holds R diamond)
-     (holds R gold-leaf)
-     (wears R halonic-garb)
-
-     (room A)
-     (room B)
-     (room C)
-
-     (demon ahriman)
-     (wounded saint)
-
-     (holdable goblet)
-     (holdable diamond)
-     (holdable gold-leaf)
-     (holdable halonic-garb)
-
-     (wearable halonic-garb)
-
-     (holy halonic-garb)
-
-     (structure altar)
-     (altar altar)
-     (pure altar)
-
-     (in goblet A)
-     (in diamond A)
-     (in gold-leaf A)
-     (in halonic-garb A)
-     (in altar B)
-     (in ahriman C)
-     (in saint C)
-     })
-
-(defn os-test []
-  (time (ops-search os-state '((agent saint)) opssearch-very-large-ops))
-  )
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -319,7 +265,8 @@
            consecrate
            {:name consecrate
             :achieves (consecrated ?obj)
-            :when ((holy ?to-wear)
+            :when ((wearable ?to-wear)
+                    (holy ?to-wear)
                    (agent ?agent)
                    (holdable ?obj)
                    (:guard (not= (? to-wear) (? obj)))
@@ -334,7 +281,8 @@
            purify
            {:name purify
             :achieves (pure ?struct)
-            :when ((holy ?to-wear)
+            :when ((wearable ?to-wear)
+                   (holy ?to-wear)
                    (agent ?agent)
                    (in ?struct ?room)
                    (structure ?struct))
@@ -450,55 +398,207 @@
             }
            }))
 
-(def pl-state
+
+
+
+(def test-state-one
   '#{(agent R)
+
+     (room A)
+     (room B)
+
      (in R A)
-     (holds R)
+     })
+
+
+
+(def test-state-two
+  '#{(agent R)
+
+     (room A)
+     (room B)
+     (room C)
+     (room D)
+     (room E)
+
+     (holdable halonic-garb)
+
+     (in R A)
+     (in halonic-garb B)
+     })
+
+
+
+(def test-state-three
+  '#{(agent R)
      (wears R nil)
 
      (room A)
      (room B)
      (room C)
+     (room D)
+     (room E)
 
-     (demon ahriman)
-     (wounded saint)
-
-     (holdable goblet)
-     (holdable diamond)
      (holdable gold-leaf)
+     (holdable cake)
+     (holdable book)
+     (holdable wedding-dress)
+     (holdable business-suit)
+     (holdable rags)
      (holdable halonic-garb)
-     (holdable halonic-biretta)
 
+     (wearable wedding-dress)
+     (wearable business-suit)
+     (wearable rags)
      (wearable halonic-garb)
-     (wearable halonic-biretta)
 
      (holy halonic-garb)
-     (holy halonic-biretta)
 
-     (structure altar)
-     (altar altar)
-     (demonic altar)
-     (holds altar)
-
-     (in goblet A)
-     (in diamond A)
-     (in halonic-garb A)
-     (in halonic-biretta A)
-     (in gold-leaf B)
-     (in altar B)
-     (in ahriman C)
-     (in saint C)
+     (in R A)
+     (in halonic-garb B)
+     (in cake C)
+     (in wedding-dress C)
+     (in business-suit C)
+     (in rags D)
+     (in book D)
+     (in gold-leaf D)
      })
 
-(defn pl-test []
-  (time (planner pl-state '(agent saint) planner-very-large-ops))
-  )
 
 
-(def test-state-one
+(def test-state-four
   '#{(agent R)
-     (in R A)
+     (wears R nil)
 
      (room A)
      (room B)
+     (room C)
+     (room D)
+     (room E)
+
+     (holdable gold-leaf)
+     (holdable cake)
+     (holdable book)
+     (holdable wedding-dress)
+     (holdable business-suit)
+     (holdable rags)
+     (holdable halonic-garb)
+
+     (wearable wedding-dress)
+     (wearable business-suit)
+     (wearable rags)
+     (wearable halonic-garb)
+
+     (holy halonic-garb)
+
+     (altar altar)
+     (demonic altar)
+     (structure altar)
+
+     (in R A)
+     (in halonic-garb B)
+     (in cake C)
+     (in wedding-dress C)
+     (in business-suit C)
+     (in rags D)
+     (in book D)
+     (in gold-leaf D)
+     (in altar A)
      })
+
+
+(def test-state-five
+  '#{(agent R)
+     (wears R nil)
+
+     (demon behemoth)
+     (demon ahriman)
+     (demon nabriales)
+
+     (wounded priest)
+     (wounded saint)
+     (wounded vicar)
+
+     (room A)
+     (room B)
+     (room C)
+     (room D)
+     (room E)
+
+     (holdable gold-leaf)
+     (holdable cake)
+     (holdable book)
+     (holdable wedding-dress)
+     (holdable business-suit)
+     (holdable rags)
+     (holdable halonic-garb)
+
+     (wearable wedding-dress)
+     (wearable business-suit)
+     (wearable rags)
+     (wearable halonic-garb)
+
+     (holy halonic-garb)
+
+     (altar altar)
+     (demonic altar)
+     (structure altar)
+
+     (in R A)
+     (in behemoth C)
+     (in priest C)
+     (in ahriman D)
+     (in vicar D)
+     (in nabriales E)
+     (in saint E)
+     (in halonic-garb B)
+     (in cake C)
+     (in wedding-dress C)
+     (in business-suit C)
+     (in rags D)
+     (in book D)
+     (in gold-leaf D)
+     (in altar A)
+     })
+
+
+
+(def test-state-six
+  '#{(agent R)
+     (wears R nil)
+
+     (wounded priest)
+
+     (room A)
+     (room B)
+     (room C)
+
+     (holdable gold-leaf)
+     (holdable halonic-garb)
+
+     (wearable halonic-garb)
+
+     (holy halonic-garb)
+
+     (altar altar)
+     (demonic altar)
+     (structure altar)
+
+     (in R A)
+     (in priest C)
+     (in halonic-garb B)
+     (in gold-leaf B)
+     (in altar A)
+     })
+
+(defn t-os []
+  (time (ops-search test-state-six '((agent priest)) opssearch-very-large-ops))
+  )
+
+(defn t-pl []
+  (time (planner test-state-six '(agent priest) planner-very-large-ops))
+  )
+
+
+
+
