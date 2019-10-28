@@ -7,7 +7,7 @@
   )
 
 (defn ui-out [win & str]
-  (apply  println str))
+  (apply println str))
 
 ;===================================================
 ; based on: strips-search-1a.clj from SHRDLU model
@@ -82,7 +82,7 @@
 
   (if-let [goal (.poll @goalq)]
     (cond
-      (map? goal) ;; it is a partially matched op
+      (map? goal)                                           ;; it is a partially matched op
       (do
         (ui-out :dbg '** 'APPLYING (:name goal) '=> (:achieves goal))
         ; (ui-out :dbg '** (:add goal))
@@ -140,7 +140,7 @@
 
 (defn update-path
   [current newp]
-  { :state (:state newp),
+  {:state (:state newp),
    :cmds  (concat (:cmds current) (:cmd newp)),
    :txt   (concat (:txt current) (:txt newp))
    })
@@ -158,64 +158,64 @@
   '{
     move
     {
-     :name move-agent
+     :name     move-agent
      :achieves (in ?agent ?room2)
-     :when (
-            (agent ?agent)
-            (in ?agent ?room1)
-            (room ?room1)
-            (room ?room2)
-            )
-     :post ()
-     :pre ()
-     :add (
-           (in ?agent ?room2)
-           )
-     :del (
-           (in ?agent ?room1)
-           )
-     :txt (agent ?agent has moved from ?room1 to ?room2)
+     :when     (
+                 (agent ?agent)
+                 (in ?agent ?room1)
+                 (room ?room1)
+                 (room ?room2)
+                 )
+     :post     ()
+     :pre      ()
+     :add      (
+                 (in ?agent ?room2)
+                 )
+     :del      (
+                 (in ?agent ?room1)
+                 )
+     :txt      (agent ?agent has moved from ?room1 to ?room2)
      }
     pickup
     {
-     :name pickup-obj
+     :name     pickup-obj
      :achieves (holds ?agent ??x ?obj)
-     :when (
-            (agent ?agent)
-            (room ?room1)
-            (holdable ?obj)
-            (in ?obj ?room1)
-            )
-     :post ((holds ?agent ??x)
-            (in ?agent ?room1))
-     :pre ()
-     :add (
-           (holds ?agent ??x ?obj)
-           )
-     :del (
-           (holds ?agent ??x)
-           (in ?obj ?room1)
-           )
-     :txt (?agent picked up ?obj from ?room1)
+     :when     (
+                 (agent ?agent)
+                 (room ?room1)
+                 (holdable ?obj)
+                 (in ?obj ?room1)
+                 )
+     :post     ((holds ?agent ??x)
+                 (in ?agent ?room1))
+     :pre      ()
+     :add      (
+                 (holds ?agent ??x ?obj)
+                 )
+     :del      (
+                 (holds ?agent ??x)
+                 (in ?obj ?room1)
+                 )
+     :txt      (?agent picked up ?obj from ?room1)
 
      }
     drop-obj
     {
-     :name drop-obj
+     :name     drop-obj
      :achieves (in ?obj ?room1)
-     :when (
-            (agent ?agent)
-            (holdable ?obj)
-            (room ?room1)
-            )
-     :post (
-            (holds ?agent ?obj)
-            (in ?agent ?room1)
-            )
-     :pre ()
-     :add ((in ?obj ?room1))
-     :del ((holds ?agent ?obj))
-     :txt (?agent dropped ?obj in ?room1)
+     :when     (
+                 (agent ?agent)
+                 (holdable ?obj)
+                 (room ?room1)
+                 )
+     :post     (
+                 (holds ?agent ?obj)
+                 (in ?agent ?room1)
+                 )
+     :pre      ()
+     :add      ((in ?obj ?room1))
+     :del      ((holds ?agent ?obj))
+     :txt      (?agent dropped ?obj in ?room1)
      }
 
     }

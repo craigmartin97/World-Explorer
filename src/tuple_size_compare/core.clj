@@ -174,6 +174,7 @@
 
 (defn planner-r-holds-many []
   "Elapsed time: 1.2265 msecs"
+
   (time (planner state-r-holds-all '(in R F) planner-operations))
   )
 

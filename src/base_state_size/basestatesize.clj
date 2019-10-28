@@ -1,54 +1,12 @@
-(ns world-explorer
+(ns base-state-size.basestatesize
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]
-
+            [matcher-starter.ops-search-base-ops :refer :all]
+            [planner.planner :refer :all]
             )
   )
 
-(use 'clojure.tools.trace)
-
-;; *ns* // check what namespace your currently in
-;; (in-ns 'world-explorer) // this changes the namespace to this file
-; ALT+SHIFT + L, loads file into REPL onside
-
-;(time (ops-search intermediate-state-one '((in R E) (opened C-F false) (opened B-E false)) operations))
-
-
-(comment
-  --RULES--
-  - A door has a key
-  - A door has two connecting rooms
-  )
-
-(comment
-  --KEYWORDS--
-  - AGENT (agent ?agent)
-  - ROOM (room ?room)
-  - KEY (key ?key)
-  - DOOR (door ?door)
-  - HOLDABLE (holdable ?key)
-
-
-  -OPENED (opened ?door true/false)
-  -UNLOCKED (unlocked ?door true/false)
-  -CONNECTS (connects ?door ?A ?B)                          ;(connects ?door A)(connects ?door A)
-  -UNLOCKS (unlocks ?key ?door)
-  -LOCKS (locks ?key ?door)
-  -HOLDS "Agent holds key-a" (holds ?agent ?holdable)
-  -IN (IN ?agent ?room), (IN ?key ?room)
-  )
-
-(comment
-  --OPS--
-  - OPEN DOOR
-  - CLOSE DOOR
-  - LOCK DOOR
-  - UNLOCK DOOR
-  - MOVE
-  - PICKUP
-  - DROP
-  )
 
 (def base-state-fourteen
   '#{
@@ -910,191 +868,6 @@
      (in key8 F)
      })
 
-;(connects ?door ??_ ?room1 ??_)
-(def operations
-  "A map of operations that the agent can perform in the world"
-  '{
-    open
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           )
-     :add
-          (
-           (opened ?door true)
-           )
-     :del
-          (
-           (opened ?door false)
-           )
-     :txt (?agent has opened ?door)
-     }
-
-    closed
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           )
-     :add
-          (
-           (opened ?door false)
-           )
-     :del
-          (
-           (opened ?door true)
-           )
-     :txt (?agent has closed ?door)
-     }
-
-    lock
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door true)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-
-
-           (key ?key)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           )
-     :add
-          (
-           (unlocked ?door false)
-           )
-     :del
-          (
-           (unlocked ?door true)
-           )
-     :txt (?agent has locked ?door)
-     }
-
-    unlock
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door false)
-           (unlocked ?door false)
-           (in ?agent ?room1)
-           (connects ?door ?room1)
-
-
-           (key ?key)
-           (holdable ?key)
-           (unlocks ?key ?door)
-           (holds ?agent ?key)
-           )
-     :add
-          (
-           (unlocked ?door true)
-           )
-     :del
-          (
-           (unlocked ?door false)
-           )
-     :txt (?agent has unlocked ?door)
-     }
-
-    move
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (room ?room2)
-           (door ?door)
-           (opened ?door true)
-           (unlocked ?door true)
-           (connects ?door ?room1)
-           (connects ?door ?room2)
-           (in ?agent ?room1)
-           )
-     :add
-          (
-           (in ?agent ?room2)
-           )
-     :del
-          (
-           (in ?agent ?room1)
-           )
-     :txt (?agent has moved from ?room1 to ?room2)
-     }
-
-    pickup
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           )
-     :del
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :txt (?agent picked up ?obj from ?room1)
-     }
-
-    drop
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent ?obj)
-           )
-     :add
-          (
-           (holds ?agent nil)
-           (in ?obj ?room1)
-           )
-     :del
-          (
-           (holds ?agent ?obj)
-           )
-     :txt (?agent dropped ?obj in ?room1)
-     }
-    }
-  )
 
 ;;Test one - run with state up to 52
 (time (ops-search base-state-fourteen '((in R D)) operations))
@@ -1104,3 +877,12 @@
 
 ;;Test three - run with state up to 52
 (time (ops-search base-state-fourteen '((in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) operations))
+
+(time (planner base-state-fourteen '((in R D)) planner-operations))
+
+;;Test two - run with state up to 52
+(time (planner base-state-fourteen '((in R D) (opened A-D false)) planner-operations))
+
+;;Test three - run with state up to 52
+(time (planner base-state-fourteen '((in R D) (opened A-D false) (unlocked A-D false) (holds R nil)) planner-operations))
+

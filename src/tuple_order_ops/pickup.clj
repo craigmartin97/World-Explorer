@@ -7,29 +7,20 @@
 
 (def operations
   "A map of operations that the agent can perform in the world"
-  '{
-    pickup
-    {
-     :pre
-          (
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent ??x)
-           (in ?obj ?room1)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           (holds ?agent ??x)
-
-           )
-     :del
-          (
-           (holds ?agent ??x)
-           (in ?obj ?room1)
-           )
+  '{pickup
+    {:pre ((agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ??x)
+            (in ?obj ?room1)
+            )
+     :add ((holds ?agent ?obj)
+            (holds ?agent ??x)
+            )
+     :del ((holds ?agent ??x)
+            (in ?obj ?room1)
+            )
      :txt (?agent picked up ?obj from ?room1)
      }
     }
@@ -37,90 +28,63 @@
 
 (def operations-two
   "A map of operations that the agent can perform in the world"
-  '{
-    pickup
-    {
-     :pre
-          (
-           (in ?agent ?room1)
-           (agent ?agent)
-           (room ?room1)
-           (holdable ?obj)
-           (holds ?agent ??x)
-           (in ?obj ?room1)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           (holds ?agent ??x)
+  '{pickup
+    {:pre ((in ?agent ?room1)
+            (agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            (holds ?agent ??x)
+            (in ?obj ?room1)
+            )
+     :add ((holds ?agent ?obj)
+            (holds ?agent ??x)
 
-           )
-     :del
-          (
-           (holds ?agent ??x)
-           (in ?obj ?room1)
-           )
+            )
+     :del ((holds ?agent ??x)
+            (in ?obj ?room1)
+            )
      :txt (?agent picked up ?obj from ?room1)
      }
     }
   )
 
 (def operations-three
-     "A map of operations that the agent can perform in the world"
-     '{
-       pickup
-       {
-        :pre
-             (
-              (in ?agent ?room1)
-              (holds ?agent ??x)
-              (in ?obj ?room1)
-              (agent ?agent)
-              (room ?room1)
-              (holdable ?obj)
-
-              )
-        :add
-             (
-              (holds ?agent ?obj)
-              (holds ?agent ??x)
-
-              )
-        :del
-             (
-              (holds ?agent ??x)
-              (in ?obj ?room1)
-              )
-        :txt (?agent picked up ?obj from ?room1)
-        }
-       }
-     )
+  "A map of operations that the agent can perform in the world"
+  '{pickup
+    {:pre ((in ?agent ?room1)
+            (holds ?agent ??x)
+            (in ?obj ?room1)
+            (agent ?agent)
+            (room ?room1)
+            (holdable ?obj)
+            )
+     :add ((holds ?agent ?obj)
+            (holds ?agent ??x)
+            )
+     :del ((holds ?agent ??x)
+            (in ?obj ?room1)
+            )
+     :txt (?agent picked up ?obj from ?room1)
+     }
+    }
+  )
 
 (def operations-four
   "A map of operations that the agent can perform in the world"
-  '{
-    pickup
-    {
-     :pre
-          (
-           (in ?obj ?room1)
-           (holdable ?obj)
-           (in ?agent ?room1)
-           (holds ?agent ??x)
-           (agent ?agent)
-           (room ?room1)
-           )
-     :add
-          (
-           (holds ?agent ?obj)
-           (holds ?agent ??x)
-
-           )
-     :del
-          (
-           (holds ?agent ??x)
-           (in ?obj ?room1)
-           )
+  '{pickup
+    {:pre ((in ?obj ?room1)
+            (holdable ?obj)
+            (in ?agent ?room1)
+            (holds ?agent ??x)
+            (agent ?agent)
+            (room ?room1)
+            )
+     :add ((holds ?agent ?obj)
+            (holds ?agent ??x)
+            )
+     :del ((holds ?agent ??x)
+            (in ?obj ?room1)
+            )
      :txt (?agent picked up ?obj from ?room1)
      }
     }
@@ -374,10 +338,10 @@
 
   Agent picks up 4 objects"
   (time (ops-search state-pickup-two '((holds R key)
-                                          (holds R dog)
-                                          (holds R cat)
-                                          (holds R mouse)
-                                          ) operations :debug true))
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        ) operations :debug true))
   )
 
 (defn test-three []
@@ -386,13 +350,13 @@
 
   Agent picks up 6 objects"
   (time (ops-search state-pickup-three '(
-                                              (holds R key)
-                                              (holds R dog)
-                                              (holds R cat)
-                                              (holds R mouse)
-                                              (holds R case)
-                                              (holds R remote)
-                                              ) operations :debug true))
+                                          (holds R key)
+                                          (holds R dog)
+                                          (holds R cat)
+                                          (holds R mouse)
+                                          (holds R case)
+                                          (holds R remote)
+                                          ) operations :debug true))
   )
 
 
@@ -401,15 +365,15 @@
 
   Agent picks up 8 objects"
   (time (ops-search state-pickup-four '(
-                                              (holds R key)
-                                              (holds R dog)
-                                              (holds R cat)
-                                              (holds R mouse)
-                                              (holds R case)
-                                              (holds R remote)
-                                              (holds R hammer)
-                                              (holds R watch)
-                                              ) operations :debug true))
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         ) operations :debug true))
   )
 
 (defn test-five []
@@ -417,27 +381,6 @@
 
   Agent picks up 12 objects"
   (time (ops-search state-pickup-five '(
-                                              (holds R key)
-                                              (holds R dog)
-                                              (holds R cat)
-                                              (holds R mouse)
-                                              (holds R case)
-                                              (holds R remote)
-                                              (holds R hammer)
-                                              (holds R watch)
-                                              (holds R chips)
-                                              (holds R mango)
-                                              (holds R apple)
-                                              (holds R olive)
-                                              ) operations :debug true))
-  )
-
-
-(defn test-six []
-  "Elapsed time: unsolvable msecs
-
-  Agent picks up 24 objects"
-  (time (ops-search state-pickup-six '(
                                          (holds R key)
                                          (holds R dog)
                                          (holds R cat)
@@ -450,18 +393,39 @@
                                          (holds R mango)
                                          (holds R apple)
                                          (holds R olive)
-                                         (holds R guitar)
-                                         (holds R drum)
-                                         (holds R phone)
-                                         (holds R cpu)
-                                         (holds R poster)
-                                         (holds R pen)
-                                         (holds R calc)
-                                         (holds R pc)
-                                         (holds R glass)
-                                         (holds R coffee)
-                                         (holds R tea)
-                                         (holds R football)
+                                         ) operations :debug true))
+  )
+
+
+(defn test-six []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
+                                        (holds R key)
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        (holds R case)
+                                        (holds R remote)
+                                        (holds R hammer)
+                                        (holds R watch)
+                                        (holds R chips)
+                                        (holds R mango)
+                                        (holds R apple)
+                                        (holds R olive)
+                                        (holds R guitar)
+                                        (holds R drum)
+                                        (holds R phone)
+                                        (holds R cpu)
+                                        (holds R poster)
+                                        (holds R pen)
+                                        (holds R calc)
+                                        (holds R pc)
+                                        (holds R glass)
+                                        (holds R coffee)
+                                        (holds R tea)
+                                        (holds R football)
                                         ) operations :debug true))
   )
 
@@ -481,10 +445,10 @@
 
   Agent picks up 4 objects"
   (time (ops-search state-pickup-two '((holds R key)
-                                       (holds R dog)
-                                       (holds R cat)
-                                       (holds R mouse)
-                                       ) operations-two :debug true))
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        ) operations-two :debug true))
   )
 
 (defn test-nine []
@@ -493,13 +457,13 @@
 
   Agent picks up 6 objects"
   (time (ops-search state-pickup-three '(
-                                         (holds R key)
-                                         (holds R dog)
-                                         (holds R cat)
-                                         (holds R mouse)
-                                         (holds R case)
-                                         (holds R remote)
-                                         ) operations-two :debug true))
+                                          (holds R key)
+                                          (holds R dog)
+                                          (holds R cat)
+                                          (holds R mouse)
+                                          (holds R case)
+                                          (holds R remote)
+                                          ) operations-two :debug true))
   )
 
 
@@ -508,15 +472,15 @@
 
   Agent picks up 8 objects"
   (time (ops-search state-pickup-four '(
-                                        (holds R key)
-                                        (holds R dog)
-                                        (holds R cat)
-                                        (holds R mouse)
-                                        (holds R case)
-                                        (holds R remote)
-                                        (holds R hammer)
-                                        (holds R watch)
-                                        ) operations-two :debug true))
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         ) operations-two :debug true))
   )
 
 (defn test-eleven []
@@ -524,6 +488,27 @@
 
   Agent picks up 12 objects"
   (time (ops-search state-pickup-five '(
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         (holds R chips)
+                                         (holds R mango)
+                                         (holds R apple)
+                                         (holds R olive)
+                                         ) operations-two :debug true))
+  )
+
+
+(defn test-twelve []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
                                         (holds R key)
                                         (holds R dog)
                                         (holds R cat)
@@ -536,40 +521,19 @@
                                         (holds R mango)
                                         (holds R apple)
                                         (holds R olive)
+                                        (holds R guitar)
+                                        (holds R drum)
+                                        (holds R phone)
+                                        (holds R cpu)
+                                        (holds R poster)
+                                        (holds R pen)
+                                        (holds R calc)
+                                        (holds R pc)
+                                        (holds R glass)
+                                        (holds R coffee)
+                                        (holds R tea)
+                                        (holds R football)
                                         ) operations-two :debug true))
-  )
-
-
-(defn test-twelve []
-  "Elapsed time: unsolvable msecs
-
-  Agent picks up 24 objects"
-  (time (ops-search state-pickup-six '(
-                                       (holds R key)
-                                       (holds R dog)
-                                       (holds R cat)
-                                       (holds R mouse)
-                                       (holds R case)
-                                       (holds R remote)
-                                       (holds R hammer)
-                                       (holds R watch)
-                                       (holds R chips)
-                                       (holds R mango)
-                                       (holds R apple)
-                                       (holds R olive)
-                                       (holds R guitar)
-                                       (holds R drum)
-                                       (holds R phone)
-                                       (holds R cpu)
-                                       (holds R poster)
-                                       (holds R pen)
-                                       (holds R calc)
-                                       (holds R pc)
-                                       (holds R glass)
-                                       (holds R coffee)
-                                       (holds R tea)
-                                       (holds R football)
-                                       ) operations-two :debug true))
   )
 
 ;----------------------------------------------------------------
@@ -588,10 +552,10 @@
 
   Agent picks up 4 objects"
   (time (ops-search state-pickup-two '((holds R key)
-                                       (holds R dog)
-                                       (holds R cat)
-                                       (holds R mouse)
-                                       ) operations-three :debug true))
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        ) operations-three :debug true))
   )
 
 (defn test-fifteen []
@@ -600,13 +564,13 @@
 
   Agent picks up 6 objects"
   (time (ops-search state-pickup-three '(
-                                         (holds R key)
-                                         (holds R dog)
-                                         (holds R cat)
-                                         (holds R mouse)
-                                         (holds R case)
-                                         (holds R remote)
-                                         ) operations-three :debug true))
+                                          (holds R key)
+                                          (holds R dog)
+                                          (holds R cat)
+                                          (holds R mouse)
+                                          (holds R case)
+                                          (holds R remote)
+                                          ) operations-three :debug true))
   )
 
 
@@ -615,15 +579,15 @@
 
   Agent picks up 8 objects"
   (time (ops-search state-pickup-four '(
-                                        (holds R key)
-                                        (holds R dog)
-                                        (holds R cat)
-                                        (holds R mouse)
-                                        (holds R case)
-                                        (holds R remote)
-                                        (holds R hammer)
-                                        (holds R watch)
-                                        ) operations-three :debug true))
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         ) operations-three :debug true))
   )
 
 (defn test-seventeen []
@@ -631,6 +595,27 @@
 
   Agent picks up 12 objects"
   (time (ops-search state-pickup-five '(
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         (holds R chips)
+                                         (holds R mango)
+                                         (holds R apple)
+                                         (holds R olive)
+                                         ) operations-three :debug true))
+  )
+
+
+(defn test-eighteen []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
                                         (holds R key)
                                         (holds R dog)
                                         (holds R cat)
@@ -643,40 +628,19 @@
                                         (holds R mango)
                                         (holds R apple)
                                         (holds R olive)
+                                        (holds R guitar)
+                                        (holds R drum)
+                                        (holds R phone)
+                                        (holds R cpu)
+                                        (holds R poster)
+                                        (holds R pen)
+                                        (holds R calc)
+                                        (holds R pc)
+                                        (holds R glass)
+                                        (holds R coffee)
+                                        (holds R tea)
+                                        (holds R football)
                                         ) operations-three :debug true))
-  )
-
-
-(defn test-eighteen []
-  "Elapsed time: unsolvable msecs
-
-  Agent picks up 24 objects"
-  (time (ops-search state-pickup-six '(
-                                       (holds R key)
-                                       (holds R dog)
-                                       (holds R cat)
-                                       (holds R mouse)
-                                       (holds R case)
-                                       (holds R remote)
-                                       (holds R hammer)
-                                       (holds R watch)
-                                       (holds R chips)
-                                       (holds R mango)
-                                       (holds R apple)
-                                       (holds R olive)
-                                       (holds R guitar)
-                                       (holds R drum)
-                                       (holds R phone)
-                                       (holds R cpu)
-                                       (holds R poster)
-                                       (holds R pen)
-                                       (holds R calc)
-                                       (holds R pc)
-                                       (holds R glass)
-                                       (holds R coffee)
-                                       (holds R tea)
-                                       (holds R football)
-                                       ) operations-three :debug true))
   )
 
 ;----------------------------------------------------------------
@@ -695,10 +659,10 @@
 
   Agent picks up 4 objects"
   (time (ops-search state-pickup-two '((holds R key)
-                                       (holds R dog)
-                                       (holds R cat)
-                                       (holds R mouse)
-                                       ) operations-four :debug true))
+                                        (holds R dog)
+                                        (holds R cat)
+                                        (holds R mouse)
+                                        ) operations-four :debug true))
   )
 
 (defn test-twenty-one []
@@ -707,13 +671,13 @@
 
   Agent picks up 6 objects"
   (time (ops-search state-pickup-three '(
-                                         (holds R key)
-                                         (holds R dog)
-                                         (holds R cat)
-                                         (holds R mouse)
-                                         (holds R case)
-                                         (holds R remote)
-                                         ) operations-four :debug true))
+                                          (holds R key)
+                                          (holds R dog)
+                                          (holds R cat)
+                                          (holds R mouse)
+                                          (holds R case)
+                                          (holds R remote)
+                                          ) operations-four :debug true))
   )
 
 
@@ -722,15 +686,15 @@
 
   Agent picks up 8 objects"
   (time (ops-search state-pickup-four '(
-                                        (holds R key)
-                                        (holds R dog)
-                                        (holds R cat)
-                                        (holds R mouse)
-                                        (holds R case)
-                                        (holds R remote)
-                                        (holds R hammer)
-                                        (holds R watch)
-                                        ) operations-four :debug true))
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         ) operations-four :debug true))
   )
 
 (defn test-twenty-three []
@@ -738,6 +702,27 @@
 
   Agent picks up 12 objects"
   (time (ops-search state-pickup-five '(
+                                         (holds R key)
+                                         (holds R dog)
+                                         (holds R cat)
+                                         (holds R mouse)
+                                         (holds R case)
+                                         (holds R remote)
+                                         (holds R hammer)
+                                         (holds R watch)
+                                         (holds R chips)
+                                         (holds R mango)
+                                         (holds R apple)
+                                         (holds R olive)
+                                         ) operations-four :debug true))
+  )
+
+
+(defn test-twenty-four []
+  "Elapsed time: unsolvable msecs
+
+  Agent picks up 24 objects"
+  (time (ops-search state-pickup-six '(
                                         (holds R key)
                                         (holds R dog)
                                         (holds R cat)
@@ -750,38 +735,17 @@
                                         (holds R mango)
                                         (holds R apple)
                                         (holds R olive)
+                                        (holds R guitar)
+                                        (holds R drum)
+                                        (holds R phone)
+                                        (holds R cpu)
+                                        (holds R poster)
+                                        (holds R pen)
+                                        (holds R calc)
+                                        (holds R pc)
+                                        (holds R glass)
+                                        (holds R coffee)
+                                        (holds R tea)
+                                        (holds R football)
                                         ) operations-four :debug true))
-  )
-
-
-(defn test-twenty-four []
-  "Elapsed time: unsolvable msecs
-
-  Agent picks up 24 objects"
-  (time (ops-search state-pickup-six '(
-                                       (holds R key)
-                                       (holds R dog)
-                                       (holds R cat)
-                                       (holds R mouse)
-                                       (holds R case)
-                                       (holds R remote)
-                                       (holds R hammer)
-                                       (holds R watch)
-                                       (holds R chips)
-                                       (holds R mango)
-                                       (holds R apple)
-                                       (holds R olive)
-                                       (holds R guitar)
-                                       (holds R drum)
-                                       (holds R phone)
-                                       (holds R cpu)
-                                       (holds R poster)
-                                       (holds R pen)
-                                       (holds R calc)
-                                       (holds R pc)
-                                       (holds R glass)
-                                       (holds R coffee)
-                                       (holds R tea)
-                                       (holds R football)
-                                       ) operations-four :debug true))
   )
