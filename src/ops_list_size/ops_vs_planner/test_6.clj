@@ -5,7 +5,19 @@
             [planner.planner :refer :all]
             [ops-list-size.ops-vs-planner.operations :refer :all]))
 
+(comment "This test uses a similar goal to test 5, but simplifies the scenario to only contain the tuples
+          necessary for reaching this goal (e.g. no additional wounded agents or holdable items).
+          The very-large operations lists are still the only lists able to solve this problem.
+
+          The drawn conclusions are the same as test 5 although ops-search doesn't have the same Stack Overflow issue
+          on any of its operator lists due to having less paths to take.
+
+          Planner does take less time to solve this test than it took in test 6. It's not certain, but it's likely
+          that the additional time in test 5 was due to the ':when' matching and/or the planner having to retreat
+          on dead-end paths.")
+
 (def test-state-six
+  "Simplified state containing some rooms, holdable items, a wearable item, an altar, and a wounded agent."
   '#{(agent R)
      (wears R nil)
 

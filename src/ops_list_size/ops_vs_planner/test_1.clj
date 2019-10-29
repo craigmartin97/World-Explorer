@@ -5,7 +5,15 @@
             [planner.planner :refer :all]
             [ops-list-size.ops-vs-planner.operations :refer :all]))
 
+(comment "Simple test using a very basic world. The agent can only use the move operator to move from one room to another.
+          Ops search performs better than planner due to the miniscule amount of possibilities.
+
+          Ops search took longer as more operators were added whilst planner remained seemingly unaffected.
+          This is because planner will only use operators that are relevant to it's current goal by looking at an operators ':achieves' key.
+          Meanwhile, ops search will have to check every possible combination with each operator, even if the operator is irrelevant.")
+
 (def test-state-one
+  "Simple state with two rooms."
   '#{(agent R)
 
      (room A)

@@ -5,7 +5,15 @@
             [planner.planner :refer :all]
             [ops-list-size.ops-vs-planner.operations :refer :all]))
 
+(comment "The test scenario now offers multiple rooms to move around an an item to pick up.
+          Surprisingly, planner starts to clearly outperform ops search even with this small state.
+
+          This test further distinguishes the differences between ops search and planner when more operators are added.
+          Ops search is having to repeat its "":precondition"" matcher checks for many nodes at multiple depths, causing an
+          increase in processing time need to terminate.")
+
 (def test-state-two
+  "State including a few rooms and a holdable item"
   '#{(agent R)
 
      (room A)

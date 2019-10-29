@@ -5,6 +5,7 @@
             [planner.planner :refer :all]))
 
 (def very-short-ops-opssearch
+  "Simplest operator list with the ability to move and pickup items."
   '{move
     {:pre ((agent ?agent)
             (room ?room1)
@@ -30,6 +31,7 @@
   )
 
 (def short-ops-opssearch
+  "Extends very-short-ops-opssearch to include operations for dropping objects and equipping items."
   (merge very-short-ops-opssearch
          '{drop-obj
            {:pre ((holdable ?obj)
@@ -57,6 +59,7 @@
   )
 
 (def medium-ops-opssearch
+  "Extends short-ops-opssearch to include operations for unequipping items, consecrating objects, and purifying structures."
   (merge short-ops-opssearch
          '{unequip
            {:pre ((wearable ?obj)
@@ -96,6 +99,7 @@
   )
 
 (def large-ops-opssearch
+  "Extends medium-ops-opssearch to include operations for gilding structures and tributing items to altars."
   (merge medium-ops-opssearch
          '{gild
            {:pre ((in ?agent ?room)
@@ -127,6 +131,8 @@
            }))
 
 (def very-large-ops-opssearch
+  "Extends large-ops-opssearch to including operatorins for delivering tributed items, transcending agents,
+  smiting demons, and healing wounded agents."
   (merge large-ops-opssearch
          '{deliverance
            {:pre ((in ?agent ?room)
@@ -184,6 +190,7 @@
 
 
 (def very-short-ops-planner
+  "Simplest operator list with the ability to move and pickup items."
   '{move
     {
      :name     move-agent
@@ -217,6 +224,7 @@
   )
 
 (def short-ops-planner
+  "Extends very-short-ops-planner to include operations for dropping objects and equipping items."
   (merge very-short-ops-planner
          '{drop-obj
            {:name     drop-obj
@@ -248,6 +256,7 @@
   )
 
 (def medium-ops-planner
+  "Extends short-ops-planner to include operations for unequipping items, consecrating objects, and purifying structures."
   (merge short-ops-planner
          '{unequip
            {:name     unequip
@@ -297,6 +306,7 @@
   )
 
 (def large-ops-planner
+  "Extends medium-ops-planner to include operations for gilding structures and tributing items to altars."
   (merge medium-ops-planner
          '{gild
            {:name     gild
@@ -337,6 +347,8 @@
          ))
 
 (def very-large-ops-planner
+  "Extends large-ops-planner to including operations for delivering tributed items, transcending agents,
+  smiting demons, and healing wounded agents."
   (merge large-ops-planner
          '{deliverance
            {:name     deliverance

@@ -5,7 +5,21 @@
             [planner.planner :refer :all]
             [ops-list-size.ops-vs-planner.operations :refer :all]))
 
+(comment "This test allows all operators to be applied in a fairly large world. This test is only possible with the
+          very-large operations lists.
+
+          Due to the number of possibilities in the world state, ops-search has massive problems trying to reach
+          the end goal of these tests and causes a Stack Overflow on all operation lists excluding very-short-ops.
+
+          Planner is able to handle the large amount of required operators elegantly as the ':achieves' key allows it
+          to not only pick the correct operators, but ignore unnecessary paths. For example, planner will only try to
+          pick up one of the 7 holdable items for consecration.
+
+          Similar to test 4, planner is still very quick to recognise if it can't solve the problem whereas ops-search
+          will continue to try every possibility until all possible states are found or a Stack Overflow occurs.")
+
 (def test-state-five
+  "State containing some rooms, holdable items, wearable items, an altar, demons, and wounded agents."
   '#{(agent R)
      (wears R nil)
 
@@ -70,7 +84,7 @@
   )
 
 (defn test-five-short-opssearch []
-  "Elapsed time: Stack Overflow msecs"
+  "Elapsed time: Stack Overflow"
   (time (ops-search test-state-five '((smited nabriales)) short-ops-opssearch))
   )
 
@@ -80,7 +94,7 @@
   )
 
 (defn test-five-medium-opssearch []
-  "Elapsed time:Stack Overflow  msecs"
+  "Elapsed time:Stack Overflow"
   (time (ops-search test-state-five '((smited nabriales)) medium-ops-opssearch))
   )
 
@@ -90,7 +104,7 @@
   )
 
 (defn test-five-large-opssearch []
-  "Elapsed time:Stack Overflow  msecs"
+  "Elapsed time:Stack Overflow"
   (time (ops-search test-state-five '((smited nabriales)) large-ops-opssearch))
   )
 
@@ -100,7 +114,7 @@
   )
 
 (defn test-five-very-large-opssearch []
-  "Elapsed time:Stack Overflow  msecs"
+  "Elapsed time:Stack Overflow"
   (time (ops-search test-state-five '((smited nabriales)) very-large-ops-opssearch))
   )
 

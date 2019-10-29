@@ -5,7 +5,15 @@
             [planner.planner :refer :all]
             [ops-list-size.ops-vs-planner.operations :refer :all]))
 
+(comment "The test scenario now offers more items it pick up and items that can be worn.
+          This test starts to let more operators in the operator list be applicable which has a heavy effect on ops-search.
+          The very-short-ops lists are not able to solve this problem.
+
+          Planner is still seemingly unaffected as no clear time increase is seen as more operators are added.
+          This is likely because the planner will only have to look at the ':achieves' key to deem an operator necessary.")
+
 (def test-state-three
+  "State containing some rooms, holdable items, and clothes."
   '#{(agent R)
      (wears R nil)
 
