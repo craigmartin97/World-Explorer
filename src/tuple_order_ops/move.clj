@@ -235,31 +235,38 @@
 ;----------------------------------------------------
 ;----------------------------------------------------
 (defn test-one []
-  "Making the agent move to room B using the first set of operators"
+  "Making the agent move to room B using the first set of operators
+  Elapsed time: 88.752499"
   (time (ops-search state-move '((in R B)) base-move-one))
   )
 
 (defn test-two []
-  "Making the agent move to room B using the second set of operators"
+  "Making the agent move to room B using the second set of operators
+  Elapsed time: 9.278399 msecs"
   (time (ops-search state-move '((in R B)) base-move-two))
   )
 
 (defn test-three []
-  "Making the agent move to room B using the third set of operators"
+  "Making the agent move to room B using the third set of operators
+  Elapsed time: 4.8277 msecs"
   (time (ops-search state-move '((in R B)) base-move-three))
   )
 
 (defn test-four []
-  "Making the agent move to room B using the fourth set of operators"
+  "Making the agent move to room B using the fourth set of operators
+  Elapsed time: 3.1802 msecs"
   (time (ops-search state-move '((in R B)) base-move-four))
   )
 
 (defn test-five []
-  "Making the agent move to room B using the fifth set of operators"
+  "Making the agent move to room B using the fifth set of operators
+  Elapsed time: 3.109401 msecs
+  "
   (time (ops-search state-move '((in R B)) base-move-five))
   )
 
 (defn test-six []
-  "Making the agent move to room B using the sixth set of operators"
+  "Making the agent move to room B using the sixth set of operators
+  Elapsed time: 2.391399 msecs"
   (time (ops-search state-move '((in R B)) base-move-six))
   )

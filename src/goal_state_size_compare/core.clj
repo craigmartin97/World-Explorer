@@ -14,6 +14,7 @@
 ;----------------------------
 
 (def state
+  "A small scenario with a rooms and a few objects"
   '#{
      ;define agent
      (agent R)
@@ -49,6 +50,7 @@
   )
 
 (def state-many-objs
+  "A more complicated scenario with more objects"
   '#{
      ;define agentLL
      (agent R)
@@ -102,6 +104,7 @@
   )
 
 (def state-huge
+  "A large scenario with lots of objects scattered around the rooms"
   '#{
      ;define agentLL
      (agent R)

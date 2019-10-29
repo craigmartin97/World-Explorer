@@ -251,3 +251,30 @@
      (holds R nil)
      }
   )
+
+
+;-------------------------------------------------
+;-------------------------------------------------
+;-----------------------Tests--------------------------
+;-------------------------------------------------
+;-------------------------------------------------
+
+(defn move-to-b []
+  "The agent moves from room a to room b"
+  (planner move-A-D-all-unlocked '(in R B) operations)
+  )
+
+(defn move-to-c []
+  "The agent moves from room a to room c"
+  (planner move-A-D-all-unlocked '(in R C) operations)
+  )
+
+(defn move-to-f []
+  "The agent moves from room a to room f"
+  (planner move-A-D-all-unlocked '(in R F) operations)
+  )
+
+(defn move-to-j []
+  "The agent moves from room a to room j"
+  (planner move-A-D-all-unlocked '(in R J) operations)
+  )

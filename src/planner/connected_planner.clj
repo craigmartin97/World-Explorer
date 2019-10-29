@@ -287,3 +287,66 @@
      (door C-D)
 
      })
+
+
+
+;----------------------------------------------------
+;----------------------------------------------------
+;-------------------------Tests---------------------------
+;----------------------------------------------------
+;----------------------------------------------------
+
+(defn test-move-to-d []
+  "The agent moves from room A to room D
+  This is a depth of one"
+  (planner move-A-D-all-unlocked '(in R D) operations2)
+  )
+
+(defn test-move-to-b []
+  "The agent moves from room A to room B
+  This is a depth of one"
+  (planner move-A-D-all-unlocked '(in R B) operations2)
+  )
+
+(defn test-move-to-c []
+  "The agent moves from room A to room C
+  This is a depth of one"
+  (planner move-A-D-all-unlocked '(in R C) operations2)
+  )
+
+(defn test-move-to-f []
+  "The agent moves from room A to room F
+  This is a depth of two"
+  (planner move-A-D-all-unlocked '(in R F) operations2)
+  )
+
+
+;-----------------------------------------------------
+;-----------------------------------------------------
+;-----------------------Tests with refactored code------------------------------
+;-----------------------------------------------------
+;-----------------------------------------------------
+
+(defn test-move-to-d-refac []
+  "The agent moves from room A to room D
+  This is a depth of one"
+  (planner move-A-D-all-unlocked '(in R D) josh-ops)
+  )
+
+(defn test-move-to-b-refac []
+  "The agent moves from room A to room B
+  This is a depth of one"
+  (planner move-A-D-all-unlocked '(in R B) josh-ops)
+  )
+
+(defn test-move-to-c-refac []
+  "The agent moves from room A to room C
+  This is a depth of one"
+  (planner move-A-D-all-unlocked '(in R C) josh-ops)
+  )
+
+(defn test-move-to-f-refac []
+  "The agent moves from room A to room F
+  This is a depth of two"
+  (planner move-A-D-all-unlocked '(in R F) josh-ops)
+  )

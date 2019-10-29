@@ -60,41 +60,51 @@
      })
 
 (defn test-five-very-short-opssearch []
+  "Elapsed time: 8819.068033 msecs"
   (time (ops-search test-state-five '((smited nabriales)) very-short-ops-opssearch))
   )
 
 (defn test-five-very-short-planner []
+  "Elapsed time: 2.121133333 msecs"
   (time (planner test-state-five '(smited nabriales) very-short-ops-planner))
   )
 
 (defn test-five-short-opssearch []
+  "Elapsed time: Stack Overflow msecs"
   (time (ops-search test-state-five '((smited nabriales)) short-ops-opssearch))
   )
 
 (defn test-five-short-planner []
+  "Elapsed time:1.909333333  msecs"
   (time (planner test-state-five '(smited nabriales) short-ops-planner))
   )
 
 (defn test-five-medium-opssearch []
+  "Elapsed time:Stack Overflow  msecs"
   (time (ops-search test-state-five '((smited nabriales)) medium-ops-opssearch))
   )
 
 (defn test-five-medium-planner []
+  "Elapsed time: 2.2913 msecs"
   (time (planner test-state-five '(smited nabriales) medium-ops-planner))
   )
 
 (defn test-five-large-opssearch []
+  "Elapsed time:Stack Overflow  msecs"
   (time (ops-search test-state-five '((smited nabriales)) large-ops-opssearch))
   )
 
 (defn test-five-large-planner []
+  "Elapsed time:2.1535  msecs"
   (time (planner test-state-five '(smited nabriales) large-ops-planner))
   )
 
 (defn test-five-very-large-opssearch []
+  "Elapsed time:Stack Overflow  msecs"
   (time (ops-search test-state-five '((smited nabriales)) very-large-ops-opssearch))
   )
 
 (defn test-five-very-large-planner []
+  "Elapsed time: 159.6204333 msecs"
   (time (planner test-state-five '(smited nabriales) very-large-ops-planner))
   )
