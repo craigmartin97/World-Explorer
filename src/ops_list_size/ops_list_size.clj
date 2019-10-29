@@ -657,7 +657,7 @@
   "Test further displaying points made in test-state-6. In this case, very-large-ops
   should complete the fastest as it offers the most optimal path of 3 moves.
 
-  All operation sets, excluding very-short-ops, can solve this problem"
+  All operation sets, excluding very-short-ops, can solve this problem."
   '#{(agent R)
      (room room-a)
      (room room-b)
