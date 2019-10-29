@@ -3,9 +3,13 @@
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]))
 
-(comment "Guard that room 1 and room 2 aren't the same room.")
+
+(comment "Tests to see the differences in ops search performance when a guard is used in the operator preconditions.
+          The move operator can be guarded so that the two rooms are ensured to be different. This will reduce
+          the number of paths taken but the guard check may have its own impact on runtime.")
 
 (def op-move-base
+  "The operator for move that we originally created with no guard condition."
   '{move
     {:pre ((agent ?agent)
             (room ?room1)
@@ -27,6 +31,7 @@
   )
 
 (def op-move-guarded-one
+  "Similar to op-move-base but now contains a guard to ensure room1 and room2 aren't the same room."
   '{move
     {:pre ((agent ?agent)
             (room ?room1)
@@ -49,6 +54,7 @@
   )
 
 (def op-move-guarded-two
+  "Similar to op-move-guarded-one but the guard has been moved right below where room1 and room2 are specified."
   '{move
     {:pre ((agent ?agent)
             (room ?room1)
@@ -71,7 +77,7 @@
   )
 
 (def state-move-small
-  "basic state for agent to move from one room to next"
+  "Basic state containing an agent and 2 connected rooms."
   '#{
      (agent R)
 
@@ -91,7 +97,7 @@
   )
 
 (def state-move-medium
-  "basic state for agent to move from one room to next"
+  "Extends state-move-small by adding 3 more rooms to the scenario."
   '#{
      (agent R)
      (room A)
@@ -129,7 +135,7 @@
   )
 
 (def state-move-large
-  "basic state for agent to move from one room to next"
+  "Extends state-move-medium by adding 5 more rooms to the scenario."
   '#{
      (agent R)
      (room A)
@@ -197,41 +203,67 @@
   )
 
 
+;;;;;;;;;;;;;;;;;;;
+;;; SMALL TESTS ;;;
+;;;;;;;;;;;;;;;;;;;
+
+;These small state tests will attempt to move the agent from room A to room B. This requires a search depth of 1.
 
 (defn test-move-base-small []
+  "Average time: 5.3936ms"
   (time (ops-search state-move-small '((in R B)) op-move-base))
   )
 
-(defn test-move-base-medium []
-  (time (ops-search state-move-medium '((in R E)) op-move-base))
-  )
-
-(defn test-move-base-large []
-  (time (ops-search state-move-large '((in R J)) op-move-base))
-  )
-
-
 (defn test-move-guarded-one-small []
+  "Average time: 6.9865"
   (time (ops-search state-move-small '((in R B)) op-move-guarded-one))
   )
 
-(defn test-move-guarded-one-medium []
-  (time (ops-search state-move-medium '((in R E)) op-move-guarded-one))
-  )
-
-(defn test-move-guarded-one-large []
-  (time (ops-search state-move-large '((in R J)) op-move-guarded-one))
-  )
-
-
 (defn test-move-guarded-two-small []
+  "Average time: 6.9464"
   (time (ops-search state-move-small '((in R B)) op-move-guarded-two))
   )
 
+
+;;;;;;;;;;;;;;;;;;;;
+;;; MEDIUM TESTS ;;;
+;;;;;;;;;;;;;;;;;;;;
+
+;These medium state tests will attempt to move the agent from room A to room E. This requires a search depth of 4.
+
+(defn test-move-base-medium []
+  "Average time: 280.1636ms"
+  (time (ops-search state-move-medium '((in R E)) op-move-base))
+  )
+
+(defn test-move-guarded-one-medium []
+  "Average time: 282.29778ms"
+  (time (ops-search state-move-medium '((in R E)) op-move-guarded-one))
+  )
+
 (defn test-move-guarded-two-medium []
+  "Average time: 335.4809ms"
   (time (ops-search state-move-medium '((in R E)) op-move-guarded-two))
   )
 
+
+;;;;;;;;;;;;;;;;;;;
+;;; LARGE TESTS ;;;
+;;;;;;;;;;;;;;;;;;;
+
+;These large state tests will attempt to move the agent from room A to room J. This requires a search depth of 9.
+
+(defn test-move-base-large []
+  "Average time: 6512.58514ms"
+  (time (ops-search state-move-large '((in R J)) op-move-base))
+  )
+
+(defn test-move-guarded-one-large []
+  "Average time: 6457.90434ms"
+  (time (ops-search state-move-large '((in R J)) op-move-guarded-one))
+  )
+
 (defn test-move-guarded-two-large []
+  "Average time: 6096.84584ms"
   (time (ops-search state-move-large '((in R J)) op-move-guarded-two))
   )

@@ -3,12 +3,12 @@
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]))
 
-(comment "Guard that room 1 and room 2 aren't the same room.
-          Also guard that tele 1 and tele 2 aren't the same tele.
-          Does having 2 separate guards work better than using an AND?
-          Can guard be used to specify 'teleporter-connection ?tele1 ?tele2' OR 'teleporter-connection ?tele2 ?tele2'?")
+(comment "Tests to see the differences in ops search performance when a guard is used in the operator preconditions.
+          The teleport operator can be guarded so that the two rooms and teleporters are ensured to be different.
+          This will reduce the number of paths taken but the guard check may have its own impact on runtime.")
 
 (def op-teleport-base
+  "The base operator for teleport with no guard condition."
   '{teleport
     {:pre ((agent ?agent)
             (teleporter ?tele1)
@@ -33,6 +33,8 @@
   )
 
 (def op-teleport-guarded-one
+  "Teleport with two separate guards included. After testing this operator, multiple guards does not seem to work with
+  ops search. op-teleport-guarded-two handles this issue."
   '{teleport
     {:pre ((agent ?agent)
             (teleporter ?tele1)
@@ -59,6 +61,7 @@
   )
 
 (def op-teleport-guarded-two
+  "Teleport with a single guard that combines the room and teleporter checks into an 'and' operator."
   '{teleport
     {:pre ((agent ?agent)
             (teleporter ?tele1)
@@ -85,6 +88,9 @@
   )
 
 (def op-teleport-guarded-three
+  "Similar to op-teleport-guarded-three but can now work with the teleporter connections in both orders.
+  This operator will likely be less efficient but it will mean less teleporter connections have to be added in states.
+  See the alternative states for examples of this."
   '{teleport
     {:pre ((agent ?agent)
             (teleporter ?tele1)
@@ -114,6 +120,7 @@
   )
 
 (def state-teleport-small
+  "Small state where the agent can use two teleporters."
   '#{(agent R)
      (in R A)
 
@@ -135,6 +142,7 @@
   )
 
 (def state-teleport-small-alt
+  "Alternate version of state-teleport-small where only 1 teleporter-connection is defined."
   '#{(agent R)
      (in R A)
 
@@ -155,6 +163,7 @@
   )
 
 (def state-teleport-medium
+  "Extends state-teleport-small to include 4 more teleporters."
   '#{(agent R)
      (in R A)
 
@@ -197,6 +206,7 @@
   )
 
 (def state-teleport-medium-alt
+  "Alternate version of state-teleport-small where only 1 teleporter-connection is defined for each teleporter."
   '#{(agent R)
      (in R A)
 
@@ -235,6 +245,7 @@
   )
 
 (def state-teleport-large
+  "Extends state-teleport-medium to include 5 more teleporters."
   '#{(agent R)
      (in R A)
 
@@ -312,6 +323,7 @@
   )
 
 (def state-teleport-large-alt
+  "Alternate version of state-teleport-small where only 1 teleporter-connection is defined for each teleporter."
   '#{(agent R)
      (in R A)
 
@@ -380,382 +392,86 @@
   )
 
 
-(def state-teleport-very-large-alt
-  '#{(agent R)
-     (in R A)
 
-     (room A)
-     (room B)
-     (room C)
-     (room D)
-     (room E)
-     (room F)
-     (room G)
-     (room H)
-     (room I)
-     (room J)
-     (room K)
-     (room L)
-     (room M)
-     (room N)
-     (room O)
-     (room P)
-     (room Q)
-     (room rR)
-     (room S)
-     (room T)
+;;;;;;;;;;;;;;;;;;;
+;;; SMALL TESTS ;;;
+;;;;;;;;;;;;;;;;;;;
 
-     (teleporter tele-A)
-     (teleporter tele-B)
-     (teleporter tele-C)
-     (teleporter tele-D)
-     (teleporter tele-E)
-     (teleporter tele-F)
-     (teleporter tele-G)
-     (teleporter tele-H)
-     (teleporter tele-I)
-     (teleporter tele-J)
-     (teleporter tele-K)
-     (teleporter tele-L)
-     (teleporter tele-M)
-     (teleporter tele-N)
-     (teleporter tele-O)
-     (teleporter tele-P)
-     (teleporter tele-Q)
-     (teleporter tele-R)
-     (teleporter tele-S)
-     (teleporter tele-T)
-     (powerable tele-A)
-     (powerable tele-B)
-     (powerable tele-C)
-     (powerable tele-D)
-     (powerable tele-E)
-     (powerable tele-F)
-     (powerable tele-G)
-     (powerable tele-H)
-     (powerable tele-I)
-     (powerable tele-J)
-     (powerable tele-K)
-     (powerable tele-L)
-     (powerable tele-M)
-     (powerable tele-N)
-     (powerable tele-O)
-     (powerable tele-P)
-     (powerable tele-Q)
-     (powerable tele-R)
-     (powerable tele-S)
-     (powerable tele-T)
-     (powered tele-A true)
-     (powered tele-B true)
-     (powered tele-C true)
-     (powered tele-D true)
-     (powered tele-E true)
-     (powered tele-F true)
-     (powered tele-G true)
-     (powered tele-H true)
-     (powered tele-I true)
-     (powered tele-J true)
-     (powered tele-K true)
-     (powered tele-L true)
-     (powered tele-M true)
-     (powered tele-N true)
-     (powered tele-O true)
-     (powered tele-P true)
-     (powered tele-Q true)
-     (powered tele-R true)
-     (powered tele-S true)
-     (powered tele-T true)
-     (teleporter-connection tele-A tele-B)
-     (teleporter-connection tele-A tele-C)
-     (teleporter-connection tele-A tele-D)
-     (teleporter-connection tele-A tele-E)
-     (teleporter-connection tele-A tele-F)
-     (teleporter-connection tele-B tele-C)
-     (teleporter-connection tele-B tele-D)
-     (teleporter-connection tele-B tele-E)
-     (teleporter-connection tele-B tele-F)
-     (teleporter-connection tele-C tele-D)
-     (teleporter-connection tele-C tele-E)
-     (teleporter-connection tele-C tele-F)
-     (teleporter-connection tele-D tele-E)
-     (teleporter-connection tele-D tele-F)
-     (teleporter-connection tele-E tele-F)
-     (teleporter-connection tele-F tele-G)
-     (teleporter-connection tele-G tele-H)
-     (teleporter-connection tele-H tele-I)
-     (teleporter-connection tele-I tele-J)
-     (teleporter-connection tele-J tele-K)
-     (teleporter-connection tele-K tele-L)
-     (teleporter-connection tele-L tele-M)
-     (teleporter-connection tele-M tele-N)
-     (teleporter-connection tele-N tele-O)
-     (teleporter-connection tele-O tele-P)
-     (teleporter-connection tele-P tele-Q)
-     (teleporter-connection tele-Q tele-R)
-     (teleporter-connection tele-R tele-S)
-     (teleporter-connection tele-S tele-T)
-
-     (in tele-A A)
-     (in tele-B B)
-     (in tele-C E)
-     (in tele-D D)
-     (in tele-E C)
-     (in tele-F F)
-     (in tele-G J)
-     (in tele-H I)
-     (in tele-I H)
-     (in tele-J G)
-     (in tele-K L)
-     (in tele-L N)
-     (in tele-M O)
-     (in tele-N M)
-     (in tele-O K)
-     (in tele-P Q)
-     (in tele-Q S)
-     (in tele-R P)
-     (in tele-S T)
-     (in tele-T rR)
-     }
-  )
-
-(def state-teleport-very-large
-  '#{(agent R)
-     (in R A)
-
-     (room A)
-     (room B)
-     (room C)
-     (room D)
-     (room E)
-     (room F)
-     (room G)
-     (room H)
-     (room I)
-     (room J)
-     (room K)
-     (room L)
-     (room M)
-     (room N)
-     (room O)
-     (room P)
-     (room Q)
-     (room rR)
-     (room S)
-     (room T)
-     (room U)
-     (room V)
-     (room W)
-     (room X)
-     (room Y)
-     (room Z)
-
-     (teleporter tele-A)
-     (teleporter tele-B)
-     (teleporter tele-C)
-     (teleporter tele-D)
-     (teleporter tele-E)
-     (teleporter tele-F)
-     (teleporter tele-G)
-     (teleporter tele-H)
-     (teleporter tele-I)
-     (teleporter tele-J)
-     (teleporter tele-K)
-     (teleporter tele-L)
-     (teleporter tele-M)
-     (teleporter tele-N)
-     (teleporter tele-O)
-     (teleporter tele-P)
-     (teleporter tele-Q)
-     (teleporter tele-R)
-     (teleporter tele-S)
-     (teleporter tele-T)
-     (teleporter tele-U)
-     (teleporter tele-V)
-     (teleporter tele-W)
-     (teleporter tele-X)
-     (teleporter tele-Y)
-     (teleporter tele-Z)
-     (powerable tele-A)
-     (powerable tele-B)
-     (powerable tele-C)
-     (powerable tele-D)
-     (powerable tele-E)
-     (powerable tele-F)
-     (powerable tele-G)
-     (powerable tele-H)
-     (powerable tele-I)
-     (powerable tele-J)
-     (powerable tele-K)
-     (powerable tele-L)
-     (powerable tele-M)
-     (powerable tele-N)
-     (powerable tele-O)
-     (powerable tele-P)
-     (powerable tele-Q)
-     (powerable tele-R)
-     (powerable tele-S)
-     (powerable tele-T)
-     (powerable tele-U)
-     (powerable tele-V)
-     (powerable tele-W)
-     (powerable tele-X)
-     (powerable tele-Y)
-     (powerable tele-Z)
-     (powered tele-A true)
-     (powered tele-B true)
-     (powered tele-C true)
-     (powered tele-D true)
-     (powered tele-E true)
-     (powered tele-F true)
-     (powered tele-G true)
-     (powered tele-H true)
-     (powered tele-I true)
-     (powered tele-J true)
-     (powered tele-K true)
-     (powered tele-L true)
-     (powered tele-M true)
-     (powered tele-N true)
-     (powered tele-O true)
-     (powered tele-P true)
-     (powered tele-Q true)
-     (powered tele-R true)
-     (powered tele-S true)
-     (powered tele-T true)
-     (powered tele-U true)
-     (powered tele-V true)
-     (powered tele-W true)
-     (powered tele-X true)
-     (powered tele-Y true)
-     (powered tele-Z true)
-     (teleporter-connection tele-A tele-B)
-     (teleporter-connection tele-B tele-A)
-     (teleporter-connection tele-B tele-C)
-     (teleporter-connection tele-C tele-B)
-     (teleporter-connection tele-C tele-D)
-     (teleporter-connection tele-D tele-C)
-     (teleporter-connection tele-D tele-E)
-     (teleporter-connection tele-E tele-D)
-     (teleporter-connection tele-E tele-F)
-     (teleporter-connection tele-F tele-E)
-     (teleporter-connection tele-F tele-G)
-     (teleporter-connection tele-G tele-F)
-     (teleporter-connection tele-G tele-H)
-     (teleporter-connection tele-H tele-G)
-     (teleporter-connection tele-H tele-I)
-     (teleporter-connection tele-I tele-H)
-     (teleporter-connection tele-I tele-J)
-     (teleporter-connection tele-J tele-I)
-     (teleporter-connection tele-J tele-K)
-     (teleporter-connection tele-K tele-J)
-     (teleporter-connection tele-K tele-L)
-     (teleporter-connection tele-L tele-K)
-     (teleporter-connection tele-L tele-M)
-     (teleporter-connection tele-M tele-L)
-     (teleporter-connection tele-M tele-N)
-     (teleporter-connection tele-N tele-M)
-     (teleporter-connection tele-N tele-O)
-     (teleporter-connection tele-O tele-N)
-     (teleporter-connection tele-O tele-P)
-     (teleporter-connection tele-P tele-O)
-     (teleporter-connection tele-P tele-Q)
-     (teleporter-connection tele-Q tele-P)
-     (teleporter-connection tele-Q tele-R)
-     (teleporter-connection tele-R tele-Q)
-     (teleporter-connection tele-R tele-S)
-     (teleporter-connection tele-S tele-R)
-     (teleporter-connection tele-S tele-T)
-     (teleporter-connection tele-T tele-S)
-     (teleporter-connection tele-T tele-U)
-     (teleporter-connection tele-U tele-T)
-     (teleporter-connection tele-U tele-V)
-     (teleporter-connection tele-V tele-U)
-     (teleporter-connection tele-V tele-W)
-     (teleporter-connection tele-W tele-V)
-     (teleporter-connection tele-W tele-X)
-     (teleporter-connection tele-X tele-W)
-     (teleporter-connection tele-X tele-Y)
-     (teleporter-connection tele-Y tele-X)
-     (teleporter-connection tele-Y tele-Z)
-     (teleporter-connection tele-Z tele-Y)
-
-     (in tele-A A)
-     (in tele-B B)
-     (in tele-C E)
-     (in tele-D D)
-     (in tele-E C)
-     (in tele-F F)
-     (in tele-G J)
-     (in tele-H I)
-     (in tele-I H)
-     (in tele-J G)
-     (in tele-K L)
-     (in tele-L N)
-     (in tele-M O)
-     (in tele-N M)
-     (in tele-O K)
-     (in tele-P Q)
-     (in tele-Q S)
-     (in tele-R P)
-     (in tele-S T)
-     (in tele-T rR)
-     (in tele-U U)
-     (in tele-V W)
-     (in tele-W Z)
-     (in tele-X X)
-     (in tele-Y V)
-     (in tele-Z Y)
-     }
-  )
-
-
+;These small state tests will attempt to move the agent from room A to room B using teleporters.
+;This requires a search depth of 1.
 
 (defn test-teleport-base-small []
+  "Average time: 6.90788ms"
   (time (ops-search state-teleport-small '((in R B)) op-teleport-base))
   )
 
-(defn test-teleport-base-medium []
-  (time (ops-search state-teleport-medium '((in R C)) op-teleport-base))
-  )
-
-(defn test-teleport-base-large []
-  (time (ops-search state-teleport-large '((in R G)) op-teleport-base))
-  )
-
-
 (defn test-teleport-guarded-one-small []
+  "Average time: NIL"
   (time (ops-search state-teleport-small '((in R B)) op-teleport-guarded-one))
   )
 
-(defn test-teleport-guarded-one-medium []
-  (time (ops-search state-teleport-medium '((in R C)) op-teleport-guarded-one))
-  )
-
-(defn test-teleport-guarded-one-large []
-  (time (ops-search state-teleport-large '((in R G)) op-teleport-guarded-one))
-  )
-
-
 (defn test-teleport-guarded-two-small []
+  "Average time: 8.5805ms"
   (time (ops-search state-teleport-small '((in R B)) op-teleport-guarded-two))
   )
 
+(defn test-teleport-guarded-three-small []
+  "Average time: 14.2201ms"
+  (time (ops-search state-teleport-small-alt '((in R B)) op-teleport-guarded-three))
+  )
+
+
+;;;;;;;;;;;;;;;;;;;;
+;;; MEDIUM TESTS ;;;
+;;;;;;;;;;;;;;;;;;;;
+
+;These medium state tests will attempt to move the agent from room A to room C using teleporters.
+;This requires a search depth of 4.
+
+(defn test-teleport-base-medium []
+  "Average time: 125.99574ms"
+  (time (ops-search state-teleport-medium '((in R C)) op-teleport-base))
+  )
+
+(defn test-teleport-guarded-one-medium []
+  "Average time: NIL"
+  (time (ops-search state-teleport-medium '((in R C)) op-teleport-guarded-one))
+  )
+
 (defn test-teleport-guarded-two-medium []
+  "Average time: 132.55644ms"
   (time (ops-search state-teleport-medium '((in R C)) op-teleport-guarded-two))
   )
 
+(defn test-teleport-guarded-three-medium []
+  "Average time: 363.51454ms"
+  (time (ops-search state-teleport-medium-alt '((in R C)) op-teleport-guarded-three))
+  )
+
+
+;;;;;;;;;;;;;;;;;;;
+;;; LARGE TESTS ;;;
+;;;;;;;;;;;;;;;;;;;
+
+;These medium state tests will attempt to move the agent from room A to room G using teleporters.
+;This requires a search depth of 9.
+
+(defn test-teleport-base-large []
+  "Average time: 1156.3655ms"
+  (time (ops-search state-teleport-large '((in R G)) op-teleport-base))
+  )
+
+(defn test-teleport-guarded-one-large []
+  "Average time: NIL"
+  (time (ops-search state-teleport-large '((in R G)) op-teleport-guarded-one))
+  )
+
 (defn test-teleport-guarded-two-large []
+  "Average time: 1160.25032ms"
   (time (ops-search state-teleport-large '((in R G)) op-teleport-guarded-two))
   )
 
-
-(defn test-teleport-guarded-three-small []
-  (time (ops-search state-teleport-small '((in R B)) op-teleport-guarded-three))
-  )
-
-(defn test-teleport-guarded-three-medium []
-  (time (ops-search state-teleport-medium '((in R C)) op-teleport-guarded-three))
-  )
-
 (defn test-teleport-guarded-three-large []
-  (time (ops-search state-teleport-large '((in R G)) op-teleport-guarded-three))
+  "Average time: 2946.07286ms"
+  (time (ops-search state-teleport-large-alt '((in R G)) op-teleport-guarded-three))
   )

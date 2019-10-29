@@ -3,9 +3,12 @@
             [org.clojars.cognesence.matcher.core :refer :all]
             [org.clojars.cognesence.ops-search.core :refer :all]))
 
-(comment "Guard that room 1 and room 2 aren't the same room.")
+(comment "Tests to see the differences in ops search performance when a guard is used in the operator preconditions.
+          The throw operator can be guarded so that the two rooms are ensured to be different. This will reduce
+          the number of paths taken but the guard check may have its own impact on runtime.")
 
 (def op-throw-base
+  "Base operator for throw with no guard condition."
   '{throw
     {:pre ((agent ?agent)
             (room ?room1)
@@ -29,6 +32,7 @@
   )
 
 (def op-throw-guarded-one
+  "Extends op-throw-base to include a guard condition ensuring that the two rooms are different."
   '{throw
     {:pre ((agent ?agent)
             (room ?room1)
@@ -54,6 +58,7 @@
   )
 
 (def op-throw-guarded-two
+  "Similar to op-throw-guarded-one but the guard has been moved right below where room1 and room2 are specified."
   '{throw
     {:pre ((agent ?agent)
             (room ?room1)
@@ -81,7 +86,7 @@
 
 
 (def state-throw-small
-  "basic state for agent to move from one room to next"
+  "Basic state for agent to throw an item."
   '#{
      (agent R)
 
@@ -104,7 +109,7 @@
   )
 
 (def state-throw-medium
-  "basic state for agent to move from one room to next"
+  "Extends state-throw-small for agent to throw 4 more items."
   '#{
      (agent R)
 
@@ -135,7 +140,7 @@
   )
 
 (def state-throw-large
-  "basic state for agent to move from one room to next"
+  "Extends state-throw-medium for agent to throw 5 more items."
   '#{(agent R)
 
      (room A)
@@ -175,41 +180,67 @@
   )
 
 
+;;;;;;;;;;;;;;;;;;;
+;;; SMALL TESTS ;;;
+;;;;;;;;;;;;;;;;;;;
+
+;These small state tests will attempt to throw 1 item into B. This requires a search depth of 1.
 
 (defn test-throw-base-small []
+  "Average time: 6.17818ms"
   (time (ops-search state-throw-small '((in key B)) op-throw-base))
   )
 
-(defn test-throw-base-medium []
-  (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-base))
-  )
-
-(defn test-throw-base-large []
-  (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-base))
-  )
-
-
 (defn test-throw-guarded-one-small []
+  "Average time: 6.9898ms"
   (time (ops-search state-throw-small '((in key B)) op-throw-guarded-one))
   )
 
-(defn test-throw-guarded-one-medium []
-  (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-guarded-one))
-  )
-
-(defn test-throw-guarded-one-large []
-  (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-guarded-one))
-  )
-
-
 (defn test-throw-guarded-two-small []
+  "Average time: 7.64086ms"
   (time (ops-search state-throw-small '((in key B)) op-throw-guarded-two))
   )
 
+
+;;;;;;;;;;;;;;;;;;;;
+;;; MEDIUM TESTS ;;;
+;;;;;;;;;;;;;;;;;;;;
+
+;These medium state tests will attempt to throw 5 items into B. This requires a search depth of 5.
+
+(defn test-throw-base-medium []
+  "Average time: 1161.00726ms"
+  (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-base))
+  )
+
+(defn test-throw-guarded-one-medium []
+  "Average time: 373.92064ms"
+  (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-guarded-one))
+  )
+
 (defn test-throw-guarded-two-medium []
+  "Average time: 270.07456ms"
   (time (ops-search state-throw-medium '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B)) op-throw-guarded-two))
   )
 
+
+;;;;;;;;;;;;;;;;;;;
+;;; LARGE TESTS ;;;
+;;;;;;;;;;;;;;;;;;;
+
+;These large state tests will attempt to throw 10 items into B. This requires a search depth of 10.
+
+(defn test-throw-base-large []
+  "Average time: STACK OVERFLOW"
+  (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-base))
+  )
+
+(defn test-throw-guarded-one-large []
+  "Average time: 21390.09436ms"
+  (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-guarded-one))
+  )
+
 (defn test-throw-guarded-two-large []
+  "Average time: 10797.50554ms"
   (time (ops-search state-throw-large '((in key B) (in lever B) (in rock B) (in sledgehammer B) (in chocolate B) (in phone B) (in ladder B) (in knife B) (in torch B) (in journal B)) op-throw-guarded-two))
   )
