@@ -5,7 +5,19 @@
             [planner.planner :refer :all]
             [ops-list-size.ops-vs-planner.operations :refer :all]))
 
+(comment "This test introduces an altar to the scenario which allowed for even more operators to be applied.
+          Only the large and very-large operation lists can solve this problem.
+
+          It is interesting to note that the planner with an operations list that can't solve the problem immediately
+          recognises this fact and takes almost no time to return nil. However, ops search will just keep trying until all
+          possible states have been reached. This results in ops-search causing a Stack Overflow exception in the short
+          and medium operations lists.
+
+          Similar conclusions to previous tests are consistent in this test where we can see ops-search being heavily
+          affected by additional operators whilst planner has very similar performance.")
+
 (def test-state-four
+  "State containing some rooms, holdable items, wearable items, and an altar."
   '#{(agent R)
      (wears R nil)
 
@@ -56,7 +68,7 @@
   )
 
 (defn test-four-short-opssearch []
-  "Elapsed time: Stack Overflow msecs"
+  "Elapsed time: Stack Overflow"
   (time (ops-search test-state-four '((gilded altar)) short-ops-opssearch))
   )
 
@@ -66,7 +78,7 @@
   )
 
 (defn test-four-medium-opssearch []
-  "Elapsed time: Stack Overflow msecs"
+  "Elapsed time: Stack Overflow"
   (time (ops-search test-state-four '((gilded altar)) medium-ops-opssearch))
   )
 
