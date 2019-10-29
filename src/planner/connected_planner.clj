@@ -350,3 +350,9 @@
   This is a depth of two"
   (planner move-A-D-all-unlocked '(in R F) josh-ops)
   )
+
+(defn test-move-to-j-refac []
+  "The agent moves from room A to room F
+  This is a depth of two"
+  (planner move-A-D-all-unlocked '(in R J) josh-ops)
+  )
