@@ -1,8 +1,8 @@
 (ns guard-testing.move-comparison
   (:require [org.clojars.cognesence.breadth-search.core :refer :all]
-  [org.clojars.cognesence.matcher.core :refer :all]
-  [org.clojars.cognesence.ops-search.core :refer :all]
-  [planner.planner :refer :all]))
+            [org.clojars.cognesence.matcher.core :refer :all]
+            [org.clojars.cognesence.ops-search.core :refer :all]
+            [planner.planner :refer :all]))
 
 (comment "Comparing planner and ops search performance when guards are used in operators.
 
@@ -83,20 +83,20 @@
   "Base implementation of the modified move operator in planner with no guard."
   '{
     move
-    {:name move
+    {:name     move
      :achieves (visited ?agent ??vis ?room1 ?room2)
-     :when ((agent ?agent)
-             (room ?room1)
-             (room ?room2)
-             (visited ?agent ??cur-vis)
-             )
-     :post ((visited ?agent ??vis ?room1))
-     :pre ()
-     :add ((visited ?agent ??vis ?room1 ?room2)
-            (in ?agent ?room2))
-     :del ((visited ?agent ??vis ?room1)
-            (in ?agent ?room1))
-     :txt (?agent has moved from ?room1 to ?room2)
+     :when     ((agent ?agent)
+                 (room ?room1)
+                 (room ?room2)
+                 (visited ?agent ??cur-vis)
+                 )
+     :post     ((visited ?agent ??vis ?room1))
+     :pre      ()
+     :add      ((visited ?agent ??vis ?room1 ?room2)
+                 (in ?agent ?room2))
+     :del      ((visited ?agent ??vis ?room1)
+                 (in ?agent ?room1))
+     :txt      (?agent has moved from ?room1 to ?room2)
      }
     }
   )
@@ -105,21 +105,21 @@
   "Extends op-move-base-search to include a guard ensuring that room1 and room2 are different."
   '{
     move
-    {:name move
+    {:name     move
      :achieves (visited ?agent ??vis ?room1 ?room2)
-     :when ((agent ?agent)
-             (room ?room1)
-             (room ?room2)
-             (visited ?agent ??cur-vis)
-             (:guard (not= (? room1) (? room2)))
-             )
-     :post ((visited ?agent ??vis ?room1))
-     :pre ()
-     :add ((visited ?agent ??vis ?room1 ?room2)
-            (in ?agent ?room2))
-     :del ((visited ?agent ??vis ?room1)
-            (in ?agent ?room1))
-     :txt (?agent has moved from ?room1 to ?room2)
+     :when     ((agent ?agent)
+                 (room ?room1)
+                 (room ?room2)
+                 (visited ?agent ??cur-vis)
+                 (:guard (not= (? room1) (? room2)))
+                 )
+     :post     ((visited ?agent ??vis ?room1))
+     :pre      ()
+     :add      ((visited ?agent ??vis ?room1 ?room2)
+                 (in ?agent ?room2))
+     :del      ((visited ?agent ??vis ?room1)
+                 (in ?agent ?room1))
+     :txt      (?agent has moved from ?room1 to ?room2)
      }
     }
   )
@@ -128,23 +128,23 @@
   "Extends op-move-guarded-one-search guard condition to ensure the checked room has not already been visited."
   '{
     move
-    {:name move
+    {:name     move
      :achieves (visited ?agent ??vis ?room1 ?room2)
-     :when ((agent ?agent)
-             (room ?room1)
-             (room ?room2)
-             (visited ?agent ??cur-vis)
-             (:guard (and (not= (? room1) (? room2))
-                          (not (some #(= % (? room2)) (? cur-vis)))
-                          ))
-             )
-     :post ((visited ?agent ??vis ?room1))
-     :pre ()
-     :add ((visited ?agent ??vis ?room1 ?room2)
-            (in ?agent ?room2))
-     :del ((visited ?agent ??vis ?room1)
-            (in ?agent ?room1))
-     :txt (?agent has moved from ?room1 to ?room2)
+     :when     ((agent ?agent)
+                 (room ?room1)
+                 (room ?room2)
+                 (visited ?agent ??cur-vis)
+                 (:guard (and (not= (? room1) (? room2))
+                              (not (some #(= % (? room2)) (? cur-vis)))
+                              ))
+                 )
+     :post     ((visited ?agent ??vis ?room1))
+     :pre      ()
+     :add      ((visited ?agent ??vis ?room1 ?room2)
+                 (in ?agent ?room2))
+     :del      ((visited ?agent ??vis ?room1)
+                 (in ?agent ?room1))
+     :txt      (?agent has moved from ?room1 to ?room2)
      }
     }
   )

@@ -46,41 +46,51 @@
      })
 
 (defn test-four-very-short-opssearch []
+  "Elapsed time: 6177.3435 msecs"
   (time (ops-search test-state-four '((gilded altar)) very-short-ops-opssearch))
   )
 
 (defn test-four-very-short-planner []
+  "Elapsed time: 2.088733333 msecs"
   (time (planner test-state-four '(gilded altar) very-short-ops-planner))
   )
 
 (defn test-four-short-opssearch []
+  "Elapsed time: Stack Overflow msecs"
   (time (ops-search test-state-four '((gilded altar)) short-ops-opssearch))
   )
 
 (defn test-four-short-planner []
+  "Elapsed time: 2.037066667 msecs"
   (time (planner test-state-four '(gilded altar) short-ops-planner))
   )
 
 (defn test-four-medium-opssearch []
+  "Elapsed time: Stack Overflow msecs"
   (time (ops-search test-state-four '((gilded altar)) medium-ops-opssearch))
   )
 
 (defn test-four-medium-planner []
+  "Elapsed time: 2.134933333 msecs"
   (time (planner test-state-four '(gilded altar) medium-ops-planner))
   )
 
 (defn test-four-large-opssearch []
+  "Elapsed time:61643.7911  msecs"
   (time (ops-search test-state-four '((gilded altar)) large-ops-opssearch))
   )
 
 (defn test-four-large-planner []
+  "Elapsed time: 48.73369967 msecs"
   (time (planner test-state-four '(gilded altar) large-ops-planner))
   )
 
 (defn test-four-very-large-opssearch []
+  "Elapsed time: 94397.26463 msecs"
   (time (ops-search test-state-four '((gilded altar)) very-large-ops-opssearch))
   )
 
 (defn test-four-very-large-planner []
+  "Elapsed time:45.0606  msecs"
   (time (planner test-state-four '(gilded altar) very-large-ops-planner))
   )

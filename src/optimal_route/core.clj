@@ -105,6 +105,7 @@
 ;--------------------------------------
 
 (def state
+  "Basic state with many room and a few objects"
   '#{
      ;define agentLL
      (agent R)

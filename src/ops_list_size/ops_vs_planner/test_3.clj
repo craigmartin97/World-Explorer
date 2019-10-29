@@ -41,41 +41,51 @@
      })
 
 (defn test-three-very-short-opssearch []
+  "Elapsed time: 5718.136033 msecs"
   (time (ops-search test-state-three '((wears R halonic-garb)) very-short-ops-opssearch))
   )
 
 (defn test-three-very-short-planner []
+  "Elapsed time:2.156133333 msecs"
   (time (planner test-state-three '(wears R halonic-garb) very-short-ops-planner))
   )
 
 (defn test-three-short-opssearch []
+  "Elapsed time: 355.0893333  msecs"
   (time (ops-search test-state-three '((wears R halonic-garb)) short-ops-opssearch))
   )
 
 (defn test-three-short-planner []
+  "Elapsed time: 21.12256667 msecs"
   (time (planner test-state-three '(wears R halonic-garb) short-ops-planner))
   )
 
 (defn test-three-medium-opssearch []
+  "Elapsed time:378.1288333  msecs"
   (time (ops-search test-state-three '((wears R halonic-garb)) medium-ops-opssearch))
   )
 
 (defn test-three-medium-planner []
+  "Elapsed time: 21.6971 msecs"
   (time (planner test-state-three '(wears R halonic-garb) medium-ops-planner))
   )
 
 (defn test-three-large-opssearch []
+  "Elapsed time: 431.8688333 msecs"
   (time (ops-search test-state-three '((wears R halonic-garb)) large-ops-opssearch))
   )
 
 (defn test-three-large-planner []
+  "Elapsed time: 21.7216  msecs"
   (time (planner test-state-three '(wears R halonic-garb) large-ops-planner))
   )
 
 (defn test-three-very-large-opssearch []
+  "Elapsed time: 556.285 msecs"
   (time (ops-search test-state-three '((wears R halonic-garb)) very-large-ops-opssearch))
   )
 
 (defn test-three-very-large-planner []
+  "Elapsed time: 20.82706667 msecs"
   (time (planner test-state-three '(wears R halonic-garb) very-large-ops-planner))
   )
