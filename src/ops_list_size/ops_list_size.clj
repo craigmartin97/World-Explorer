@@ -5,8 +5,8 @@
 
 
 (def very-short-ops
-  '{
-    open
+  "Simplest operator list with the ability to move and open doors."
+  '{open
     {:pre ((agent ?agent)
             (room ?room1)
             (room ?room2)
@@ -44,7 +44,7 @@
   )
 
 (def short-ops
-  "A map of operations that the agent can perform in the world"
+  "Extends very-short-ops to include our base unlock and pickup operators."
   (merge very-short-ops
          '{unlock
            {:pre ((agent ?agent)
@@ -85,6 +85,8 @@
   )
 
 (def base-ops
+  "Extends short-ops with the closed, lock, and drop operators.
+  This is the base set of operators defined for our scenario."
   (merge short-ops
          '{closed
            {:pre ((agent ?agent)
@@ -140,6 +142,7 @@
   )
 
 (def large-ops
+  "Extends base-ops with 2 new operators: destroy and throw."
   (merge base-ops
          '{destroy
            {:pre ((agent ?agent)
@@ -175,6 +178,7 @@
   )
 
 (def very-large-ops
+  "Extends large-ops with 4 new operators: teleport, power-up, power-down, and pick-lock."
   (merge large-ops
          '{teleport
            {:pre ((agent ?agent)
@@ -270,22 +274,27 @@
   )
 
 (defn test-1-very-short []
+  "Average time: 18.89086ms"
   (time (ops-search test-state-1 '((in R room-b)) very-short-ops))
   )
 
 (defn test-1-short []
+  "Average time: 20.98216ms"
   (time (ops-search test-state-1 '((in R room-b)) short-ops))
   )
 
 (defn test-1-base []
+  "Average time: 24.00494ms"
   (time (ops-search test-state-1 '((in R room-b)) base-ops))
   )
 
 (defn test-1-large []
+  "Average time: 26.414912ms"
   (time (ops-search test-state-1 '((in R room-b)) large-ops))
   )
 
 (defn test-1-very-large []
+  "Average time: 29.87172ms"
   (time (ops-search test-state-1 '((in R room-b)) very-large-ops))
   )
 
@@ -338,22 +347,27 @@
   )
 
 (defn test-2-very-short []
+  "Average time: 756.3614ms"
   (time (ops-search test-state-2 '((in R room-e)) very-short-ops))
   )
 
 (defn test-2-short []
+  "Average time: 903.81746ms"
   (time (ops-search test-state-2 '((in R room-e)) short-ops))
   )
 
 (defn test-2-base []
+  "Average time: 2289.64676ms"
   (time (ops-search test-state-2 '((in R room-e)) base-ops))
   )
 
 (defn test-2-large []
+  "Average time: 2690.60494ms"
   (time (ops-search test-state-2 '((in R room-e)) large-ops))
   )
 
 (defn test-2-very-large []
+  "Average time: 3320.08264ms"
   (time (ops-search test-state-2 '((in R room-e)) very-large-ops))
   )
 
@@ -408,22 +422,27 @@
   )
 
 (defn test-3-very-short []
+  "Average time: 880.43388ms"
   (time (ops-search test-state-3 '((in R room-e)) very-short-ops))
   )
 
 (defn test-3-short []
+  "Average time: 2154.6545ms"
   (time (ops-search test-state-3 '((in R room-e)) short-ops))
   )
 
 (defn test-3-base []
+  "Average time: 8438.92976ms"
   (time (ops-search test-state-3 '((in R room-e)) base-ops))
   )
 
 (defn test-3-large []
+  "Average time: 12203.05426ms"
   (time (ops-search test-state-3 '((in R room-e)) large-ops))
   )
 
 (defn test-3-very-large []
+  "Average time: 14179.21614ms"
   (time (ops-search test-state-3 '((in R room-e)) very-large-ops))
   )
 
@@ -480,22 +499,27 @@
   )
 
 (defn test-4-very-short []
+  "Average time: 4906.12434ms"
   (time (ops-search test-state-4 '((in R room-g)) very-short-ops))
   )
 
 (defn test-4-short []
+  "Average time: 5764.7383ms"
   (time (ops-search test-state-4 '((in R room-g)) short-ops))
   )
 
 (defn test-4-base []
+  "Average time: 30203.37782ms"
   (time (ops-search test-state-4 '((in R room-g)) base-ops))
   )
 
 (defn test-4-large []
+  "Average time: 33706.63952ms"
   (time (ops-search test-state-4 '((in R room-g)) large-ops))
   )
 
 (defn test-4-very-large []
+  "Average time: 41508.60042ms"
   (time (ops-search test-state-4 '((in R room-g)) very-large-ops))
   )
 
@@ -558,22 +582,27 @@
   )
 
 (defn test-5-very-short []
+  "Average time: 5277.79286ms"
   (time (ops-search test-state-5 '((in R room-g)) very-short-ops))
   )
 
 (defn test-5-short []
+  "Average time: 14340.498ms"
   (time (ops-search test-state-5 '((in R room-g)) short-ops))
   )
 
 (defn test-5-base []
+  "Average time: 154795.5136ms"
   (time (ops-search test-state-5 '((in R room-g)) base-ops))
   )
 
 (defn test-5-large []
+  "Average time: 223062.4016ms"
   (time (ops-search test-state-5 '((in R room-g)) large-ops))
   )
 
 (defn test-5-very-large []
+  "Average time: 250476.7346ms"
   (time (ops-search test-state-5 '((in R room-g)) very-large-ops))
   )
 
@@ -629,22 +658,27 @@
   )
 
 (defn test-6-very-short []
+  "Average time: 526.866ms"
   (time (ops-search test-state-6 '((in key-ab room-e)) very-short-ops))
   )
 
 (defn test-6-short []
+  "Average time: 1333.01416ms"
   (time (ops-search test-state-6 '((in key-ab room-e)) short-ops))
   )
 
 (defn test-6-base []
+  "Average time: 11245.87156ms"
   (time (ops-search test-state-6 '((in key-ab room-e)) base-ops))
   )
 
 (defn test-6-large []
+  "Average time: 8305.8422ms"
   (time (ops-search test-state-6 '((in key-ab room-e)) large-ops))
   )
 
 (defn test-6-very-large []
+  "Average time: 10751.58038ms"
   (time (ops-search test-state-6 '((in key-ab room-e)) very-large-ops))
   )
 
@@ -720,21 +754,26 @@
   )
 
 (defn test-7-very-short []
+  "Average time: 129.01412ms"
   (time (ops-search test-state-7 '((in R room-e)) very-short-ops))
   )
 
 (defn test-7-short []
+  "Average time: 4443.0624ms"
   (time (ops-search test-state-7 '((in R room-e)) short-ops))
   )
 
 (defn test-7-base []
+  "Average time: 70655.0089ms"
   (time (ops-search test-state-7 '((in R room-e)) base-ops))
   )
 
 (defn test-7-large []
+  "Average time: 306443.4705ms"
   (time (ops-search test-state-7 '((in R room-e)) large-ops))
   )
 
 (defn test-7-very-large []
+  "Average time: 3383.55742ms"
   (time (ops-search test-state-7 '((in R room-e)) very-large-ops))
   )
