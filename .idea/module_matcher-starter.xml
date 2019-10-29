@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_matcher-starter" default="compile.module.matcher-starter">
+  <dirname property="module.matcher-starter.basedir" file="${ant.file.module_matcher-starter}"/>
+  
+  <property name="module.jdk.home.matcher-starter" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.matcher-starter" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.matcher-starter" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.matcher-starter" value="-encoding UTF-8 -source 12 -target 12 ${compiler.args}"/>
+  
+  <property name="matcher-starter.output.dir" value="${module.matcher-starter.basedir}/../target/classes"/>
+  <property name="matcher-starter.testoutput.dir" value="${module.matcher-starter.basedir}/../target/classes"/>
+  
+  <path id="matcher-starter.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="matcher-starter.module.production.classpath">
+    <path refid="${module.jdk.classpath.matcher-starter}"/>
+    <path refid="library.leiningen:_clojure-complete:0.2.5.classpath"/>
+    <path refid="library.leiningen:_com.clojure-goes-fast/clj-memory-meter:0.1.2.classpath"/>
+    <path refid="library.leiningen:_nrepl:0.6.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/breadth-search:0.9.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/matcher:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/ops-search:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojure/clojure:1.8.0.classpath"/>
+    <path refid="library.leiningen:_org.clojure/tools.trace:0.7.10.classpath"/>
+  </path>
+  
+  <path id="matcher-starter.runtime.production.module.classpath">
+    <pathelement location="${matcher-starter.output.dir}"/>
+    <path refid="library.leiningen:_clojure-complete:0.2.5.classpath"/>
+    <path refid="library.leiningen:_com.clojure-goes-fast/clj-memory-meter:0.1.2.classpath"/>
+    <path refid="library.leiningen:_nrepl:0.6.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/breadth-search:0.9.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/matcher:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/ops-search:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojure/clojure:1.8.0.classpath"/>
+    <path refid="library.leiningen:_org.clojure/tools.trace:0.7.10.classpath"/>
+  </path>
+  
+  <path id="matcher-starter.module.classpath">
+    <path refid="${module.jdk.classpath.matcher-starter}"/>
+    <pathelement location="${matcher-starter.output.dir}"/>
+    <path refid="library.leiningen:_clojure-complete:0.2.5.classpath"/>
+    <path refid="library.leiningen:_com.clojure-goes-fast/clj-memory-meter:0.1.2.classpath"/>
+    <path refid="library.leiningen:_nrepl:0.6.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/breadth-search:0.9.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/matcher:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/ops-search:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojure/clojure:1.8.0.classpath"/>
+    <path refid="library.leiningen:_org.clojure/tools.trace:0.7.10.classpath"/>
+  </path>
+  
+  <path id="matcher-starter.runtime.module.classpath">
+    <pathelement location="${matcher-starter.output.dir}"/>
+    <path refid="library.leiningen:_clojure-complete:0.2.5.classpath"/>
+    <path refid="library.leiningen:_com.clojure-goes-fast/clj-memory-meter:0.1.2.classpath"/>
+    <path refid="library.leiningen:_nrepl:0.6.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/breadth-search:0.9.0.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/matcher:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojars.cognesence/ops-search:1.0.1.classpath"/>
+    <path refid="library.leiningen:_org.clojure/clojure:1.8.0.classpath"/>
+    <path refid="library.leiningen:_org.clojure/tools.trace:0.7.10.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.matcher-starter">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.matcher-starter">
+    <patternset refid="excluded.from.module.matcher-starter"/>
+  </patternset>
+  
+  <path id="matcher-starter.module.sourcepath">
+    <dirset dir="${module.matcher-starter.basedir}/../../World-Explorer">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="matcher-starter.module.test.sourcepath">
+    <dirset dir="${module.matcher-starter.basedir}/../../World-Explorer">
+      <include name="test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.matcher-starter" depends="compile.module.matcher-starter.production,compile.module.matcher-starter.tests" description="Compile module matcher-starter"/>
+  
+  <target name="compile.module.matcher-starter.production" depends="register.custom.compilers" description="Compile module matcher-starter; production classes">
+    <mkdir dir="${matcher-starter.output.dir}"/>
+    <javac2 destdir="${matcher-starter.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.matcher-starter}/javac">
+      <compilerarg line="${compiler.args.matcher-starter}"/>
+      <bootclasspath refid="matcher-starter.module.bootclasspath"/>
+      <classpath refid="matcher-starter.module.production.classpath"/>
+      <src refid="matcher-starter.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.matcher-starter"/>
+    </javac2>
+    
+    <copy todir="${matcher-starter.output.dir}">
+      <fileset dir="${module.matcher-starter.basedir}/../src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.matcher-starter.tests" depends="register.custom.compilers,compile.module.matcher-starter.production" description="compile module matcher-starter; test classes" unless="skip.tests">
+    <mkdir dir="${matcher-starter.testoutput.dir}"/>
+    <javac2 destdir="${matcher-starter.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.matcher-starter}/javac">
+      <compilerarg line="${compiler.args.matcher-starter}"/>
+      <bootclasspath refid="matcher-starter.module.bootclasspath"/>
+      <classpath refid="matcher-starter.module.classpath"/>
+      <src refid="matcher-starter.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.matcher-starter"/>
+    </javac2>
+    
+    <copy todir="${matcher-starter.testoutput.dir}">
+      <fileset dir="${module.matcher-starter.basedir}/../test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.matcher-starter" description="cleanup module">
+    <delete dir="${matcher-starter.output.dir}"/>
+    <delete dir="${matcher-starter.testoutput.dir}"/>
+  </target>
+</project>
